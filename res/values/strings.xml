@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">give-me-coins.com Dashboard</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="demo_collection">Demo collection</string>
+    <string name="demo_external_activity">Demo external activity</string>
+    <string name="dummy_section_text">Dummy section text</string>
+    <string name="scan_qrcode">Please target QR code on your monitor to scan it</string>
+    <string name="qrcode_button">Scan QR code</string>
+    <string name="api_url_text">API URL:</string>
+    <string name="preference_file_key">give_me_coins.com-api</string>
+    <string name="saved_api_key">saved_api_key</string>
+    <string name="add_api_key_text">Please enter your API key or scan QR code which contains it</string>
+    <string name="save_settings">Save settings</string>
+    <string name="delete_settings">Delete settings</string>
+    <string name="username_text">Username:</string>
+    <string name="totalhash_text">Your hashrate:</string>
+    <string name="roundestimate_text">Round estimate:</string>
+	<string name="roundshares_text">Round shares:</string>
+	<string name="confirmedrewards_text">Confirmed rewards:</string>
+	<string name="ltc_text">LTC</string>
+	<string name="btc_text">BTC</string>
+	<string name="ftc_text">FTC</string>
+	<string name="saved_coin_select">saved_coin_select</string>
+	<string name="pool_name">Give-me-coins.com Pool Status!</string>
+	<string name="pool_hashrate_text">Pool hashrate:</string>
+	<string name="pool_workers_text">Pool active workers:</string>
+	<string name="pool_shares_text">Pool shares this round:</string>
+	<string name="pool_last_block_text">Pool last block id:</string>
+	<string name="pool_difficulty_text">Pool difficulty:</string>
+	<string name="api_key_hint">Your API key with /pool/api-ltc...</string>
+	<string name="help1_text">Remember that this is ALPHA version. No QR Code scanner embedded yet, but it is on priority development list. </string>
+	<string name="help2_text">Once you enter your API key, please hit save settings. At this moment the data on Summary should start updating (blue,line on top of each tab). In case you do not receive any data in 30 seconds please close app and reopen it. This is known issue and it is being worked on, but it only happens if you do not have saved settings. Pool tab should be OK. In case of any other problems please contact crt on #give-me-coins . I would love to hear any additional feedback and ideas to improve this app before final release.</string>
+</resources>

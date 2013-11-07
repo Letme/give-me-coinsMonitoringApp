@@ -1,0 +1,12 @@
+<resources>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="menu_background">#838383</color>
+    <color name="main_background">#e9e9e9</color>
+    <color name="actionbar_text_selected">#3d7ab8</color>
+    <color name="actionbar_text_unselected">#ffffff</color>
+    <color name="ltc">#3D7AB8</color>
+    <color name="btc">#F90</color>
+    <color name="ftc">#969</color>
+
+</resources>

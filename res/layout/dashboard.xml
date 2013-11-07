@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:id="@+id/dashboard_layout"
+    android:layout_marginLeft="5dp" 
+    android:layout_marginRight="5dp" >
+
+    <ProgressBar
+        android:id="@+id/progressBarDashBoard"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    	
+    <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pool_name"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+	<TableLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:stretchColumns="1"
+	        android:layout_marginTop="30dp" >
+	
+	        <TableRow
+	            android:id="@+id/PooltableRow1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" 
+	            android:layout_marginBottom="10dp">
+	
+	            <TextView
+	                android:id="@+id/PooltextView1"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/pool_hashrate_text"
+	                android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+	            <TextView
+	                android:id="@+id/pool_hashrate"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text=""
+	                android:gravity="right"
+	                android:textAppearance="?android:attr/textAppearanceMedium" />
+	            
+	        </TableRow>
+	         <TableRow
+	            android:id="@+id/PooltableRow2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginBottom="10dp" >
+	
+	            <TextView
+	                android:id="@+id/PooltextView2"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/pool_workers_text"
+	                android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+	            <TextView
+	                android:id="@+id/pool_workers"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text=""
+	                android:gravity="right"
+	                android:textAppearance="?android:attr/textAppearanceMedium" />
+	            
+	        </TableRow>
+	         <TableRow
+	            android:id="@+id/PooltableRow3"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginBottom="10dp" >
+	
+	            <TextView
+	                android:id="@+id/PooltextView3"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/pool_shares_text"
+	                android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+	            <TextView
+	                android:id="@+id/pool_shares"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text=""
+	                android:gravity="right"
+	                android:textAppearance="?android:attr/textAppearanceMedium" />
+	            
+	        </TableRow>
+	         <TableRow
+	            android:id="@+id/PooltableRow4"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginBottom="10dp" >
+	
+	            <TextView
+	                android:id="@+id/PooltextView4"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/pool_last_block_text"
+	                android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+	            <TextView
+	                android:id="@+id/pool_lastblock"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text=""
+	                android:gravity="right"
+	                android:textAppearance="?android:attr/textAppearanceMedium" />
+	            
+	        </TableRow>
+	         <TableRow
+	            android:id="@+id/PooltableRow5"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginBottom="10dp" >
+	
+	            <TextView
+	                android:id="@+id/PooltextView5"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/pool_difficulty_text"
+	                android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+	            <TextView
+	                android:id="@+id/pool_difficulty"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text=""
+	                android:gravity="right"
+	                android:textAppearance="?android:attr/textAppearanceMedium" />
+	            
+	        </TableRow>
+     </TableLayout>
+</LinearLayout>
