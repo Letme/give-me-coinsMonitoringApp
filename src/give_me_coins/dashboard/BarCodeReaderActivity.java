@@ -55,7 +55,12 @@ public class BarCodeReaderActivity extends Activity{
 	    
 
 	    preview = (SurfaceView)findViewById(R.id.cameraPrev);
-	        
+	    
+	    int width = preview.getWidth();
+	    int height = preview.getHeight();
+	    // bring to 16:9
+	    
+	    
 	    oTerrorCam = new TerrorCam(preview,this);
 	    oTerrorCam.addQRCodeReturnListener( oQRCodeListener );
 //	    previewHolder = preview.getHolder();

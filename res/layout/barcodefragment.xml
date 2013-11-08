@@ -13,10 +13,10 @@
         android:id="@+id/textView" />
 
     <SurfaceView
-            android:id="@+id/cameraPrev"
-            android:layout_below="@+id/textView"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" 
-            />
+        android:id="@+id/cameraPrev"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/textView" />
     
 </RelativeLayout>

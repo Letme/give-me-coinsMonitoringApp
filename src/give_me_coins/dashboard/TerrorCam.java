@@ -1,11 +1,9 @@
 package give_me_coins.dashboard;
 
 import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Method;
-import java.util.List;
-
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.LuminanceSource;
+import com.google.zxing.NotFoundException;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 import android.app.Activity;
@@ -19,7 +17,6 @@ import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.Size;
-import android.os.Build;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
@@ -92,7 +89,7 @@ public class TerrorCam implements Callback, PreviewCallback
 				}
 			}
 		}
-
+		
 		return ( result );
 	}
 
@@ -121,6 +118,21 @@ public class TerrorCam implements Callback, PreviewCallback
 				{
 					parameters.setPreviewSize( size.width, size.height );
 					oCamera.setParameters( parameters );
+					
+					/* stupid fps rates beeing stupid ...
+					try{
+						parameters.setPreviewFpsRange(5000, 12000);
+						oCamera.setParameters( parameters );
+					
+					}
+					catch(Exception e)
+					{
+						if(DEBUG)Log.d(TAG, "doens't like to make fps range ...");
+						parameters = oCamera.getParameters();
+						parameters.setPreviewSize(size.width, size.height);
+						oCamera.setParameters(parameters);
+					}
+					*/
 					Display display = ((WindowManager) oAct.getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 					if(DEBUG)Log.d(TAG, "ORIENT"+oAct.getResources().getConfiguration().orientation );
 					
@@ -148,6 +160,7 @@ public class TerrorCam implements Callback, PreviewCallback
 							oCamera.setDisplayOrientation(180);
 						}
 					}
+					
 					cameraConfigured = true;
 				}
 			}
@@ -169,6 +182,7 @@ public class TerrorCam implements Callback, PreviewCallback
 		}
 		oPreviewHolder.addCallback( this );
 		oPreviewHolder.setType( SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS );
+		//oPreviewHolder.setType(SurfaceHolder.SURFACE_TYPE_GPU);
 		
 		startPreview();
 		oCamera.setPreviewCallback( this );
@@ -205,10 +219,13 @@ public class TerrorCam implements Callback, PreviewCallback
 	{
 		try
 		{
+			camera.autoFocus(null);
 			// Convert to JPG
 			Size previewSize = camera.getParameters().getPreviewSize();
 			YuvImage yuvimage = new YuvImage( data, ImageFormat.NV21,
 					previewSize.width, previewSize.height, null );
+			
+			
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			yuvimage.compressToJpeg( new Rect( 0, 0, previewSize.width,
 					previewSize.height ), 80, baos );
@@ -234,12 +251,13 @@ public class TerrorCam implements Callback, PreviewCallback
 			catch ( Exception e1 )
 			{
 				// Log.e(TAG,e1.toString());
+				// didnt find qrcode ...
 			}
 
 		} 
 		catch ( Exception e )
 		{
-			// Log.e(TAG,e.toString());
+			 Log.e(TAG,e.toString());
 		}
 	}
 
