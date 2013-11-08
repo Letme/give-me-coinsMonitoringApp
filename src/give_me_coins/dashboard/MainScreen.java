@@ -1009,12 +1009,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
-		asyncService.cancel(true);
-		asyncPoolService.cancel(true);
-		mService.timer.cancel();
-		mPoolService.timer.cancel();
-		mService.stop();
-		mPoolService.stop();
+		
 		
 	}
 
@@ -1022,6 +1017,12 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+		asyncService.cancel(true);
+		asyncPoolService.cancel(true);
+		mService.timer.cancel();
+		mPoolService.timer.cancel();
+		mService.stop();
+		mPoolService.stop();
 	}
 
 	@Override
