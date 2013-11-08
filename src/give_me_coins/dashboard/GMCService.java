@@ -115,7 +115,12 @@ public class GMCService extends Service{
 						send = mHandler.obtainMessage(MainScreen.DATA_PROGRESS);
 						MainScreen.Progress=30;
 						mHandler.sendMessage(send);
-			if(jsonAll==null) jsonAll = new JsonReader(reader);
+			try {
+				if(jsonAll==null) jsonAll = new JsonReader(reader);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				jsonAll = null;
+			}
 			//now lets parse the output form give-me-coins
 			if(DEBUG) Log.d(TAG,"Parsing json");
 
