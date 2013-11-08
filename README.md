@@ -7,7 +7,7 @@ Give-me-coins.com monitoring app is useful for monitoring your BTC, LTC or FTC w
 DEVELOPERS
 -------------------------
 Creator and lead: Crt Lukancic Mori (Letme), BTC: 16625Ktt9LU4tuDPmSAnh781JYd2E5qQmC
-Developer: Patrik Hummelbrunner (MrPet), BTC: 153BhareZ9S539GjLbnh3nEK1CPM5XZDgC
+Developer: Patrik Hummelbrunner (MrPet), BTC: 153BhareZ9S539GjLbnh3nEK1CPM5XZDgC , LTC: LYAWygquzJizQCjNTZbQPcqGeTdxh3zH2V
 
 
 TODO:
