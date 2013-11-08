@@ -9,6 +9,7 @@ public class BarCodeReaderActivity extends FragmentActivity {
      public void onCreate(Bundle savedInstanceState) {
              super.onCreate(savedInstanceState);
              setContentView(R.layout.barcodefragment);
+			 //TEst
              //BarCodeFragment fragment = (BarCodeFragment) getSupportFragmentManager()
              //        .findFragmentById(R.id.barCode);
              //	fragment.setmCallBack((IResultCallback) this);
