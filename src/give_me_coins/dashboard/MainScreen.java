@@ -65,7 +65,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	// Debugging
     private static final String TAG = "MainScreen";
     private static final boolean DEBUG=false;
-	
+    
 	static String API_key_saved;
 	static String URL="https://give-me-coins.com";
 	private final static int REFRESH_RATE=100;
@@ -152,12 +152,35 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.main_screen);
-		
+
 		//create file for shared preference
 		context = this;
 		sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-		API_key_saved=sharedPref.getString(getString(R.string.saved_api_key),"");
 		
+		// trying to get stuff from qrcode reader activity 
+		Bundle extras = getIntent().getExtras(); 
+		String sApiKey = null;
+
+		if(extras != null) {
+			sApiKey = extras.getString("API_KEY");
+			if(DEBUG)Log.d(TAG,sApiKey);
+			
+			// if got api key from QR activity directly save it
+			if( sApiKey != null )
+			{
+				SharedPreferences.Editor editor = sharedPref.edit();
+            	editor.putString(getString(R.string.saved_api_key), sApiKey);
+            	if(DEBUG) Log.d(TAG,"Saving sApiKey:" + sApiKey);
+            	editor.commit();
+            	Toast.makeText(context, "Settings have been saved.",Toast.LENGTH_LONG).show();
+			}
+		}
+
+		
+
+
+
+		API_key_saved=sharedPref.getString(getString(R.string.saved_api_key),"");
 		// Start service to receive data
 		if(mService==null) mService= new GMCService(this,mHandler);
 		if(mPoolService==null) mPoolService=new GMCPoolService(this,mHandler);
@@ -170,7 +193,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     			startService();
     		}
     	}
-
+		
 		  // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
         mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());

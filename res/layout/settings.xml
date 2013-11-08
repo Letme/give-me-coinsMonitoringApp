@@ -12,14 +12,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 	
-
+		<ImageButton
+		    android:id="@+id/lunch_barcode_reader"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:contentDescription="@string/qrcode_button"
+		    android:src="@drawable/ic_action_camera" />
+<!--  
     <Button
             android:id="@+id/lunch_barcode_reader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/qrcode_button" 
             android:visibility="invisible" />
-	
+-->
+
 	<TextView
 	    android:id="@+id/SettingstextView1"
 	    android:layout_width="wrap_content"
@@ -48,6 +55,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/delete_settings" />
+
 	</LinearLayout>
 
 	 <TextView
