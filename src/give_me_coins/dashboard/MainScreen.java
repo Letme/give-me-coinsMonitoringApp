@@ -65,7 +65,7 @@ import android.widget.TableLayout.LayoutParams;
 public class MainScreen extends FragmentActivity implements ActionBar.TabListener {
 	// Debugging
     private static final String TAG = "MainScreen";
-    private static final boolean DEBUG=false;
+    private static final boolean DEBUG=true;
     
 	static String API_key_saved;
 	static String URL="https://give-me-coins.com";
@@ -159,6 +159,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 		
 		// trying to get stuff from qrcode reader activity 
+		
 		Bundle extras = getIntent().getExtras(); 
 		String sApiKey = null;
 
@@ -176,12 +177,18 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             	Toast.makeText(context, "Settings have been saved.",Toast.LENGTH_LONG).show();
 			}
 		}
-
-		
+		else
+		{
+			
+			if(DEBUG) Log.d(TAG,"No Extras");
+		}
 
 
 
 		API_key_saved=sharedPref.getString(getString(R.string.saved_api_key),"");
+		
+
+
 		// Start service to receive data
 		if(mService==null) mService= new GMCService(this,mHandler);
 		if(mPoolService==null) mPoolService=new GMCPoolService(this,mHandler);
@@ -1021,6 +1028,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		
 		if(mService==null || mPoolService==null) startService();
 	}
 	

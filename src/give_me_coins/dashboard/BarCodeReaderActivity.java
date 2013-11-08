@@ -78,7 +78,7 @@ public class BarCodeReaderActivity extends Activity{
 		{
 			if(DEBUG) Log.d(TAG, "Valid QRText found");
 			Intent mainScreen = new	Intent(oAct,give_me_coins.dashboard.MainScreen.class);
-			mainScreen.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
+			//mainScreen.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
 			// adding  /pool/api-ftc?api_key= -> in front of key
 			mainScreen.putExtra("API_KEY", "/pool/api-ftc?api_key="+QRText);
 			oAct.startActivity(mainScreen);
