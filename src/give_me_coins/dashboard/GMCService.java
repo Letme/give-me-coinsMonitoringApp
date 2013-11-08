@@ -107,7 +107,7 @@ public class GMCService extends Service{
 				    	try {
 				    	    // json is UTF-8 by default
 				    	    reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
-				    	    Log.d(TAG,"Connected and reading JSON");
+				    	    if(DEBUG) Log.d(TAG,"Connected and reading JSON");
 				    	} catch (Exception e) { 
 				    	    // Oops
 				    		Log.e(TAG,"Connecting failed!");
@@ -132,7 +132,7 @@ public class GMCService extends Service{
 									if(DEBUG) Log.d(TAG,"JSON endObject");
 									break;
 								case NAME:
-									Log.d(TAG,"Main NAME");
+									if(DEBUG)Log.d(TAG,"Main NAME");
 									String name=jsonAll.nextName();
 									if (name.equals("username")) {
 										MainScreen.username=jsonAll.nextString();
@@ -223,7 +223,7 @@ public class GMCService extends Service{
 		//going through workers
 		try {
 			while(jsonAll.hasNext()) {
-				Log.d(TAG,"Inside worker");
+				if(DEBUG)Log.d(TAG,"Inside worker");
 				//we need to determine what comes next and act accordingly
 		    	try {
 					switch(jsonAll.peek()) {
