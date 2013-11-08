@@ -36,5 +36,6 @@ Low priority
  - [ ] app promotion
 
 Some code in this project uses other libraries.
+- QRCode Reader Library: https://code.google.com/p/zxing/
 
 
