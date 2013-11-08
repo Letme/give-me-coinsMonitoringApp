@@ -20,7 +20,8 @@
             android:name="give_me_coins.dashboard.MainScreen"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:theme="@style/AppBaseTheme" >
+            android:theme="@style/AppBaseTheme" 
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
