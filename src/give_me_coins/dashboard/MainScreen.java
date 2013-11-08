@@ -582,7 +582,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	            	}
 	            	if(pool_difficulty!=null) {
 	            		TextView sifTV = (TextView) rootView.findViewById(R.id.pool_difficulty);
-	            		sifTV.setText(readableHashSize(Long.valueOf(pool_difficulty.split("\\.")[0])));
+	            		sifTV.setText(pool_difficulty.split("\\.")[0]);
 	            	}
 		        
 		        ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarDashBoard);
@@ -817,7 +817,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             	}
             	if(total_hashrate!=null) {
             		TextView hashrateTV = (TextView) rootView.findViewById(R.id.summary_totalhash);
-            		hashrateTV.setText(total_hashrate);
+            		hashrateTV.setText(readableHashSize(Long.valueOf(total_hashrate.split("\\.")[0])));
             	}
             	if(round_estimate!=null) {
             		TextView estimateTV = (TextView) rootView.findViewById(R.id.summary_roundestimate);
@@ -1003,7 +1003,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	
 	public static String readableHashSize(long size) {
 	    if(size <= 0) return String.valueOf(size);
-	    final String[] units = new String[] { "h/s", "Kh/s", "Mh/s", "Gh/s", "Th/s","Ph/s","Eh/s" };
+	    final String[] units = new String[] { "Kh/s", "Mh/s", "Gh/s", "Th/s","Ph/s","Eh/s" }; //we left ouh h/s because API puts dot at kh/s!!
 	    int digitGroups = (int) (Math.log10(size)/Math.log10(1000));
 	    return new DecimalFormat("#,##0.#").format(size/Math.pow(1000, digitGroups)) + " " + units[digitGroups];
 	}
