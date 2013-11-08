@@ -16,17 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="4dp" />
    	
-    <TextView
-            android:id="@+id/textView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pool_name"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge" 
-            android:background="@drawable/container_dropshadow"
-            android:layout_marginTop="5dp"
-            android:padding="5dp"
-            />
+
 	        
 	<TableLayout
 	        android:layout_width="match_parent"
@@ -37,10 +27,32 @@
 	        android:padding="5dp"
 	        >
 	        
+			  
+	    
+			<TableRow 
+ 				android:id="@+id/PooltableRow_header"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" 
+            	android:padding="5dp"
+            	android:layout_marginBottom="5dp"
+	            >
+			    
+			        <TextView
+			            android:id="@+id/textView1"
+			            android:layout_width="match_parent"
+			            android:layout_height="wrap_content"
+			            android:text="@string/pool_name"
+			            android:gravity="center"
+			            android:textAppearance="?android:attr/textAppearanceLarge" 
+			            android:padding="5dp"
+			            android:layout_span="2"
+			            />
+			    
+			</TableRow>
+			
 		<View android:layout_width="match_parent"
 			      android:layout_height="1dp"
-			      android:background="#DDDDDD"/>	   
-	    
+			      android:background="#DDDDDD"/>
 	        <TableRow
 	            android:id="@+id/PooltableRow1"
 	            android:layout_width="wrap_content"
