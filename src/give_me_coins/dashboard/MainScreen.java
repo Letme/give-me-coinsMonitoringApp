@@ -5,10 +5,12 @@ import java.util.ArrayList;
 
 import give_me_coins.dashboard.util.SystemUiHider;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -145,6 +147,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	static ActionBar actionBar;
 	static AsyncTask asyncService;
 	static AsyncTask asyncPoolService;
+	private static Activity oAct;
 	
 	static int coin_select=1;
 	
@@ -158,8 +161,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		context = this;
 		sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 		
-		// trying to get stuff from qrcode reader activity 
+		oAct = this;
 		
+		// trying to get stuff from qrcode reader activity 		
 		Bundle extras = getIntent().getExtras(); 
 		String sApiKey = null;
 
@@ -212,7 +216,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    // Specify that tabs should be displayed in the action bar.
 	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 	    actionBar.setDisplayShowTitleEnabled(false);
-
+	    
 	 // Set up the ViewPager, attaching the adapter and setting up a listener for when the
         // user swipes between sections.
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -328,6 +332,10 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
+		int currentColor = 0;
+		LinearLayout summary = (LinearLayout) oAct.findViewById(R.id.summary_layout);
+		LinearLayout dashBoard = (LinearLayout) oAct.findViewById(R.id.dashboard_layout);
+		
 	    switch (item.getItemId()) {
 	        case R.id.ltc_menu:
     	 		coin_select=1;
@@ -343,6 +351,15 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-ltc";
     	 		mAppSectionsPagerAdapter.notifyDataSetChanged();
+    	 		currentColor = getResources().getColor(R.color.ltc);
+    	 		if(dashBoard != null)
+    	 		{
+    	 			dashBoard.setBackgroundColor(currentColor); 			
+    	 		}
+    	 		if( summary != null )
+    	 		{
+    	 			summary.setBackgroundColor(currentColor);    	 			
+    	 		}
 	            return true;
 	        case R.id.btc_menu:
 	        	coin_select=2;
@@ -358,6 +375,15 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				GMCService.url_fixed=URL+API_key_saved;
 				GMCPoolService.url_fixed=URL+"/pool/api-btc";
             	mAppSectionsPagerAdapter.notifyDataSetChanged();
+    	 		currentColor = getResources().getColor(R.color.btc);
+    	 		if(dashBoard != null)
+    	 		{
+    	 			dashBoard.setBackgroundColor(currentColor); 			
+    	 		}
+    	 		if( summary != null )
+    	 		{
+    	 			summary.setBackgroundColor(currentColor);    	 			
+    	 		}
 	            return true;
 	        case R.id.ftc_menu:
 	        	coin_select=3;
@@ -373,9 +399,19 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-ftc";
             	mAppSectionsPagerAdapter.notifyDataSetChanged();
+    	 		currentColor = getResources().getColor(R.color.ftc);
+    	 		if(dashBoard != null)
+    	 		{
+    	 			dashBoard.setBackgroundColor(currentColor); 			
+    	 		}
+    	 		if( summary != null )
+    	 		{
+    	 			summary.setBackgroundColor(currentColor);    	 			
+    	 		}
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
+		
 	}
 	
 	 /**
@@ -513,7 +549,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    			default:
 	    				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
 	    		}
-	    		actionBar.setTitle("Settings");
+	    		//actionBar.setTitle("Settings");
 	    		actionBar.setDisplayShowTitleEnabled(true);
 	    		// Adds the drawable to your progressBar
 	    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
@@ -546,7 +582,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     			default:
     				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
     		}
-    		actionBar.setTitle("Settings");
+    		//actionBar.setTitle("Settings");
     		actionBar.setDisplayShowTitleEnabled(true);
     		displayProgress.setProgress(Progress);
     		displayProgress.invalidate();
@@ -570,25 +606,29 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		     // Define a shape with rounded corners
                 ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
             
+                int currentColor = 0;
             	//determine what color it needs to be
 	    		switch(coin_select) {
 	    			case 1:
-	    				pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
+	    				currentColor = getResources().getColor(R.color.ltc);
 	    				break;
 	    			case 2:
-	    				pgDrawable.getPaint().setColor(getResources().getColor(R.color.btc));
+	    				currentColor = getResources().getColor(R.color.btc);
 						break;
 	    			case 3:
-	    				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ftc));
+	    				currentColor = getResources().getColor(R.color.ftc);
 						break;
 	    			default:
-	    				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
+	    				currentColor = getResources().getColor(R.color.ltc);
 	    		}
 	    		// Adds the drawable to your progressBar
 	    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
 	    	    displayProgress.setProgressDrawable(progressDrawable);
 	    	    displayProgress.setProgress(Progress);
-		        
+	    	    pgDrawable.getPaint().setColor(currentColor);
+				LinearLayout dashBoard = (LinearLayout) rootView.findViewById(R.id.dashboard_layout);
+				dashBoard.setBackgroundColor(currentColor);
+				
 	        	//Read data from settings and write them here
 	        	return rootView;
     		}
@@ -651,7 +691,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                 Bundle savedInstanceState) {
    
 	    		 rootView = inflater.inflate(R.layout.summary, container, false);
-	    		 
+
 	    		 TextView api_text = (TextView) rootView.findViewById(R.id.api_key_url_text);
 	    		 api_text.setPadding(0, 0, 0, 2);
 		        	SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
@@ -678,16 +718,17 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        	}*/
 		        	
 		        	LinearLayout main_layout = (LinearLayout) (rootView.findViewById(R.id.summary_layout));
-		        	TextView usernameH = new TextView(getActivity());
+		        	/*TextView usernameH = new TextView(getActivity());
 					usernameH.setText(username + "with hashrate: " + total_hashrate);
 					usernameH.setTextColor(Color.RED);
 					main_layout.addView(usernameH);
-					
+					*/
 					TableLayout tl = (TableLayout)rootView.findViewById(R.id.myTableLayout);
 					//----------------- Dodaj header-----------------
 					TableRow trH = new TableRow(getActivity());
 					trH.setBackgroundResource(R.drawable.shape);
-					trH.setBackgroundColor(Color.GRAY);
+					//trH.setBackgroundColor(Color.LTGRAY);
+					trH.setPadding(5, 5, 5, 5);
 			        trH.setLayoutParams(new TableLayout.LayoutParams(
 			        		LayoutParams.MATCH_PARENT,
 			                LayoutParams.WRAP_CONTENT));
@@ -695,7 +736,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        TextView Worker_NameH = new TextView(getActivity());
 			        Worker_NameH.setText("Worker Name"); //+1 tukaj ker gledamo 2 polje
 			        Worker_NameH.setTextColor(Color.BLACK);
-			        Worker_NameH.setBackgroundColor(Color.GRAY);
+			       // Worker_NameH.setBackgroundColor(Color.LTGRAY);
 			        Worker_NameH.setPadding(5,2,40,2);
 			        Worker_NameH.setGravity(Gravity.LEFT);
 			        Worker_NameH.setLayoutParams(new TableRow.LayoutParams(
@@ -706,7 +747,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        TextView Worker_AliveH = new TextView(getActivity());
 			        Worker_AliveH.setText("Worker status"); //+1 tukaj ker gledamo 2 polje
 			        Worker_AliveH.setTextColor(Color.BLACK);
-			        Worker_AliveH.setBackgroundColor(Color.GRAY);
+			       // Worker_AliveH.setBackgroundColor(Color.LTGRAY);
 			        Worker_AliveH.setGravity(Gravity.CENTER);
 			        Worker_AliveH.setPadding(0,2,40,2);
 			        Worker_AliveH.setLayoutParams(new TableRow.LayoutParams(
@@ -717,16 +758,24 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        TextView Worker_HashRateH = new TextView(getActivity());
 			        Worker_HashRateH.setText("HashRate"); //+1 tukaj ker gledamo 2 polje
 			        Worker_HashRateH.setTextColor(Color.BLACK);
-			        Worker_HashRateH.setBackgroundColor(Color.GRAY);
+			        //Worker_HashRateH.setBackgroundColor(Color.LTGRAY);
 			        Worker_HashRateH.setGravity(Gravity.RIGHT);
 			        Worker_HashRateH.setLayoutParams(new TableRow.LayoutParams(
 			        		LayoutParams.WRAP_CONTENT));
+			       // Worker_HashRateH.setPadding(10,2,0,2);
 			        trH.addView(Worker_HashRateH);
 			        /* Add row to TableLayout. */
 			        tl.addView(trH,new TableLayout.LayoutParams(
 			                  LayoutParams.FILL_PARENT,
 			                  LayoutParams.WRAP_CONTENT));  
+			        View line = new View(oAct);
+			        line.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
+			        line.setBackgroundColor(getResources().getColor(R.color.table_border));
+			        
+			        tl.addView( line );
 			        if(DEBUG) Log.d(TAG,"Table header ended");
+			        int green = getResources().getColor(R.color.light_green);
+			        int red = getResources().getColor(R.color.light_red);
 			        //------------- KONEC TABLE HEADERJA ---------------------
 			        for(int current=0;worker_alive[current]!=null;current++)
 			        {
@@ -737,11 +786,11 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        		TextView Worker_Alive=(TextView) rootView.findViewById(3000+current);
 			        		if(worker_alive[current].equals("1")) {
 						        Worker_Alive.setText("Online");
-						        tr.setBackgroundColor(Color.GREEN);
+						        //tr.setBackgroundColor(green);
 			        		}
 						    else {
 						        Worker_Alive.setText("Offline");
-						        tr.setBackgroundColor(Color.RED);
+						       // tr.setBackgroundColor(red);
 						    }
 			        		TextView Worker_HashRate =(TextView) rootView.findViewById(4000+current);
 			        		Worker_HashRate.setText(worker_hashrate[current]);
@@ -770,11 +819,13 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				        Worker_Alive.setId(3000+current);
 				        if(worker_alive[current].equals("1")) {
 				        	Worker_Alive.setText("Online");
-				        	tr.setBackgroundColor(Color.GREEN);
+				        	Worker_Alive.setTextColor(green);
+				        	//tr.setBackgroundColor(green);
 				        }
 				        else {
 				        	Worker_Alive.setText("Offline");
-				        	tr.setBackgroundColor(Color.RED);
+				        	Worker_Alive.setTextColor(red);
+				        	//tr.setBackgroundColor(red);
 				        }
 				        Worker_Alive.setTextColor(Color.BLACK);
 				        Worker_Alive.setGravity(Gravity.CENTER);
@@ -795,6 +846,11 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				        tl.addView(tr,new TableLayout.LayoutParams(
 				                  LayoutParams.MATCH_PARENT,
 				                  LayoutParams.WRAP_CONTENT));
+				        tl.setPadding(5, 5, 5, 5);
+				        View line1 = new View(oAct);
+				        line1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
+				        line1.setBackgroundColor(getResources().getColor(R.color.table_border));
+				        tl.addView(line1);
 			        	}
 			        }
 			        if(DEBUG) Log.d(TAG,"Table data ended");
@@ -803,28 +859,38 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        // Define a shape with rounded corners
 	                ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
 	            
+	                int currentColor = 0;
 	            	//determine what color it needs to be
 		    		switch(coin_select) {
 		    			case 1:
-		    				pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
+		    				currentColor = getResources().getColor(R.color.ltc);
 		    				actionBar.setTitle("LTC");
 		    				actionBar.setDisplayShowTitleEnabled(true);
 		    				break;
 		    			case 2:
-		    				pgDrawable.getPaint().setColor(getResources().getColor(R.color.btc));
+		    				currentColor = getResources().getColor(R.color.btc);
 		    				actionBar.setTitle("BTC");
 		    				actionBar.setDisplayShowTitleEnabled(true);
 							break;
 		    			case 3:
-		    				pgDrawable.getPaint().setColor(getResources().getColor(R.color.ftc));
+		    				currentColor =  getResources().getColor(R.color.ftc);
 		    				actionBar.setTitle("FTC");
 		    				actionBar.setDisplayShowTitleEnabled(true);
 							break;
 		    			default:
-		    				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
+		    				currentColor = getResources().getColor(R.color.ltc);
 		    				 actionBar.setTitle("LTC");
 		    				 actionBar.setDisplayShowTitleEnabled(true);
 		    		}
+		    		
+    				//pgDrawable.getPaint().setColor(currentColor);
+    				
+    			//	LinearLayout dashBoard = (LinearLayout) oAct.findViewById(R.id.dashboard_layout);
+    			//	dashBoard.setBackgroundColor(currentColor);
+    				
+    				LinearLayout summary = (LinearLayout) rootView.findViewById(R.id.summary_layout);
+    				summary.setBackgroundColor(currentColor);
+    				
 		    		// Adds the drawable to your progressBar
 		    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
 		    	    displayProgress.setProgressDrawable(progressDrawable);
@@ -861,6 +927,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             	 // do whatever you want to update your data
 	        	LinearLayout main_layout = (LinearLayout) (rootView.findViewById(R.id.summary_layout));
 	        	TableLayout tl = (TableLayout)rootView.findViewById(R.id.myTableLayout);
+	        	
+		       // View line = new View(oAct);
+		        // line.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
+		       // line.setBackgroundColor(Color.GRAY);
+		        
+		       // tl.addView( line );
+		        int green = getResources().getColor(R.color.light_green);
+		        int red = getResources().getColor(R.color.light_red);
 		        for(int current=0;worker_alive[current]!=null;current++)
 		        {
 		        	// Check if we have already the line on screen
@@ -869,12 +943,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        		TableRow tr=(TableRow) rootView.findViewById(1000+current);
 		        		TextView Worker_Alive=(TextView) rootView.findViewById(3000+current);
 		        		if(worker_alive[current].equals("1")){
-		        			tr.setBackgroundColor(Color.GREEN);
+		        			//tr.setBackgroundColor(Color.GREEN);
 					        Worker_Alive.setText("Online");
+					        Worker_Alive.setTextColor(green);
 		        		}
 					    else {
 					    	Worker_Alive.setText("Offline");
-					    	tr.setBackgroundColor(Color.RED);
+					    	Worker_Alive.setTextColor(red);
+					    	//tr.setBackgroundColor(Color.RED);
 					    }
 					        	
 		        		TextView Worker_HashRate =(TextView) rootView.findViewById(4000+current);
@@ -885,6 +961,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        TableRow tr = new TableRow(getActivity());
 			        tr.setBackgroundResource(R.drawable.shape);
 			        tr.setId(1000+current);
+			        tr.setPadding(5, 5, 5, 5);
 			        tr.setLayoutParams(new TableLayout.LayoutParams(
 			        		LayoutParams.MATCH_PARENT,
 			                LayoutParams.WRAP_CONTENT));
@@ -904,11 +981,13 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        Worker_Alive.setId(3000+current);
 			        if(worker_alive[current].equals("1")) {
 			        	Worker_Alive.setText("Online");
-			        	tr.setBackgroundColor(Color.GREEN);
+			        	Worker_Alive.setTextColor(green);
+			        	//tr.setBackgroundColor(Color.GREEN);
 			        }
 			        else {
 			        	Worker_Alive.setText("Offline");
-			        	tr.setBackgroundColor(Color.RED);
+			        	Worker_Alive.setTextColor(red);
+			        	//tr.setBackgroundColor(Color.RED);
 			        }
 			        Worker_Alive.setTextColor(Color.BLACK);
 			        Worker_Alive.setGravity(Gravity.CENTER);
@@ -929,32 +1008,46 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        tl.addView(tr,new TableLayout.LayoutParams(
 			                  LayoutParams.MATCH_PARENT,
 			                  LayoutParams.WRAP_CONTENT));
+			        View line1 = new View(oAct);
+			        line1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
+			        line1.setBackgroundColor(getResources().getColor(R.color.table_border));
+		        	tl.addView(line1);
 		        	}
+
 		        }            
 		        if(DEBUG) Log.d(TAG,"Summary updated");
 		        
 		        ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSummary);
 		        // Define a shape with rounded corners
                 ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
-            
+                int currentColor = 0;
             	//determine what color it needs to be
 	    		switch(coin_select) {
 	    		case 1:
-    				pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
+	    			currentColor = getResources().getColor(R.color.ltc);
     				actionBar.setTitle("LTC");
     				break;
     			case 2:
-    				pgDrawable.getPaint().setColor(getResources().getColor(R.color.btc));
+    				currentColor = getResources().getColor(R.color.btc);
     				actionBar.setTitle("BTC");
 					break;
     			case 3:
-    				pgDrawable.getPaint().setColor(getResources().getColor(R.color.ftc));
+    				currentColor =  getResources().getColor(R.color.ftc);
     				actionBar.setTitle("FTC");
 					break;
     			default:
-    				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
+    				currentColor =  getResources().getColor(R.color.ltc);
     				 actionBar.setTitle("LTC");
 	    		}
+	    		
+				//pgDrawable.getPaint().setColor(currentColor);
+				/*
+				LinearLayout dashBoard = (LinearLayout) oAct.findViewById(R.id.dashboard_layout);
+				dashBoard.setBackgroundColor(currentColor);
+				*/
+				LinearLayout summary = main_layout;
+				summary.setBackgroundColor(currentColor);
+	    		
 	    		// Adds the drawable to your progressBar
 	    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
 	    	    displayProgress.setProgressDrawable(progressDrawable);

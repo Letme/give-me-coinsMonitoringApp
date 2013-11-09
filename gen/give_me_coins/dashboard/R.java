@@ -24,12 +24,16 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int black_overlay=0x7f040000;
         public static final int btc=0x7f040006;
         public static final int ftc=0x7f040007;
+        public static final int light_green=0x7f04000a;
+        public static final int light_red=0x7f040009;
         public static final int ltc=0x7f040005;
         public static final int main_background=0x7f040002;
         public static final int menu_background=0x7f040001;
-        public static final int pressed_btc=0x7f040008;
-        public static final int pressed_ftc=0x7f040009;
-        public static final int pressed_ltc=0x7f04000a;
+        public static final int pressed_btc=0x7f04000c;
+        public static final int pressed_ftc=0x7f04000d;
+        public static final int pressed_ltc=0x7f04000e;
+        public static final int table_border=0x7f04000b;
+        public static final int table_text=0x7f040008;
     }
     public static final class drawable {
         public static final int ab_background_textured_btc=0x7f020000;
@@ -157,14 +161,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int SettingstextView1=0x7f080018;
         public static final int api_key_url_text=0x7f08002f;
         public static final int api_key_value=0x7f080019;
-        public static final int btc_menu=0x7f080033;
+        public static final int btc_menu=0x7f080032;
         public static final int cameraPrev=0x7f080001;
         public static final int dashboard_layout=0x7f080002;
         public static final int delete_settings_button=0x7f08001b;
-        public static final int ftc_menu=0x7f080034;
-        public static final int ltc_menu=0x7f080032;
+        public static final int ftc_menu=0x7f080033;
+        public static final int ltc_menu=0x7f080031;
         public static final int lunch_barcode_reader=0x7f080017;
-        public static final int myTableLayout=0x7f080031;
+        public static final int myTableLayout=0x7f080030;
         public static final int pager=0x7f080015;
         public static final int pool_difficulty=0x7f080014;
         public static final int pool_hashrate=0x7f080008;
@@ -175,7 +179,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int progressBarSettings=0x7f080016;
         public static final int progressBarSummary=0x7f08001f;
         public static final int save_settings_button=0x7f08001a;
-        public static final int scrollView1=0x7f080030;
         public static final int summary_confirmedrewards=0x7f080027;
         public static final int summary_layout=0x7f08001e;
         public static final int summary_roundestimate=0x7f08002a;
@@ -210,7 +213,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class string {
         public static final int add_api_key_text=0x7f05000b;
-        public static final int api_key_hint=0x7f05001d;
+        public static final int api_key_hint=0x7f05001e;
         public static final int api_url_text=0x7f050008;
         public static final int app_name=0x7f050000;
         public static final int btc_text=0x7f050014;
@@ -222,22 +225,23 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int dummy_content=0x7f050002;
         public static final int dummy_section_text=0x7f050005;
         public static final int ftc_text=0x7f050015;
-        public static final int help1_text=0x7f05001e;
-        public static final int help2_text=0x7f05001f;
+        public static final int help1_text=0x7f05001f;
+        public static final int help2_text=0x7f050020;
         public static final int ltc_text=0x7f050013;
-        public static final int pool_difficulty_text=0x7f05001c;
-        public static final int pool_hashrate_text=0x7f050018;
-        public static final int pool_last_block_text=0x7f05001b;
-        public static final int pool_name=0x7f050017;
-        public static final int pool_shares_text=0x7f05001a;
-        public static final int pool_workers_text=0x7f050019;
+        public static final int missing_username=0x7f050016;
+        public static final int pool_difficulty_text=0x7f05001d;
+        public static final int pool_hashrate_text=0x7f050019;
+        public static final int pool_last_block_text=0x7f05001c;
+        public static final int pool_name=0x7f050018;
+        public static final int pool_shares_text=0x7f05001b;
+        public static final int pool_workers_text=0x7f05001a;
         public static final int preference_file_key=0x7f050009;
         public static final int qrcode_button=0x7f050007;
         public static final int roundestimate_text=0x7f050010;
         public static final int roundshares_text=0x7f050011;
         public static final int save_settings=0x7f05000c;
         public static final int saved_api_key=0x7f05000a;
-        public static final int saved_coin_select=0x7f050016;
+        public static final int saved_coin_select=0x7f050017;
         public static final int scan_qrcode=0x7f050006;
         public static final int totalhash_text=0x7f05000f;
         public static final int username_text=0x7f05000e;

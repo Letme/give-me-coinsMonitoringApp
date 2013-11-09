@@ -10,7 +10,8 @@
         android:id="@+id/progressBarSettings"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="4dp"
+        />
 	
 		<ImageButton
 		    android:id="@+id/lunch_barcode_reader"
@@ -63,6 +64,7 @@
 	     android:layout_width="wrap_content"
 	     android:layout_height="wrap_content"
 	     android:text="@string/help1_text"
+	     android:autoLink="web"
 	     android:textAppearance="?android:attr/textAppearanceSmall" 
 	     android:layout_marginTop="5dp"/>
 	 <TextView

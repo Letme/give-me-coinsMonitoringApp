@@ -67,7 +67,7 @@ public class BarCodeReaderActivity extends Activity{
 //	    previewHolder.addCallback(surfaceCallback);
 //	    previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 	    oAct = this;
-
+	    
 	  }
 
 	  QRCodeReturnListener oQRCodeListener = new QRCodeReturnListener()
@@ -80,8 +80,9 @@ public class BarCodeReaderActivity extends Activity{
 			Intent mainScreen = new	Intent(oAct,give_me_coins.dashboard.MainScreen.class);
 			//mainScreen.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
 			// adding  /pool/api-ftc?api_key= -> in front of key
-			mainScreen.putExtra("API_KEY", "/pool/api-ftc?api_key="+QRText);
+			mainScreen.putExtra("API_KEY", "/pool/api-ltc?api_key="+QRText);
 			oAct.startActivity(mainScreen);
+			oAct.finish();
 		}
 
 	  };
@@ -94,6 +95,8 @@ public class BarCodeReaderActivity extends Activity{
 	    
 	  }
 	    
+	  
+	  
 	  @Override
 	  public void onPause() {
 		  super.onPause();

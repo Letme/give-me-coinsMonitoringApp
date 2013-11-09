@@ -7,14 +7,14 @@
     android:background="#50CCCCCC"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-
     >
 
     <ProgressBar
         android:id="@+id/progressBarDashBoard"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="4dp" />
+        android:layout_height="4dp" 
+        />
    	
 
 	        
@@ -26,9 +26,7 @@
 	        android:background="@drawable/container_dropshadow"
 	        android:padding="5dp"
 	        >
-	        
-			  
-	    
+
 			<TableRow 
  				android:id="@+id/PooltableRow_header"
 	            android:layout_width="wrap_content"
@@ -52,7 +50,7 @@
 			
 		<View android:layout_width="match_parent"
 			      android:layout_height="1dp"
-			      android:background="#DDDDDD"/>
+			      android:background="@color/table_border"/>
 	        <TableRow
 	            android:id="@+id/PooltableRow1"
 	            android:layout_width="wrap_content"
@@ -84,7 +82,7 @@
 	        
 	        <View android:layout_width="match_parent"
 			      android:layout_height="1dp"
-			      android:background="#DDDDDD"/>
+			      android:background="@color/table_border"/>
 	        
 	         <TableRow
 	            android:id="@+id/PooltableRow2"
@@ -115,7 +113,7 @@
 	        
 	        <View android:layout_width="match_parent"
 			      android:layout_height="1dp"
-			      android:background="#DDD"/>
+			      android:background="@color/table_border"/>
 	        
 	         <TableRow
 	            android:id="@+id/PooltableRow3"
@@ -146,7 +144,7 @@
 	        
 	        <View android:layout_width="match_parent"
 			      android:layout_height="1dp"
-			      android:background="#DDD"/>
+			      android:background="@color/table_border"/>
 	        
 	         <TableRow
 	            android:id="@+id/PooltableRow4"
@@ -177,7 +175,7 @@
 	        
 	        <View android:layout_width="match_parent"
 			      android:layout_height="1dp"
-			      android:background="#DDD"/>
+			      android:background="@color/table_border"/>
 	        
 	         <TableRow
 	             android:id="@+id/PooltableRow5"
@@ -209,7 +207,7 @@
 		
 			<View android:layout_width="match_parent"
 			      android:layout_height="1dp"
-			      android:background="#DDDDDD"/>
+			      android:background="@color/table_border"/>
 			
      </TableLayout>
 </LinearLayout>
