@@ -1,8 +1,6 @@
 package give_me_coins.dashboard;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-
 import give_me_coins.dashboard.util.SystemUiHider;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -10,21 +8,15 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.LevelListDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
-import android.os.RemoteException;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -38,9 +30,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Editable;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -147,6 +137,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	static ActionBar actionBar;
 	static AsyncTask asyncService;
 	static AsyncTask asyncPoolService;
+	private static boolean isRunning=true;
 	private static Activity oAct;
 	
 	static int coin_select=1;
@@ -197,15 +188,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		if(mService==null) mService= new GMCService(this,mHandler);
 		if(mPoolService==null) mPoolService=new GMCPoolService(this,mHandler);
 		
-		if(API_key_saved != null) {
-    		if(API_key_saved.matches("No api key found")) {
-    			
-    		}
-    		else {
-    			startService();
-    		}
-    	}
-		
 		  // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
         mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
@@ -231,6 +213,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             }
         });
 
+        
         actionBar.setBackgroundDrawable(new ColorDrawable(R.color.menu_background));
         // For each of the sections in the app, add a tab to the action bar.
         // Create a tab with text corresponding to the page title defined by the adapter.
@@ -251,6 +234,18 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         .setText("Pool")
                         //.setIcon(R.drawable.news)
                         .setTabListener(this));
+        
+		if(API_key_saved != null) {
+    		if(API_key_saved.matches("No api key found")) {
+    			
+    		}
+    		else {
+    			startService();
+    			// change to summary tab if api key is set and everything
+    			mViewPager.setCurrentItem(1);
+    		}
+    	}
+        
 	}
 	
 	public static void startService() {
@@ -482,6 +477,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         public void onClick(View view) {
                            Intent intent = new Intent(getActivity(), BarCodeReaderActivity.class);
                            startActivity(intent);
+                           oAct.finish();
                         }
                     });
             
@@ -766,7 +762,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        trH.addView(Worker_HashRateH);
 			        /* Add row to TableLayout. */
 			        tl.addView(trH,new TableLayout.LayoutParams(
-			                  LayoutParams.FILL_PARENT,
+			                  LayoutParams.MATCH_PARENT,
 			                  LayoutParams.WRAP_CONTENT));  
 			        View line = new View(oAct);
 			        line.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
@@ -888,8 +884,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     			//	LinearLayout dashBoard = (LinearLayout) oAct.findViewById(R.id.dashboard_layout);
     			//	dashBoard.setBackgroundColor(currentColor);
     				
-    				LinearLayout summary = (LinearLayout) rootView.findViewById(R.id.summary_layout);
-    				summary.setBackgroundColor(currentColor);
+    				//LinearLayout summary = (LinearLayout) rootView.findViewById(R.id.summary_layout);
+		    		main_layout.setBackgroundColor(currentColor);
     				
 		    		// Adds the drawable to your progressBar
 		    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
@@ -1077,22 +1073,26 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     private static final Handler mHandler = new Handler() {
     	 @Override
          public void handleMessage(Message msg) {
-    		 switch(msg.what) {
-    		 	case DATA_FAILED:
-    		 		mAppSectionsPagerAdapter.notifyDataSetChanged();
-    		 		break;
-    		 	case DATA_READY:
-    		 		mAppSectionsPagerAdapter.notifyDataSetChanged();
-    		 		break;
-    		 	case DATA_PROGRESS:
-    		 		//Progress=msg.getData().getInt(PROGRESS);
-    		 		mAppSectionsPagerAdapter.notifyDataSetChanged();
-    		 		break;
-    		 	case POOL_DATA_READY:
-    		 		//Progress=msg.getData().getInt(PROGRESS);
-    		 		mAppSectionsPagerAdapter.notifyDataSetChanged();
-    		 		break;
-    		 
+    		 // so it doesnt try to update if not running
+    		 if( isRunning )
+    		 {
+	    		 switch(msg.what) {
+	    		 	case DATA_FAILED:
+	    		 		mAppSectionsPagerAdapter.notifyDataSetChanged();
+	    		 		break;
+	    		 	case DATA_READY:
+	    		 		mAppSectionsPagerAdapter.notifyDataSetChanged();
+	    		 		break;
+	    		 	case DATA_PROGRESS:
+	    		 		//Progress=msg.getData().getInt(PROGRESS);
+	    		 		mAppSectionsPagerAdapter.notifyDataSetChanged();
+	    		 		break;
+	    		 	case POOL_DATA_READY:
+	    		 		//Progress=msg.getData().getInt(PROGRESS);
+	    		 		mAppSectionsPagerAdapter.notifyDataSetChanged();
+	    		 		break;
+	    		 
+	    		 }
     		 }
     	 }
     };
@@ -1100,7 +1100,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 	@Override
 	protected void onStop() {
-		// TODO Auto-generated method stub
 		super.onStop();
 		
 		
@@ -1108,21 +1107,29 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
 		super.onPause();
-		asyncService.cancel(true);
-		asyncPoolService.cancel(true);
-		mService.timer.cancel();
-		mPoolService.timer.cancel();
-		mService.stop();
-		mPoolService.stop();
+		isRunning=false;
+		try
+		{
+			asyncService.cancel(true);
+			asyncPoolService.cancel(true);
+			mService.timer.cancel();
+			mPoolService.timer.cancel();
+			mService.stop();
+			mPoolService.stop();
+		}
+		catch(Exception e)
+		{
+			Log.e(TAG,"error while trying to pause "+e.toString());
+		}
+
 	}
 
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		
+		isRunning=true;
 		if(mService==null || mPoolService==null) startService();
 	}
 	

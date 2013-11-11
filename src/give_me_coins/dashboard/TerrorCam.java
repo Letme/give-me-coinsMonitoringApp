@@ -3,7 +3,6 @@ package give_me_coins.dashboard;
 import java.io.ByteArrayOutputStream;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.LuminanceSource;
-import com.google.zxing.NotFoundException;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 import android.app.Activity;
@@ -182,6 +181,7 @@ public class TerrorCam implements Callback, PreviewCallback
 		}
 		oPreviewHolder.addCallback( this );
 		oPreviewHolder.setType( SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS );
+		
 		//oPreviewHolder.setType(SurfaceHolder.SURFACE_TYPE_GPU);
 		
 		startPreview();

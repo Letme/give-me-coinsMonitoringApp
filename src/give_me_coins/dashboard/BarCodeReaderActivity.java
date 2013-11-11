@@ -1,35 +1,11 @@
 package give_me_coins.dashboard;
 
-import java.io.ByteArrayOutputStream;
-
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.LuminanceSource;
-import com.google.zxing.Result;
-import com.google.zxing.common.HybridBinarizer;
-import com.google.zxing.qrcode.QRCodeReader;
-import give_me_coins.dashboard.RGBLuminanceSource;
 import give_me_coins.dashboard.TerrorCam.QRCodeReturnListener;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.ImageFormat;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.graphics.YuvImage;
-import android.hardware.Camera;
-import android.hardware.Camera.PreviewCallback;
-import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -56,9 +32,8 @@ public class BarCodeReaderActivity extends Activity{
 
 	    preview = (SurfaceView)findViewById(R.id.cameraPrev);
 	    
-	    int width = preview.getWidth();
-	    int height = preview.getHeight();
-	    // bring to 16:9
+	   // int width = preview.getWidth();
+	   // int height = preview.getHeight();
 	    
 	    
 	    oTerrorCam = new TerrorCam(preview,this);
@@ -72,19 +47,17 @@ public class BarCodeReaderActivity extends Activity{
 
 	  QRCodeReturnListener oQRCodeListener = new QRCodeReturnListener()
 	  {
-
-		@Override
-		public void validQRcode( String QRText )
-		{
-			if(DEBUG) Log.d(TAG, "Valid QRText found");
-			Intent mainScreen = new	Intent(oAct,give_me_coins.dashboard.MainScreen.class);
-			//mainScreen.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
-			// adding  /pool/api-ftc?api_key= -> in front of key
-			mainScreen.putExtra("API_KEY", "/pool/api-ltc?api_key="+QRText);
-			oAct.startActivity(mainScreen);
-			oAct.finish();
-		}
-
+			@Override
+			public void validQRcode( String QRText )
+			{
+				if(DEBUG) Log.d(TAG, "Valid QRText found");
+				Intent mainScreen = new	Intent(oAct,give_me_coins.dashboard.MainScreen.class);
+				mainScreen.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
+				// adding  /pool/api-ftc?api_key= -> in front of key
+				mainScreen.putExtra("API_KEY", "/pool/api-ltc?api_key="+QRText);
+				oAct.startActivity(mainScreen);
+				oAct.finish();
+			}
 	  };
 	  
 	  @Override
