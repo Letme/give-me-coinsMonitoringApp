@@ -235,7 +235,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         //.setIcon(R.drawable.news)
                         .setTabListener(this));
         
-		if(API_key_saved != null) {
+       // mViewPager.setCurrentItem(0);
+		if(API_key_saved != null && API_key_saved != "") {
     		if(API_key_saved.matches("No api key found")) {
     			
     		}

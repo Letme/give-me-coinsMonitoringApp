@@ -32,35 +32,44 @@ public abstract class Widget_mainLarge extends AppWidgetProvider implements GetI
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 		oAppWidgetManager = appWidgetManager;
 		oContext = context;
-		apiKey = getApiKey(context);
-		
-		if( oGiveMeCoinsWorker == null )
+		try
 		{
-			if( apiKey != null )
+			apiKey = getApiKey(context);
+			
+			if( oGiveMeCoinsWorker == null )
 			{
-				if(DEBUG)Log.d(TAG,"new coin worker");
-				oGiveMeCoinsWorker = new GetInfoWorker( this );
-				oGiveMeCoinsWorker.setUrlToGiveMeCoins(URL_STRING+apiKey);
-				oGiveMeCoinsWorker.setRunning( true );
-				oGiveMeCoinsWorker.execute();
+				if( apiKey != null )
+				{
+					if(DEBUG)Log.d(TAG,"new coin worker");
+					oGiveMeCoinsWorker = new GetInfoWorker( this );
+					oGiveMeCoinsWorker.setUrlToGiveMeCoins(URL_STRING+apiKey);
+					oGiveMeCoinsWorker.setRunning( true );
+					oGiveMeCoinsWorker.execute();
+				}
 			}
+			RemoteViews remoteViews = new RemoteViews( oContext.getPackageName(), R.layout.activity_widget_main );
+			
+	        ComponentName watchWidget = getComponentName(oContext);
+	        
+			remoteViews.removeAllViews(R.id.main_view);
+			RemoteViews overview = (RemoteViews) new RemoteViews(oContext.getPackageName(), R.layout.overview_layout);
+			
+			int countOnlineWorkers = 0;
+	       
+	       // worker.setProgressBar(R.id.hash_rate_percentage, para_giveMeCoinsInfo.getTotal_hashrate(), currentWorker.getHashrate(), false);
+			overview.setTextViewText(R.id.total_hash_rate, "...");
+	        overview.setTextViewText(R.id.confirmed_rewards, "...");
+	        overview.setTextViewText(R.id.workers_online, "..." );
+	        remoteViews.addView(R.id.main_view, overview);
+	        oAppWidgetManager.updateAppWidget(watchWidget, remoteViews);
 		}
-		RemoteViews remoteViews = new RemoteViews( oContext.getPackageName(), R.layout.activity_widget_main );
-		
-        ComponentName watchWidget = getComponentName(oContext);
-        
-		remoteViews.removeAllViews(R.id.main_view);
-		RemoteViews overview = (RemoteViews) new RemoteViews(oContext.getPackageName(), R.layout.overview_layout);
-		
-		int countOnlineWorkers = 0;
-       
-       // worker.setProgressBar(R.id.hash_rate_percentage, para_giveMeCoinsInfo.getTotal_hashrate(), currentWorker.getHashrate(), false);
-		overview.setTextViewText(R.id.total_hash_rate, "...");
-        overview.setTextViewText(R.id.confirmed_rewards, "...");
-        overview.setTextViewText(R.id.workers_online, "..." );
-        remoteViews.addView(R.id.main_view, overview);
-        oAppWidgetManager.updateAppWidget(watchWidget, remoteViews);
-		
+		catch(Exception e)
+		{
+			RemoteViews remoteViews = new RemoteViews( oContext.getPackageName(), R.layout.activity_widget_main );
+			remoteViews.setTextViewText(R.id.total_hash_rate, "Please choose API Key in App");
+			ComponentName watchWidget = getComponentName(oContext);
+			oAppWidgetManager.updateAppWidget(watchWidget, remoteViews);
+		}
 	}
 	
 	protected abstract String getApiKey(Context context);
