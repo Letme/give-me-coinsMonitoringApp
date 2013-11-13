@@ -21,8 +21,8 @@ High priority:
 Medium priority
  - [ ] write online HELP for users
  - [ ] cleanup of unused stuff
- - [ ] find out which license we want to cover this code with (GPL?)
- - [ ] include licensed code -- make comments on commits
+ - [x] find out which license we want to cover this code with (GPL?)
+ - [x] include licensed code -- make comments on commits
 
 
 Low priority
@@ -35,5 +35,25 @@ Low priority
 
 Some code in this project uses other libraries.
 - QRCode Reader Library: https://code.google.com/p/zxing/
+
+/**
+ * 	Copyrights reserved to authors of this code (available from GitHub
+ * 	repository https://github.com/Letme/give-me-coinsMonitoringApp
+ * 
+ *  Give-me-coins.com Dashboard Android App
+ * 
+ *	Give-me-coins.com Dashboard is free software: you can redistribute it 
+ *	and/or modify it under the terms of the GNU General Public License as 
+ *  published by the Free Software Foundation, either version 3 of the 
+ *  License, or (at your option) any later version.
+ *
+ *  Give-me-coins.com Dashboard is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  A copy of the GNU General Public License is in LICENSE file 
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 

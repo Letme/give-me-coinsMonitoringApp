@@ -1,3 +1,23 @@
+/**
+ * 	Copyrights reserved to authors of this code (available from GitHub
+ * 	repository https://github.com/Letme/give-me-coinsMonitoringApp
+ * 
+ *  This file is part of Give-me-coins.com Dashboard Android App
+ * 
+ *	Give-me-coins.com Dashboard is free software: you can redistribute it 
+ *	and/or modify it under the terms of the GNU General Public License as 
+ *  published by the Free Software Foundation, either version 3 of the 
+ *  License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package give_me_coins.dashboard;
 
 import com.google.zxing.LuminanceSource;
@@ -70,7 +90,7 @@ public final class RGBLuminanceSource extends LuminanceSource {
 	private static Bitmap loadBitmap(String path) throws FileNotFoundException {
 		Bitmap bitmap = BitmapFactory.decodeFile(path);
 		if (bitmap == null) {
-			throw new FileNotFoundException("Couldn’t open " + path);
+			throw new FileNotFoundException("Couldnï¿½t open " + path);
 		}
 		return bitmap;
 	}
