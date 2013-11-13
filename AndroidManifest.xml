@@ -21,6 +21,34 @@
         android:theme="@style/AppTheme" 
         android:allowClearUserData="true">
         
+        <receiver android:name=".Widget_mainLargeLTC" android:label="@string/app_name_ltc">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/givemecoins_widget_provider_large" />
+        </receiver>
+        
+       <receiver android:name=".Widget_mainLargeBTC" android:label="@string/app_name_btc">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/givemecoins_widget_provider_large" />
+        </receiver>
+        
+               
+       <receiver android:name=".Widget_mainLargeFTC" android:label="@string/app_name_ftc">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/givemecoins_widget_provider_large" />
+        </receiver>
+        
         <activity
             android:name="give_me_coins.dashboard.MainScreen"
             android:configChanges="orientation|keyboardHidden|screenSize"
