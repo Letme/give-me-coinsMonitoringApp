@@ -99,7 +99,10 @@ public class GMCService extends Service{
 		
 		public ReceiveDataThread (String urls){
 			if(DEBUG) Log.d(TAG,"public: " + urls);
-			url_string=urls;
+			if(urls!=null) url_string=urls;
+			else {
+				cancel();
+			}
 		}
 		
 		public void run() {

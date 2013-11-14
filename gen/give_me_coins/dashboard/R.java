@@ -160,22 +160,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int PooltextView4=0x7f090013;
         public static final int PooltextView5=0x7f090016;
         public static final int SettingstextView1=0x7f090020;
-        public static final int api_key_url_text=0x7f090037;
         public static final int api_key_value=0x7f090021;
-        public static final int btc_menu=0x7f09003d;
+        public static final int btc_menu=0x7f09003c;
         public static final int cameraPrev=0x7f090004;
         public static final int confirmed_rewards=0x7f09001b;
         public static final int confirmed_rewards_text=0x7f09001a;
         public static final int dashboard_layout=0x7f090005;
         public static final int delete_settings_button=0x7f090023;
-        public static final int ftc_menu=0x7f09003e;
-        public static final int hash_rate_percentage=0x7f09003b;
-        public static final int hash_rate_val=0x7f09003a;
+        public static final int ftc_menu=0x7f09003d;
+        public static final int hash_rate_percentage=0x7f09003a;
+        public static final int hash_rate_val=0x7f090039;
         public static final int hashrate_text=0x7f090019;
-        public static final int ltc_menu=0x7f09003c;
+        public static final int ltc_menu=0x7f09003b;
         public static final int lunch_barcode_reader=0x7f09001f;
         public static final int main_view=0x7f090000;
-        public static final int myTableLayout=0x7f090038;
+        public static final int myTableLayout=0x7f090037;
         public static final int pager=0x7f090018;
         public static final int pool_difficulty=0x7f090017;
         public static final int pool_hashrate=0x7f09000b;
@@ -208,7 +207,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int textView4=0x7f090034;
         public static final int textView5=0x7f09002e;
         public static final int total_hash_rate=0x7f090001;
-        public static final int worker_name=0x7f090039;
+        public static final int worker_name=0x7f090038;
         public static final int workers_online=0x7f09001d;
         public static final int workers_online_text=0x7f09001c;
     }

@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-     >
-<LinearLayout 
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/summary_layout"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#50CCCCCC"
-    >
-    
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp" >
 
     <ProgressBar
         android:id="@+id/progressBarSummary"
@@ -20,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="4dp"
         />
-        
+     
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,6 +55,8 @@
 			      android:layout_height="1dp"
 			      android:background="#DDDDDD"/>
         
+        
+
         <TableRow
             android:id="@+id/tableRow2"
             android:layout_width="wrap_content"
@@ -191,32 +187,10 @@
     </TableLayout>
 
     
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp" 
-        android:background="@drawable/container_dropshadow"
-        android:padding="5dp"
-        android:orientation="vertical"
-        >
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/api_url_text"
-            android:textAppearance="?android:attr/textAppearanceLarge" 
-            android:gravity="center"
-            android:padding="5dp"
-            />
-
-        <TextView
-            android:id="@+id/api_key_url_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-    </LinearLayout>
+   <ScrollView 
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+     >   
 
 
 	    <TableLayout
@@ -229,6 +203,5 @@
    	        android:padding="5dp"
 	        >
 	    </TableLayout>
-
+	</ScrollView>
 </LinearLayout>
-</ScrollView>

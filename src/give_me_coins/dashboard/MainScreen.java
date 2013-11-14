@@ -709,8 +709,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
    
 	    		 rootView = inflater.inflate(R.layout.summary, container, false);
 
-	    		 TextView api_text = (TextView) rootView.findViewById(R.id.api_key_url_text);
-	    		 api_text.setPadding(0, 0, 0, 2);
 		        	SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
 		        	String API_key_text=sharedPref.getString(getString(R.string.saved_api_key),"No api key found");
 		        	
@@ -724,7 +722,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        		//API_key_saved="/pool/api-ltc?api_key=5ccbdb20d6e50838fdce14aeba0727f9e995f798ee618f1c31b2eb2790ba0cec";
 		        	}
 		        	
-		        	api_text.setText(API_key_saved);
 		        	/*if(API_key_saved != null) {
 		        		if(API_key_saved.matches("No api key found")) {
 		        			
@@ -917,9 +914,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	}
         @Override
         public void update() {
-	        	TextView api_text = (TextView) rootView.findViewById(R.id.api_key_url_text);
-	        	api_text.setText(API_key_saved);
-	        	
+        	
             	if(username!=null) {
             		TextView usernameTV = (TextView) rootView.findViewById(R.id.summary_username);
             		usernameTV.setText(username);
