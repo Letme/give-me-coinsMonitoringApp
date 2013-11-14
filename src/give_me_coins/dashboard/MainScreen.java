@@ -523,8 +523,16 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         public void onClick(View view) {
                         		if(apikeyoutput.getText().length()>0)
                         			API_key_saved=apikeyoutput.getText().toString();
+                        		//strip the api key of everything you can remember - you need just  /pool/... to remain
+                        		if(API_key_saved.indexOf("/pool")!=1) {
+                        			//Toast.makeText(context, "Removing http://",Toast.LENGTH_LONG).show();
+                        			API_key_saved=API_key_saved.substring(API_key_saved.indexOf("/pool/"),API_key_saved.length());
+                        		}
                         		SharedPreferences.Editor editor = sharedPref.edit();
 	                        	editor.putString(getString(R.string.saved_api_key), API_key_saved);
+	                        	
+	                        	
+	                        	
 	                        	if(DEBUG) Log.d(TAG,"Saving API_key_save:" + API_key_saved);
 	                        	editor.commit();
 	                        	Toast.makeText(context, "Settings have been saved.",Toast.LENGTH_LONG).show();
