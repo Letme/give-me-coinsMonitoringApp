@@ -121,10 +121,11 @@ public class GMCService extends Service{
 						mHandler.sendMessage(send);
 							try {
 								inputStream = url.openStream();
-							} catch (IOException e1) {
+							} catch (Exception e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
 								Log.e(TAG,"InputStream IOException");
+								cancel();
 							}
 						if(DEBUG) Log.d(TAG,"Connection should be open by now");
 				    	try {
@@ -142,7 +143,7 @@ public class GMCService extends Service{
 				if(jsonAll==null) jsonAll = new JsonReader(reader);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
-				jsonAll = null;
+				cancel();
 			}
 			//now lets parse the output form give-me-coins
 			if(DEBUG) Log.d(TAG,"Parsing json");
@@ -220,21 +221,21 @@ public class GMCService extends Service{
 		public void cancel() {
 	   		//Perform CLEANUP !!!!
 			try {
-				jsonAll.close();
+				if(jsonAll!=null) jsonAll.close();
 				if(DEBUG) Log.d(TAG,"MAIN JSON closed");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		    try {
-				reader.close();
+				if(reader!=null) reader.close();
 				if(DEBUG) Log.d(TAG,"BufferedReader closed");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	   		try {
-				inputStream.close();
+	   			if(inputStream!=null) inputStream.close();
 				if(DEBUG) Log.d(TAG,"InputStream closed");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
