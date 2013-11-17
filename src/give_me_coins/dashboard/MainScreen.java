@@ -81,7 +81,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     
 	static String API_key_saved;
 	static String URL="https://give-me-coins.com";
-	private final static int REFRESH_RATE=100;
 	static boolean change=false;
 	/**
 	 * Whether or not the system UI should be auto-hidden after
@@ -526,16 +525,15 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         		//strip the api key of everything you can remember - you need just  /pool/... to remain
                         		if(API_key_saved.indexOf("/pool")!=1) {
                         			//Toast.makeText(context, "Removing http://",Toast.LENGTH_LONG).show();
-                        			API_key_saved=API_key_saved.substring(API_key_saved.indexOf("/pool/"),API_key_saved.length());
+                        			if(API_key_saved.length()>0) {
+	                        			API_key_saved=API_key_saved.substring(API_key_saved.indexOf("/pool/"),API_key_saved.length());
+	                            		SharedPreferences.Editor editor = sharedPref.edit();
+	    	                        	editor.putString(getString(R.string.saved_api_key), API_key_saved);
+	    	                        	if(DEBUG) Log.i(TAG,"Saving API_key_save:" + API_key_saved);
+	    	                        	editor.commit();
+	    	                        	Toast.makeText(context, "Settings have been saved.",Toast.LENGTH_LONG).show();
+                        			}
                         		}
-                        		SharedPreferences.Editor editor = sharedPref.edit();
-	                        	editor.putString(getString(R.string.saved_api_key), API_key_saved);
-	                        	
-	                        	
-	                        	
-	                        	if(DEBUG) Log.d(TAG,"Saving API_key_save:" + API_key_saved);
-	                        	editor.commit();
-	                        	Toast.makeText(context, "Settings have been saved.",Toast.LENGTH_LONG).show();
 	                        	startService();
 	                        	mAppSectionsPagerAdapter.notifyDataSetChanged();
 	                        	
