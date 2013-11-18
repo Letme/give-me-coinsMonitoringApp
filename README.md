@@ -8,15 +8,15 @@ DEVELOPERS
 -------------------------
 Creator and lead: Crt Lukancic Mori (Letme), BTC: 16625Ktt9LU4tuDPmSAnh781JYd2E5qQmC
 
-Developer: Patrik Hummelbrunner (MrPet), BTC: 153BhareZ9S539GjLbnh3nEK1CPM5XZDgC , LTC: LYAWygquzJizQCjNTZbQPcqGeTdxh3zH2V
+Developer: Patrik Hummelbrunner (MrPet), BTC: 153BhareZ9S539GjLbnh3nEK1CPM5XZDgC , LTC: LYAWygquzJizQCjNTZbQPcqGeTdxh3zH2V , FTC: 6zTHvjCihBCp2xqA38x2RsdGQ3x2uKgRyY
 
 
 TODO:
 -------------------------
 Priorities should change over time,but please keep them in reasonable order. Mark the already done one and write your username beside it. Also write your name or whatever you wish under the developers title here.
 High priority:
- - [ ] Widgets for workersi
-
+ - [x] Widgets for workersi
+ - [ ] Layout for tablets
 
 Medium priority
  - [ ] write online HELP for users
