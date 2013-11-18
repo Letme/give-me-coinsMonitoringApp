@@ -18,7 +18,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 package give_me_coins.dashboard;
 
 
@@ -28,6 +27,8 @@ import org.json.JSONObject;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 /**
@@ -36,7 +37,7 @@ import java.util.Iterator;
 public class GiveMeCoinsInfo {
 
    private static final String TAG = "GiveMeCoinsInfo";
-   private static final boolean DEBUG = true;
+   private static final boolean DEBUG = false;
 	// https://give-me-coins.com/pool/api-ftc?api_key=82ca1174fe9fffb7c93e8270caa02226f720c93fa3247a82868a348019320bbd
 /*
 {
@@ -56,7 +57,29 @@ public class GiveMeCoinsInfo {
     private double payout_history = 0;
     private long round_shares = 0;
     private ArrayList<GiveMeCoinsWorkerInfo> giveMeCoinWorkers;
+	private Comparator<? super GiveMeCoinsWorkerInfo> workerComparator = new Comparator<GiveMeCoinsWorkerInfo>()
+    {
 
+		@Override
+		public int compare(GiveMeCoinsWorkerInfo lhs, GiveMeCoinsWorkerInfo rhs) {
+
+			if( lhs.getHashrate() > rhs.getHashrate() )
+			{
+				return -1;
+			}
+			else if(lhs.getHashrate() == rhs.getHashrate())
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+			
+		}	
+    };
+    
+	
     public GiveMeCoinsInfo(JSONObject para_jsonReturn) {
 
         total_hashrate = JSONHelper.getVal(para_jsonReturn, "total_hashrate", 0);
@@ -81,10 +104,12 @@ public class GiveMeCoinsInfo {
 				// TODO Auto-generated catch block
 				Log.e(TAG, "error - decoding workers "+e.toString());
 			}
-			
         }
+        Collections.sort(giveMeCoinWorkers, workerComparator);
        
     }
+    
+
 
     public ArrayList<GiveMeCoinsWorkerInfo> getGiveMeCoinWorkers() {
         return giveMeCoinWorkers;

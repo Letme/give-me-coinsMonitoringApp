@@ -53,7 +53,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/givemecoins_widget_provider_large" />
         </receiver>
-        
+               
         <activity
             android:name="give_me_coins.dashboard.MainScreen"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -92,7 +92,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+               
+        <service android:name="ListviewWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="false" />
+        
         <service android:name="GMCService" android:permission="android.permission.INTERNET"></service>
+        <service android:name="GmcStickyService" android:permission="android.permission.INTERNET"></service>
         <service android:name="GMCPoolService" android:permission="android.permission.INTERNET"></service>
     </application>
 

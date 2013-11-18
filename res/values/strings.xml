@@ -44,5 +44,6 @@
     <string name="app_name_ltc">give-me-coins.com LTC</string>
      <string name="app_name_ftc">give-me-coins.com FTC</string>
       <string name="app_name_btc">give-me-coins.com BTC</string>
+      <string name="notification">give-me-coins.com</string>
 	
 </resources>

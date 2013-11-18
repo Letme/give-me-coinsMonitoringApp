@@ -1,24 +1,3 @@
-/**
- * 	Copyrights reserved to authors of this code (available from GitHub
- * 	repository https://github.com/Letme/give-me-coinsMonitoringApp
- * 
- *  This file is part of Give-me-coins.com Dashboard Android App
- * 
- *	Give-me-coins.com Dashboard is free software: you can redistribute it 
- *	and/or modify it under the terms of the GNU General Public License as 
- *  published by the Free Software Foundation, either version 3 of the 
- *  License, or (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-
 package give_me_coins.dashboard;
 
 import android.os.AsyncTask;
@@ -34,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -46,7 +26,8 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
     private static final String TAG = "GetInfoWorker";
 	private boolean isRunning = true;
     private int iConnectionTimeout = 5000;
-    private GetInfoWorkerCallback getInfoWorkerCallback;
+    private ArrayList<GetInfoWorkerCallback> getInfoWorkerCallbacks;
+    private String[] currencySwitcher = {"btc","ltc","ftc"};
     private int sleepTime = 60000; // 1 min
 
     public String getUrlToGiveMeCoins() {
@@ -75,8 +56,14 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
         this.sleepTime = sleepTime;
     }
 
-    public GetInfoWorker(GetInfoWorkerCallback para_getInfoWorkerCallback) {
-        this.getInfoWorkerCallback = para_getInfoWorkerCallback;
+    public GetInfoWorker(GetInfoWorkerCallback para_getInfoWorkerCallbackBTC, GetInfoWorkerCallback para_getInfoWorkerCallbackLTC, GetInfoWorkerCallback para_getInfoWorkerCallbackFTC) {
+        
+    	getInfoWorkerCallbacks = new ArrayList<GetInfoWorkerCallback>();
+    	
+    	getInfoWorkerCallbacks.add( para_getInfoWorkerCallbackBTC );
+        getInfoWorkerCallbacks.add( para_getInfoWorkerCallbackLTC );
+        getInfoWorkerCallbacks.add( para_getInfoWorkerCallbackFTC );
+        
     }
 
     @Override
@@ -86,30 +73,43 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
         {
             if(urlToGiveMeCoins != null )
             {
-                try {
-                    URL currentUrl = new URL(urlToGiveMeCoins);
-                    // bring it to UI
-                    JSONObject currentJson = getJSONFromUrl(currentUrl);
-                    if( currentJson != null )
-                    {
-                      //  Log.d(TAG,currentJson.toString() );
-                        publishProgress( currentJson );
-                    }
-                    else
-                    {
-                        Log.e(TAG, "failed to get a valid json");
-                    }
+	            for(int i = 0; i<3;i++)
+	            {
+	                try {
+	                	String currentUrlString = urlToGiveMeCoins;
 
-                } catch (MalformedURLException e) {
-                    Log.e(TAG,e.toString());
-                }
-                
+                		currentUrlString = currentUrlString.replace("ltc?api_key", currencySwitcher[i]+"?api_key");
+	                	if( getInfoWorkerCallbacks.get(i) != null )
+	                	{
+		                    URL currentUrl = new URL(currentUrlString);
+		                    // bring it to UI
+		                    JSONObject currentJson = getJSONFromUrl(currentUrl);
+		                    if( currentJson != null )
+		                    {
+		                      //  Log.d(TAG,currentJson.toString() );
+		                    	try {
+									currentJson.put("currency", i);
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									Log.e(TAG,"couldnt add currency");
+								}
+		                        publishProgress( currentJson );
+		                    }
+		                    else
+		                    {
+		                        Log.e(TAG, "failed to get a valid json");
+		                    }
+	                	}
+	                } catch (MalformedURLException e) {
+	                    Log.e(TAG,e.toString());
+	                }
+	                
+	            }
                 try {
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                    Log.e(TAG, "error sleeping"+e.toString());
                 }
-                
             }
 
         } // protected Void doInBackground(String... params)
@@ -126,7 +126,8 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
        // Log.e(TAG,currentCoinsInfo.getUsername() );
         try
         {
-            getInfoWorkerCallback.refreshValues(currentCoinsInfo);
+        	int currentCurrencyIndex = JSONHelper.getVal(values[0],"currency",0);
+            getInfoWorkerCallbacks.get(currentCurrencyIndex).refreshValues(currentCoinsInfo);
         }
         catch(Exception e)
         {

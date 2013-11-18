@@ -23,10 +23,14 @@ package give_me_coins.dashboard;
 
 
 import java.util.ArrayList;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -34,17 +38,18 @@ public abstract class Widget_mainLarge extends AppWidgetProvider implements GetI
 
     public static final String TOAST_ACTION = "com.example.givemecoinswidget.TOAST_ACTION";
     public static final String EXTRA_ITEM = "com.example.givemecoinswidget.EXTRA_ITEM";
+    public static final String CURRENCY = "Currency";
 	
 	private static final String TAG = "GiveMeCoinsWidget";
 	private static final boolean DEBUG = true;
-	private static final String URL_STRING = "https://give-me-coins.com";
-	private GetInfoWorker oGiveMeCoinsWorker = null;
-	private AppWidgetManager oAppWidgetManager = null;
-	private Context oContext = null;
-	
-	// get key somewhere
-	private String apiKey = null;
 
+	private AppWidgetManager oAppWidgetManager = null;
+	private int[] oWidgetIds = null;
+	private Context oContext = null;
+
+	private int iCurrency;
+	
+	public static GmcStickyService oGmcService;
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -53,94 +58,155 @@ public abstract class Widget_mainLarge extends AppWidgetProvider implements GetI
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 		oAppWidgetManager = appWidgetManager;
 		oContext = context;
-		try
+		oWidgetIds = appWidgetIds;
+		iCurrency = getCurrency();
+		for(int app_id :appWidgetIds)
 		{
-			apiKey = getApiKey(context);
-			
-			if( oGiveMeCoinsWorker == null )
-			{
-				if( apiKey != null )
+			try
+			{	
+				oGmcService = openServiceInstance(this);
+				if( oGmcService == null )
 				{
-					if(DEBUG)Log.d(TAG,"new coin worker");
-					oGiveMeCoinsWorker = new GetInfoWorker( this );
-					oGiveMeCoinsWorker.setUrlToGiveMeCoins(URL_STRING+apiKey);
-					oGiveMeCoinsWorker.setRunning( true );
-					oGiveMeCoinsWorker.execute();
+					context.startService( new Intent(context, GmcStickyService.class) );
 				}
+				RemoteViews remoteViews = new RemoteViews( oContext.getPackageName(), R.layout.activity_widget_main );
+		        ComponentName watchWidget = getComponentName(oContext);
+				remoteViews.removeAllViews(R.id.main_view);
+				RemoteViews overview = (RemoteViews) new RemoteViews(oContext.getPackageName(), R.layout.overview_layout);
+				int countOnlineWorkers = 0;
+		       // worker.setProgressBar(R.id.hash_rate_percentage, para_giveMeCoinsInfo.getTotal_hashrate(), currentWorker.getHashrate(), false);
+				overview.setTextViewText(R.id.total_hash_rate, "...");
+		        overview.setTextViewText(R.id.confirmed_rewards, "...");
+		        overview.setTextViewText(R.id.workers_online, "..." );
+		        // needs to be dependend which currency ...
+		        GiveMeCoinsInfo currentCoinInfo = getCurrentInfo( oGmcService );
+		        if( currentCoinInfo != null )
+		        {
+		        	
+		        	ListviewWidgetService.realCount = currentCoinInfo.getGiveMeCoinWorkers().size();
+					for(GiveMeCoinsWorkerInfo worker : currentCoinInfo.getGiveMeCoinWorkers() )
+					{
+						if( worker.isAlive() )
+						{
+							countOnlineWorkers++;
+						}
+					}
+					overview.setTextViewText(R.id.total_hash_rate, MainScreen.readableHashSize( currentCoinInfo.getTotal_hashrate() ) );
+			        overview.setTextViewText(R.id.confirmed_rewards, String.valueOf( currentCoinInfo.getConfirmed_rewards() ) );
+			        overview.setTextViewText(R.id.workers_online, countOnlineWorkers +"/"+currentCoinInfo.getGiveMeCoinWorkers().size() );
+			
+					Intent intent = new Intent(oContext, ListviewWidgetService.class);
+					
+		            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, app_id);
+		            intent.putExtra(CURRENCY, iCurrency);
+		            
+		            // When intents are compared, the extras are ignored, so we need to embed the extras
+		            // into the data so that the extras will not be ignored.
+		            intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+		            
+					//RemoteViews rv = new RemoteViews(oContext.getPackageName(), R.layout.activity_widget_main);
+					remoteViews.setRemoteAdapter( R.id.list_view, intent);
+			        
+		        }
+				
+				remoteViews.addView(R.id.main_view, overview);
+		        oAppWidgetManager.updateAppWidget(app_id, remoteViews);
 			}
+			catch(Exception e)
+			{
+				RemoteViews remoteViews = new RemoteViews( oContext.getPackageName(), R.layout.activity_widget_main );
+				remoteViews.setTextViewText(R.id.total_hash_rate, "Please choose API Key in App");
+				//ComponentName watchWidget = getComponentName(oContext);
+				oAppWidgetManager.updateAppWidget(app_id, remoteViews);
+				Log.e(TAG, "died on update " + e.toString());
+				
+			}
+		}
+		
+	}
+	
+	
+	
+	
+	protected abstract int getCurrency();
+
+	protected abstract ComponentName getComponentName(Context context);
+	protected abstract GmcStickyService openServiceInstance( GetInfoWorkerCallback callback );
+	protected abstract GiveMeCoinsInfo getCurrentInfo( GmcStickyService service );
+	
+	@Override
+	public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
+		if( oGmcService == null )
+			oGmcService = openServiceInstance(this);
+		
+		for(int app_id : oWidgetIds)
+		{
 			RemoteViews remoteViews = new RemoteViews( oContext.getPackageName(), R.layout.activity_widget_main );
 			
 	        ComponentName watchWidget = getComponentName(oContext);
 	        
-			remoteViews.removeAllViews(R.id.main_view);
-			RemoteViews overview = (RemoteViews) new RemoteViews(oContext.getPackageName(), R.layout.overview_layout);
-			
-			int countOnlineWorkers = 0;
-	       
-	       // worker.setProgressBar(R.id.hash_rate_percentage, para_giveMeCoinsInfo.getTotal_hashrate(), currentWorker.getHashrate(), false);
-			overview.setTextViewText(R.id.total_hash_rate, "...");
-	        overview.setTextViewText(R.id.confirmed_rewards, "...");
-	        overview.setTextViewText(R.id.workers_online, "..." );
-	        remoteViews.addView(R.id.main_view, overview);
-	        oAppWidgetManager.updateAppWidget(watchWidget, remoteViews);
-		}
-		catch(Exception e)
-		{
-			RemoteViews remoteViews = new RemoteViews( oContext.getPackageName(), R.layout.activity_widget_main );
-			remoteViews.setTextViewText(R.id.total_hash_rate, "Please choose API Key in App");
-			ComponentName watchWidget = getComponentName(oContext);
-			oAppWidgetManager.updateAppWidget(watchWidget, remoteViews);
-		}
-	}
-	
-	protected abstract String getApiKey(Context context);
-	protected abstract ComponentName getComponentName(Context context);
-	
-	@Override
-	public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
-		
-		RemoteViews remoteViews = new RemoteViews( oContext.getPackageName(), R.layout.activity_widget_main );
-		
-        ComponentName watchWidget = getComponentName(oContext);
-        
-		if( para_giveMeCoinsInfo != null)
-		{
-			if(DEBUG)Log.d(TAG, "refresh");
-	      	//  LayoutInflater workerInflater = (LayoutInflater) oContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE);
-			ArrayList<GiveMeCoinsWorkerInfo> giveMeCoinWorkers = para_giveMeCoinsInfo.getGiveMeCoinWorkers();
-			//remoteViews.setTextViewText(R.id.total_hash_rate, String.valueOf(para_giveMeCoinsInfo.getTotal_hashrate() ));
-			
-			//remoteViews.setEmptyView(R.id.stack_view, R.id.empty_view);
-			//remoteViews.s
-			remoteViews.removeAllViews(R.id.main_view);
-			RemoteViews overview = (RemoteViews) new RemoteViews(oContext.getPackageName(), R.layout.overview_layout);
-			
-			int countOnlineWorkers = 0;
-			for(GiveMeCoinsWorkerInfo currentWorker: giveMeCoinWorkers)
+			if( para_giveMeCoinsInfo != null)
 			{
-				if(currentWorker.isAlive())
+				if(DEBUG)Log.d(TAG, "refresh");
+				
+		      	//  LayoutInflater workerInflater = (LayoutInflater) oContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE);
+				ArrayList<GiveMeCoinsWorkerInfo> giveMeCoinWorkers = para_giveMeCoinsInfo.getGiveMeCoinWorkers();
+				//remoteViews.setTextViewText(R.id.total_hash_rate, String.valueOf(para_giveMeCoinsInfo.getTotal_hashrate() ));
+				ListviewWidgetService.realCount = giveMeCoinWorkers.size();
+				//remoteViews.setEmptyView(R.id.stack_view, R.id.empty_view);
+				//remoteViews.s
+				remoteViews.removeAllViews(R.id.main_view);
+				RemoteViews overview = (RemoteViews) new RemoteViews(oContext.getPackageName(), R.layout.overview_layout);
+				
+				int countOnlineWorkers = 0;
+				for(GiveMeCoinsWorkerInfo currentWorker: giveMeCoinWorkers)
 				{
-					++countOnlineWorkers;
+					if(currentWorker.isAlive())
+					{
+						++countOnlineWorkers;
+					}
 				}
+	
+		        overview.setTextViewText(R.id.total_hash_rate, MainScreen.readableHashSize( para_giveMeCoinsInfo.getTotal_hashrate() ) );
+		        overview.setTextViewText(R.id.confirmed_rewards, String.valueOf( para_giveMeCoinsInfo.getConfirmed_rewards() ));
+		        overview.setTextViewText(R.id.workers_online, String.valueOf( countOnlineWorkers )+"/"+giveMeCoinWorkers.size() );
+		        remoteViews.addView(R.id.main_view, overview);
+		        
+				Intent intent = new Intent(oContext, ListviewWidgetService.class);
+				
+	            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, app_id);
+	            intent.putExtra(CURRENCY, iCurrency);
+	            
+	            // When intents are compared, the extras are ignored, so we need to embed the extras
+	            // into the data so that the extras will not be ignored.
+	            intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+	            
+				//RemoteViews rv = new RemoteViews(oContext.getPackageName(), R.layout.activity_widget_main);
+				remoteViews.setRemoteAdapter( R.id.list_view, intent);
+		        
+		        oAppWidgetManager.updateAppWidget(watchWidget, remoteViews);
 			}
-			
-
-			// worker.setProgressBar(R.id.hash_rate_percentage, para_giveMeCoinsInfo.getTotal_hashrate(), currentWorker.getHashrate(), false);
-	        overview.setTextViewText(R.id.total_hash_rate, MainScreen.readableHashSize( para_giveMeCoinsInfo.getTotal_hashrate() ) );
-	        overview.setTextViewText(R.id.confirmed_rewards, String.valueOf( para_giveMeCoinsInfo.getConfirmed_rewards() ));
-	        overview.setTextViewText(R.id.workers_online, String.valueOf( countOnlineWorkers ) );
-	        remoteViews.addView(R.id.main_view, overview);
-	        oAppWidgetManager.updateAppWidget(watchWidget, remoteViews);
+			else
+			{
+				if(DEBUG)Log.d(TAG,"err ... givemecoinsInfo == null");
+				
+			}
 		}
-		else
-		{
-			if(DEBUG)Log.d(TAG,"err ... givemecoinsInfo == null");
-			
-		}
-		
 	}
+
+
 	
 /*
+
+	private boolean isMyServiceRunning() {
+	    ActivityManager manager = (ActivityManager) oContext.getSystemService(Context.ACTIVITY_SERVICE);
+	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+	        if (GmcStickyService.class.getName().equals(service.service.getClassName())) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
 	private Bitmap getBitmapPercentageCircle(float percentage)
 	{
 		Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types

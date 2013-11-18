@@ -53,6 +53,7 @@ public class GMCService extends Service{
 		mHandler=handler;
 		
 	}
+	
 	public synchronized void start(String... urls) {
 		if(urls.length==0) {
 			Log.e(TAG,"Bad URL handed to service");
@@ -60,7 +61,7 @@ public class GMCService extends Service{
 			return;
 		}
 		if(DEBUG) Log.d(TAG,"Service started");
-		url_fixed=urls[0];
+		url_fixed = urls[0];
 		if(mReceiveData==null) {
 			timer = new Timer();
 			TimerTask ReLoadThread = new TimerTask() {

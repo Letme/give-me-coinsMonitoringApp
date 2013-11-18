@@ -23,19 +23,17 @@ package give_me_coins.dashboard;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.SharedPreferences;
 
 
 
 public class Widget_mainLargeFTC extends Widget_mainLarge{
 
-		protected String getApiKey(Context context)
+		protected int currency = 2;
+	
+		@Override
+		protected GmcStickyService openServiceInstance(GetInfoWorkerCallback callback)
 		{
-			
-			SharedPreferences sp = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-			String key = sp.getString(context.getString(R.string.saved_api_key),null);
-			
-			return key.replace("ltc?api_key", "ftc?api_key");
+			return GmcStickyService.getInstance(null, null, callback);
 		}
 		
 		@Override
@@ -44,4 +42,19 @@ public class Widget_mainLargeFTC extends Widget_mainLarge{
 			return new ComponentName(context, Widget_mainLargeFTC.class);
 		}
 
+		@Override
+		protected GiveMeCoinsInfo getCurrentInfo( GmcStickyService para_service ) {
+			// TODO Auto-generated method stub
+			if( para_service != null)
+				return para_service.getFTCInfo();
+			else
+				return null;
+		}
+
+		@Override
+		protected int getCurrency() {
+			// TODO Auto-generated method stub
+			return currency;
+		}
+		
 }

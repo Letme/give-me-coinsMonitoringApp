@@ -114,6 +114,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	 * Set stuff for Service handler to communicate with UI
 	 */
 	static GMCService mService = null;
+	private static GmcStickyService oStickyService = null;
 	static GMCPoolService mPoolService = null;
 	public static final int DATA_FAILED=1;
 	public static final int DATA_READY=2;
@@ -204,7 +205,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 
 		// Start service to receive data
-		if(mService==null) mService= new GMCService(this,mHandler);
+		//if(mService==null) mService= new GMCService(this,mHandler);
 		if(mPoolService==null) mPoolService=new GMCPoolService(this,mHandler);
 		
 		  // Create the adapter that will return a fragment for each of the three primary sections
@@ -269,14 +270,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	}
 	
 	public static void startService() {
-		asyncService = new AsyncTask<Void, Void, Void>() {
+		/*asyncService = new AsyncTask<Void, Void, Void>() {
 		    @Override
 		    protected Void doInBackground(Void... params) {
 		    		if(DEBUG) Log.d("asyncService","Starting AsyncTask");
 		        	mService.start(URL+API_key_saved);
 					return null;
 		    }
-		}.execute();
+		}.execute();*/
 		asyncPoolService = new AsyncTask<Void, Void, Void>() {
 		    @Override
 		    protected Void doInBackground(Void... params) {
@@ -309,6 +310,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			mSystemUiHider.hide();
 		}
 	};
+
 
 	/**
 	 * Schedules a call to hide() in [delay] milliseconds, canceling any
@@ -620,8 +622,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	@Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-   
+    			
 	    		 rootView = inflater.inflate(R.layout.dashboard, container, false);
+	    		 getNewGMCInfo();
 	    		 /*Intent intent = new Intent(getActivity(), DashBoardActivity.class);
 	             startActivity(intent);*/	            
 	         	
@@ -714,6 +717,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                 Bundle savedInstanceState) {
    
 	    		 rootView = inflater.inflate(R.layout.summary, container, false);
+	    		 getNewGMCInfo();
 
 		        	SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
 		        	String API_key_text=sharedPref.getString(getString(R.string.saved_api_key),"No api key found");
@@ -727,6 +731,41 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        		API_key_saved=API_key_text;
 		        		//API_key_saved="/pool/api-ltc?api_key=5ccbdb20d6e50838fdce14aeba0727f9e995f798ee618f1c31b2eb2790ba0cec";
 		        	}
+		        	
+	                ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
+		            
+	                int currentColor = 0;
+	            	//determine what color it needs to be
+		    		switch(coin_select) {
+		    			case 1:
+		    				currentColor = getResources().getColor(R.color.ltc);
+		    				actionBar.setTitle("LTC");
+		    				actionBar.setDisplayShowTitleEnabled(true);
+		    				getNewGMCInfo();
+		    				//mAppSectionsPagerAdapter.notifyDataSetChanged();
+		    				break;
+		    			case 2:
+		    				currentColor = getResources().getColor(R.color.btc);
+		    				actionBar.setTitle("BTC");
+		    				actionBar.setDisplayShowTitleEnabled(true);
+		    				getNewGMCInfo();
+		    				//mAppSectionsPagerAdapter.notifyDataSetChanged();
+							break;
+		    			case 3:
+		    				currentColor =  getResources().getColor(R.color.ftc);
+		    				actionBar.setTitle("FTC");
+		    				actionBar.setDisplayShowTitleEnabled(true);
+		    				getNewGMCInfo();
+		    				//mAppSectionsPagerAdapter.notifyDataSetChanged();
+							break;
+		    			default:
+		    				currentColor = getResources().getColor(R.color.ltc);
+		    				 actionBar.setTitle("LTC");
+		    				 actionBar.setDisplayShowTitleEnabled(true);
+		    				 getNewGMCInfo();
+		    				// mAppSectionsPagerAdapter.notifyDataSetChanged();
+		    				 break;
+		    		}
 		        	
 		        	/*if(API_key_saved != null) {
 		        		if(API_key_saved.matches("No api key found")) {
@@ -877,31 +916,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    		 
 			        ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSummary);
 			        // Define a shape with rounded corners
-	                ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
-	            
-	                int currentColor = 0;
-	            	//determine what color it needs to be
-		    		switch(coin_select) {
-		    			case 1:
-		    				currentColor = getResources().getColor(R.color.ltc);
-		    				actionBar.setTitle("LTC");
-		    				actionBar.setDisplayShowTitleEnabled(true);
-		    				break;
-		    			case 2:
-		    				currentColor = getResources().getColor(R.color.btc);
-		    				actionBar.setTitle("BTC");
-		    				actionBar.setDisplayShowTitleEnabled(true);
-							break;
-		    			case 3:
-		    				currentColor =  getResources().getColor(R.color.ftc);
-		    				actionBar.setTitle("FTC");
-		    				actionBar.setDisplayShowTitleEnabled(true);
-							break;
-		    			default:
-		    				currentColor = getResources().getColor(R.color.ltc);
-		    				 actionBar.setTitle("LTC");
-		    				 actionBar.setDisplayShowTitleEnabled(true);
-		    		}
+
 		    		
     				//pgDrawable.getPaint().setColor(currentColor);
     				
@@ -918,8 +933,36 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		    	    
 	        	return rootView;
     	}
-        @Override
+
+		@Override
         public void update() {
+			
+		            ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
+		            int currentColor = 0;
+		        	//determine what color it needs to be
+		    		switch(coin_select) {
+		    		case 1:
+		    			currentColor = getResources().getColor(R.color.ltc);
+						actionBar.setTitle("LTC");
+						getNewGMCInfo();
+						break;
+					case 2:
+						currentColor = getResources().getColor(R.color.btc);
+						actionBar.setTitle("BTC");
+						getNewGMCInfo();
+						break;
+					case 3:
+						currentColor =  getResources().getColor(R.color.ftc);
+						actionBar.setTitle("FTC");
+						getNewGMCInfo();
+						break;
+					default:
+						currentColor =  getResources().getColor(R.color.ltc);
+						 actionBar.setTitle("LTC");
+						 getNewGMCInfo();
+						 break;
+		    		}
+			
         	
             	if(username!=null) {
             		TextView usernameTV = (TextView) rootView.findViewById(R.id.summary_username);
@@ -950,6 +993,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        // line.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
 		       // line.setBackgroundColor(Color.GRAY);
 		        
+	        	
+	        	
 		       // tl.addView( line );
 		        int green = getResources().getColor(R.color.light_green);
 		        int red = getResources().getColor(R.color.light_red);
@@ -1037,26 +1082,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        
 		        ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSummary);
 		        // Define a shape with rounded corners
-                ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
-                int currentColor = 0;
-            	//determine what color it needs to be
-	    		switch(coin_select) {
-	    		case 1:
-	    			currentColor = getResources().getColor(R.color.ltc);
-    				actionBar.setTitle("LTC");
-    				break;
-    			case 2:
-    				currentColor = getResources().getColor(R.color.btc);
-    				actionBar.setTitle("BTC");
-					break;
-    			case 3:
-    				currentColor =  getResources().getColor(R.color.ftc);
-    				actionBar.setTitle("FTC");
-					break;
-    			default:
-    				currentColor =  getResources().getColor(R.color.ltc);
-    				 actionBar.setTitle("LTC");
-	    		}
+
 	    		
 				//pgDrawable.getPaint().setColor(currentColor);
 				/*
@@ -1127,6 +1153,33 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		
 	}
 
+	public static void getNewGMCInfo() {
+		// new info ...
+		 if( oStickyService != null)
+		 {
+			 switch( coin_select){
+			 	case 1:
+			 		if( oStickyService.getLTCInfo() != null)
+			 			setToLocalGMCInfo(oStickyService.getLTCInfo());
+			 		break;
+			 	case 2:
+			 		if( oStickyService.getBTCInfo() != null)
+			 			setToLocalGMCInfo(oStickyService.getBTCInfo());
+			 		break;
+			 	case 3:
+			 		if( oStickyService.getFTCInfo() != null)
+			 			setToLocalGMCInfo(oStickyService.getFTCInfo());
+			 		break;
+			 	default:
+			 		if( oStickyService.getLTCInfo() != null)
+			 			setToLocalGMCInfo(oStickyService.getLTCInfo());
+			 		break;
+			 		
+			 }
+		 }
+		
+	}
+
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -1146,13 +1199,99 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		}
 
 	}
+	
+	private GetInfoWorkerCallback btc_callback = new GetInfoWorkerCallback() {
+		
+		@Override
+		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
+			if( oStickyService == null)
+				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
+			//TODO: need some defines for coin select stuff
+			if( coin_select == 2 )
+			{
+				setToLocalGMCInfo(para_giveMeCoinsInfo);
+				mAppSectionsPagerAdapter.notifyDataSetChanged();
+			}
+			
+		}
+	};
+	
+	private GetInfoWorkerCallback ltc_callback = new GetInfoWorkerCallback() {
+		
+		@Override
+		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
+			if( oStickyService == null)
+				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
+			//TODO: need some defines for coin select stuff
+			if( coin_select == 1 )
+			{
+				setToLocalGMCInfo(para_giveMeCoinsInfo);
+				mAppSectionsPagerAdapter.notifyDataSetChanged();
+			}
+			
+		}
+	};
+	
+	private GetInfoWorkerCallback ftc_callback = new GetInfoWorkerCallback() {
+		
+		@Override
+		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
+			if( oStickyService == null)
+				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
+			//TODO: need some defines for coin select stuff
+			if( coin_select == 3 )
+			{
+				setToLocalGMCInfo(para_giveMeCoinsInfo);
+				mAppSectionsPagerAdapter.notifyDataSetChanged();
+			}
+			
+			
+		}
+	};
+	
+	private static void setToLocalGMCInfo(GiveMeCoinsInfo para_giveMeCoinsInfo)
+	{
+		username = para_giveMeCoinsInfo.getUsername();
+		   round_estimate = String.valueOf( para_giveMeCoinsInfo.getRound_estimate() );
+		   total_hashrate = String.valueOf( para_giveMeCoinsInfo.getTotal_hashrate() );
+		   round_shares = String.valueOf( para_giveMeCoinsInfo.getRound_shares() );
+		   confirmed_rewards = String.valueOf( para_giveMeCoinsInfo.getConfirmed_rewards() );
+		   int i = 0;
+		   for(GiveMeCoinsWorkerInfo worker : para_giveMeCoinsInfo.getGiveMeCoinWorkers() )
+		   {
+			   if(  worker.isAlive() )
+			   {
+				   worker_alive[i] = "1";
+			   }
+			   else
+			   {
+				   worker_alive[i] = "0";
+			   }
+			   worker_hashrate[i] = String.valueOf( para_giveMeCoinsInfo.getTotal_hashrate() );
+			   worker_name[i] = worker.getUsername();
+			   worker_timestamp[i] = String.valueOf(worker.getLast_share_timestamp());
+			   
+			   i++;
+			   //TODO: refactor ... maybe to Arraylist so we can put infite workers in list
+			   if( i >= 10 )
+			   {
+				   break;
+			   }
+		   }
+	}
+	
+	
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 		isRunning=true;
-		if(mService==null || mPoolService==null) startService();
+		oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
+		if( oStickyService == null)
+		{
+			context.startService( new Intent(context, GmcStickyService.class) );
+		}
+		if( mPoolService==null) startService();
 	}
 	
 	public static String readableHashSize(long size) {
