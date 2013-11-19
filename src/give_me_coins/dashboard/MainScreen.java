@@ -525,9 +525,13 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         		if(apikeyoutput.getText().length()>0)
                         			API_key_saved=apikeyoutput.getText().toString();
                         		//strip the api key of everything you can remember - you need just  /pool/... to remain
-                        		if(API_key_saved.indexOf("/pool")!=1) {
+                        		int instring=API_key_saved.indexOf("/pool");
+                        		if(instring !=1) {
                         			//Toast.makeText(context, "Removing http://",Toast.LENGTH_LONG).show();
-                        			if(API_key_saved.length()>0) {
+                        			if(instring==-1) {
+                        				Toast.makeText(context, "You need to add /pool/ infront of your API-key",Toast.LENGTH_LONG).show();
+                        				API_key_saved="No api key found";
+                        			} else if(API_key_saved.length()>0) {
 	                        			API_key_saved=API_key_saved.substring(API_key_saved.indexOf("/pool/"),API_key_saved.length());
 	                            		SharedPreferences.Editor editor = sharedPref.edit();
 	    	                        	editor.putString(getString(R.string.saved_api_key), API_key_saved);
@@ -536,9 +540,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    	                        	Toast.makeText(context, "Settings have been saved.",Toast.LENGTH_LONG).show();
                         			}
                         		}
-	                        	startService();
+                        	    startService();
 	                        	mAppSectionsPagerAdapter.notifyDataSetChanged();
-	                        	
 	                        	//mAppSectionsPagerAdapter.getItemPosition(dashboard);
                         }
                     });

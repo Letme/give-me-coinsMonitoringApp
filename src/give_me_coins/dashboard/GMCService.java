@@ -204,6 +204,12 @@ public class GMCService extends Service{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					Log.w(TAG,"JSON MAIN hasNext failed!");
+					cancel();
+				} catch (NullPointerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					Log.w(TAG,"JSON MAIN hasNext failed!");
+					cancel();
 				}	
 		   			if(DEBUG) Log.d(TAG,"username: " + MainScreen.username + " |round_estimate: " + MainScreen.round_estimate +
 								" |total_hashrate: " + MainScreen.total_hashrate + " |round_shares: " + MainScreen.round_shares);
