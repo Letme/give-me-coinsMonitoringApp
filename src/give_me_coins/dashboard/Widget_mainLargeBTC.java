@@ -27,7 +27,7 @@ import android.content.Context;
 
 public class Widget_mainLargeBTC extends Widget_mainLarge{
 
-		protected int currency = 1;
+		protected int currency = 0;
 	
 		@Override
 		protected GmcStickyService openServiceInstance(GetInfoWorkerCallback callback)

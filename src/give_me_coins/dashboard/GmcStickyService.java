@@ -66,8 +66,11 @@ public class GmcStickyService extends Service{
 	
 	private boolean showBTC = false;
 	private boolean showFTC = true;
-	private boolean showLTC = false;
-
+	private boolean showLTC = true;
+	
+	private String btcHashRate = "0 kh/s";
+	private String ltcHashRate = "0 kh/s";
+	private String ftcHashRate = "0 kh/s";
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -75,6 +78,7 @@ public class GmcStickyService extends Service{
 		return null;
 	}
 
+	
 	@Override
     public void onCreate() {
     	super.onCreate();
@@ -149,11 +153,17 @@ public class GmcStickyService extends Service{
      * Show a notification while this service is running.
      */
     private void showNotification() {
-        // In this sample, we'll use the same text for the ticker and the expanded notification
-        CharSequence text = "Bla Running";
 
+    	String currentTextToShow = "";
+    	if( showBTC )
+    		currentTextToShow += "BTC: "+btcHashRate+" ";
+    	if( showFTC )
+    		currentTextToShow += "FTC: "+ftcHashRate+" ";
+    	if( showLTC )
+    		currentTextToShow += "LTC: "+ltcHashRate+" ";
+    	
         // Set the icon, scrolling text and timestamp
-        Notification notification = new Notification(R.drawable.ic_launcher, text,
+        Notification notification = new Notification(R.drawable.ic_launcher, currentTextToShow,
                 System.currentTimeMillis());
 
         // The PendingIntent to launch our activity if the user selects this notification
@@ -161,7 +171,7 @@ public class GmcStickyService extends Service{
                 new Intent(this, MainScreen.class), 0);
 
         // Set the info for the views that show in the notification panel.
-        notification.setLatestEventInfo(this, "currentBla", text, contentIntent);
+        notification.setLatestEventInfo(this, oContext.getText(R.string.app_name), currentTextToShow, contentIntent);
         
        // Start in foreground - so we dont get killed
         startForeground(NOTIFICATION, notification);
@@ -224,8 +234,8 @@ public class GmcStickyService extends Service{
 			}
 			if( showBTC )
 			{
-				showHashrateNotification( MainScreen.readableHashSize(gmcInfoBTC.getTotal_hashrate()) );
-				
+				btcHashRate = MainScreen.readableHashSize(gmcInfoBTC.getTotal_hashrate());
+				showNotification();
 			}
 			
 		}
@@ -245,8 +255,8 @@ public class GmcStickyService extends Service{
 			}
 			if( showFTC )
 			{
-				showHashrateNotification( MainScreen.readableHashSize(gmcInfoFTC.getTotal_hashrate()) );
-				
+				ftcHashRate = MainScreen.readableHashSize(gmcInfoFTC.getTotal_hashrate());
+				showNotification();
 			}
 		}
 	};
@@ -264,8 +274,8 @@ public class GmcStickyService extends Service{
 			}
 			if( showLTC )
 			{
-				showHashrateNotification( MainScreen.readableHashSize(gmcInfoLTC.getTotal_hashrate()) );
-				
+				ltcHashRate = MainScreen.readableHashSize(gmcInfoLTC.getTotal_hashrate());
+				showNotification();
 			}
 			
 		}

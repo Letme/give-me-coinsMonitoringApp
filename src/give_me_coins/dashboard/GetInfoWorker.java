@@ -28,7 +28,7 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
     private int iConnectionTimeout = 5000;
     private ArrayList<GetInfoWorkerCallback> getInfoWorkerCallbacks;
     private String[] currencySwitcher = {"btc","ltc","ftc"};
-    private int sleepTime = 60000; // 1 min
+    private int sleepTime = 10000; // 10 sec
 
     public String getUrlToGiveMeCoins() {
         return urlToGiveMeCoins;

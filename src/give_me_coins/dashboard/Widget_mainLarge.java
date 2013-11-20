@@ -172,6 +172,7 @@ public abstract class Widget_mainLarge extends AppWidgetProvider implements GetI
 		        overview.setTextViewText(R.id.workers_online, String.valueOf( countOnlineWorkers )+"/"+giveMeCoinWorkers.size() );
 		        remoteViews.addView(R.id.main_view, overview);
 		        
+		        
 				Intent intent = new Intent(oContext, ListviewWidgetService.class);
 				
 	            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, app_id);
@@ -184,7 +185,7 @@ public abstract class Widget_mainLarge extends AppWidgetProvider implements GetI
 				//RemoteViews rv = new RemoteViews(oContext.getPackageName(), R.layout.activity_widget_main);
 				remoteViews.setRemoteAdapter( R.id.list_view, intent);
 		        
-		        oAppWidgetManager.updateAppWidget(watchWidget, remoteViews);
+		        oAppWidgetManager.updateAppWidget(app_id, remoteViews);
 			}
 			else
 			{

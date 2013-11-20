@@ -54,6 +54,7 @@ import android.support.v4.view.ViewPager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -350,8 +351,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
 		int currentColor = 0;
-		LinearLayout summary = (LinearLayout) oAct.findViewById(R.id.summary_layout);
-		LinearLayout dashBoard = (LinearLayout) oAct.findViewById(R.id.dashboard_layout);
+		ScrollView summary = (ScrollView) oAct.findViewById(R.id.summary_layout);
+		ScrollView dashBoard = (ScrollView) oAct.findViewById(R.id.dashboard_layout);
 		
 	    switch (item.getItemId()) {
 	        case R.id.ltc_menu:
@@ -652,7 +653,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    	    displayProgress.setProgressDrawable(progressDrawable);
 	    	    displayProgress.setProgress(Progress);
 	    	    pgDrawable.getPaint().setColor(currentColor);
-				LinearLayout dashBoard = (LinearLayout) rootView.findViewById(R.id.dashboard_layout);
+				ScrollView dashBoard = (ScrollView) rootView.findViewById(R.id.dashboard_layout);
 				dashBoard.setBackgroundColor(currentColor);
 				
 	        	//Read data from settings and write them here
@@ -776,7 +777,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        		}
 		        	}*/
 		        	
-		        	LinearLayout main_layout = (LinearLayout) (rootView.findViewById(R.id.summary_layout));
+		        	ScrollView main_layout = (ScrollView) (rootView.findViewById(R.id.summary_layout));
 		        	/*TextView usernameH = new TextView(getActivity());
 					usernameH.setText(username + "with hashrate: " + total_hashrate);
 					usernameH.setTextColor(Color.RED);
@@ -835,6 +836,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        if(DEBUG) Log.d(TAG,"Table header ended");
 			        int green = getResources().getColor(R.color.light_green);
 			        int red = getResources().getColor(R.color.light_red);
+			        //TODO: we really need to pack this in a function ... 
 			        //------------- KONEC TABLE HEADERJA ---------------------
 			        for(int current=0;worker_alive[current]!=null;current++)
 			        {
@@ -845,14 +847,18 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        		TextView Worker_Alive=(TextView) rootView.findViewById(3000+current);
 			        		if(worker_alive[current].equals("1")) {
 						        Worker_Alive.setText("Online");
+						        Worker_Alive.setTextColor(green);
 						        //tr.setBackgroundColor(green);
 			        		}
 						    else {
 						        Worker_Alive.setText("Offline");
+						        Worker_Alive.setTextColor(red);
 						       // tr.setBackgroundColor(red);
 						    }
 			        		TextView Worker_HashRate =(TextView) rootView.findViewById(4000+current);
 			        		Worker_HashRate.setText(worker_hashrate[current]);
+			        		TextView Worker_Name =(TextView) rootView.findViewById(2000+current);
+			        		Worker_Name.setText(worker_name[current]);
 			        	}
 			        	else {
 			        		/* Create a new row to be added. */
@@ -986,7 +992,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             	}
             	
             	 // do whatever you want to update your data
-	        	LinearLayout main_layout = (LinearLayout) (rootView.findViewById(R.id.summary_layout));
+	        	ScrollView main_layout = (ScrollView) (rootView.findViewById(R.id.summary_layout));
 	        	TableLayout tl = (TableLayout)rootView.findViewById(R.id.myTableLayout);
 	        	
 		       // View line = new View(oAct);
@@ -1018,6 +1024,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 					        	
 		        		TextView Worker_HashRate =(TextView) rootView.findViewById(4000+current);
 		        		Worker_HashRate.setText(worker_hashrate[current]);
+		        		TextView Worker_Name = (TextView) rootView.findViewById(2000+current);
+		        		Worker_Name.setText(worker_name[current]);
 		        	}
 		        	else {
 		        		/* Create a new row to be added. */
@@ -1028,6 +1036,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        tr.setLayoutParams(new TableLayout.LayoutParams(
 			        		LayoutParams.MATCH_PARENT,
 			                LayoutParams.WRAP_CONTENT));
+			        
 			        
 			        // First column
 			        TextView Worker_Name = new TextView(getActivity());
@@ -1089,7 +1098,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				LinearLayout dashBoard = (LinearLayout) oAct.findViewById(R.id.dashboard_layout);
 				dashBoard.setBackgroundColor(currentColor);
 				*/
-				LinearLayout summary = main_layout;
+				ScrollView summary = main_layout;
 				summary.setBackgroundColor(currentColor);
 	    		
 	    		// Adds the drawable to your progressBar
@@ -1267,11 +1276,12 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			   {
 				   worker_alive[i] = "0";
 			   }
-			   worker_hashrate[i] = String.valueOf( para_giveMeCoinsInfo.getTotal_hashrate() );
+			   worker_hashrate[i] = String.valueOf( worker.getHashrate() );
 			   worker_name[i] = worker.getUsername();
 			   worker_timestamp[i] = String.valueOf(worker.getLast_share_timestamp());
 			   
 			   i++;
+			   
 			   //TODO: refactor ... maybe to Arraylist so we can put infite workers in list
 			   if( i >= 10 )
 			   {

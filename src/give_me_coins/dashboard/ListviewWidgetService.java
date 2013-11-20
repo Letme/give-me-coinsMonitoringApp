@@ -87,7 +87,6 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 	    	
 	    	if( gmcInfo != null )
 	    	{
-	    		if(DEBUG)Log.d(TAG,"troll "+gmcInfo.getUsername());
 		    	ArrayList<GiveMeCoinsWorkerInfo> gmcWorkers = gmcInfo.getGiveMeCoinWorkers();
 		    	mCount = gmcWorkers.size();
 		    	if( position < gmcWorkers.size() )
@@ -98,7 +97,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 		        	rv.setTextViewText(R.id.worker_name, currentWorker.getUsername());
 		        	if( currentWorker.isAlive() )
 		        	{
-		        		rv.setTextColor(R.id.status, oContext.getResources().getColor( R.color.table_text ));
+		        		rv.setTextColor(R.id.status, oContext.getResources().getColor( R.color.light_green ));
 				        rv.setTextViewText(R.id.status, "Online" );
 		        	}
 		        	else
@@ -106,6 +105,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 			        	rv.setTextColor(R.id.status, oContext.getResources().getColor( R.color.light_red ));
 				        rv.setTextViewText(R.id.status, "Offline" );
 		        	}
+		        	
 		        	rv.setTextViewText(R.id.hash_rate_val, MainScreen.readableHashSize( currentWorker.getHashrate() ));
 			        // rv.setImageViewBitmap(R.id.hash_rate_percentage, getBitmapPercentageCircle( percentage ) );
 			        // Next, we set a fill-intent which will be used to fill-in the pending intent template
