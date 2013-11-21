@@ -115,6 +115,7 @@ public class GMCPoolService extends Service{
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
 								Log.e(TAG,"InputStream IOException");
+								cancel();
 							}
 						if(DEBUG) Log.d(TAG,"Connection should be open by now");
 				    	try {
@@ -124,6 +125,7 @@ public class GMCPoolService extends Service{
 				    	} catch (Exception e) { 
 				    	    // Oops
 				    		Log.e(TAG,"Connecting failed!");
+				    		cancel();
 				    	}
 			if(jsonAll==null) jsonAll = new JsonReader(reader);
 			//now lets parse the output form give-me-coins

@@ -15,14 +15,13 @@ TODO:
 -------------------------
 Priorities should change over time,but please keep them in reasonable order. Mark the already done one and write your username beside it. Also write your name or whatever you wish under the developers title here.
 High priority:
- - [x] Widgets for workersi
+ - [x] Widgets for workers
+ - [ ] adjust GUI to get widgets out
  - [ ] Layout for tablets
 
 Medium priority
  - [ ] write online HELP for users
  - [ ] cleanup of unused stuff
- - [x] find out which license we want to cover this code with (GPL?)
- - [x] include licensed code -- make comments on commits
 
 
 Low priority
