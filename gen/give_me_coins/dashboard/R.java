@@ -186,7 +186,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int progressBarDashBoard=0x7f090008;
         public static final int progressBarSettings=0x7f090020;
         public static final int progressBarSummary=0x7f090029;
-        public static final int refresh=0x7f090041;
         public static final int root_view=0x7f090000;
         public static final int save_settings_button=0x7f090024;
         public static final int stack_view=0x7f090004;

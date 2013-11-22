@@ -55,7 +55,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -431,14 +430,16 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	 			summary.setBackgroundColor(currentColor);    	 			
     	 		}
     	 		return true;
-	        case R.id.refresh:
-	        	updateNow();
-	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
-		
+		/*
+		 *  case R.id.refresh:
+	        	updateNow();
+	        	return true;
+		 */
 	}
+	
 	
 	 private void updateNow() {
 		// TODO Auto-generated method stub
@@ -1208,7 +1209,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			 		if( oStickyService.getLTCInfo() != null)
 			 			setToLocalGMCInfo(oStickyService.getLTCInfo());
 			 		break;
-			 		
 			 }
 		 }
 		
