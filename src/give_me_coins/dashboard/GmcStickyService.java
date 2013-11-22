@@ -29,6 +29,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -47,6 +48,8 @@ public class GmcStickyService extends Service{
 	private static ArrayList<GetInfoWorkerCallback> oFtc_callbacks = null;
 	
 	private static GmcStickyService oInstace = null;
+	
+	private Notification oNotification;
 	
     // Unique Identification Number for the Notification.
     // We use it on Notification start, and to cancel it.
@@ -68,6 +71,9 @@ public class GmcStickyService extends Service{
 	private boolean showFTC = true;
 	private boolean showLTC = true;
 	
+	// so we can put all in (FTC, BTC, LTC) before we call the notification
+	private int alreadyUpdated = 0;
+	
 	private String btcHashRate = "0 kh/s";
 	private String ltcHashRate = "0 kh/s";
 	private String ftcHashRate = "0 kh/s";
@@ -78,6 +84,70 @@ public class GmcStickyService extends Service{
 		return null;
 	}
 
+	
+	public void detachListener(GetInfoWorkerCallback para_btcCallback, 
+				GetInfoWorkerCallback para_ltcCallback, GetInfoWorkerCallback para_ftcCallback)
+	{
+		if( para_btcCallback != null )
+		{
+			oBtc_callbacks.remove(para_btcCallback);
+		}
+		if( para_ltcCallback != null )
+		{
+			oLtc_callbacks.remove(para_ltcCallback);
+		}
+		if( para_ftcCallback != null )
+		{
+			oFtc_callbacks.remove(para_ftcCallback);
+		}
+	}
+	
+	/**
+	 * kills old thread and makes new one ... 
+	 * can also be called if aki key changes ...
+	 */
+	public void forceUpdate()
+	{
+		
+        SharedPreferences sp = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+		String key = sp.getString(getString(R.string.saved_api_key),null);
+		showBTC = sp.getBoolean("show_btc", true);
+		showLTC = sp.getBoolean("show_ltc", true);
+		showFTC = sp.getBoolean("show_ftc", true);
+		int sleepTime = sp.getInt("update_rate", 60000);
+		
+		oGiveMeCoinsWorker.setSleepTime(sleepTime);
+		oGiveMeCoinsWorker.setUrlToGiveMeCoins( URL_STRING+key );
+		oGiveMeCoinsWorker.setCoinsToShow(showBTC,showLTC, showFTC);
+		// kill old thread
+		if( oGiveMeCoinsWorker != null )
+		{
+			
+			oGiveMeCoinsWorker.forceUpdate();
+			//oGiveMeCoinsWorker.setRunning(false);
+			//oGiveMeCoinsWorker.cancel(true);
+		}
+		else
+		{
+			// make new one ... 
+			oGiveMeCoinsWorker = new GetInfoWorker(btc_callback, ltc_callback, ftc_callback);
+			oGiveMeCoinsWorker.setUrlToGiveMeCoins( URL_STRING+key );
+			oGiveMeCoinsWorker.setCoinsToShow(showBTC,showLTC, showFTC);
+			showBTC = sp.getBoolean("show_btc", true);
+			showLTC = sp.getBoolean("show_ltc", true);
+			showFTC = sp.getBoolean("show_ftc", true);
+			
+			oGiveMeCoinsWorker.setSleepTime(sleepTime);
+			oGiveMeCoinsWorker.setRunning( true );
+			oGiveMeCoinsWorker.execute();
+		}
+
+		if(DEBUG)Log.d(TAG, "making new service ...");
+		
+
+
+		
+	}
 	
 	@Override
     public void onCreate() {
@@ -96,22 +166,24 @@ public class GmcStickyService extends Service{
         oContext = this;
         // Display a notification about us starting.  We put an icon in the status bar.
         // and start foreground
-        showNotification();
+        showStartNotification();
         SharedPreferences sp = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 		String key = sp.getString(getString(R.string.saved_api_key),null);
-        
+		int sleepTime = sp.getInt("update_rate", 60000);
+		showBTC = sp.getBoolean("show_btc", true);
+		showLTC = sp.getBoolean("show_ltc", true);
+		showFTC = sp.getBoolean("show_ftc", true);
         // start getting info
 		if( key != null )
 		{
-			
 			if(DEBUG)Log.d(TAG,"new coin workers");
-			// here switch if we want btc or not ...
-
+			
 			oGiveMeCoinsWorker = new GetInfoWorker( btc_callback, ltc_callback, ftc_callback );
-			oGiveMeCoinsWorker.setUrlToGiveMeCoins( URL_STRING+key );
+			oGiveMeCoinsWorker.setCoinsToShow(showBTC,showLTC, showFTC);
+			oGiveMeCoinsWorker.setUrlToGiveMeCoins( URL_STRING+key );			
+			oGiveMeCoinsWorker.setSleepTime(sleepTime);
 			oGiveMeCoinsWorker.setRunning( true );
 			oGiveMeCoinsWorker.execute();
-
 		}
         
 	}
@@ -150,9 +222,45 @@ public class GmcStickyService extends Service{
 	}
 	
 	/**
+     * Refresh notification
+     */
+    private void refreshNotification() {
+
+    	String currentTextToShow = "";
+    	if( showBTC )
+    		currentTextToShow += "BTC: "+btcHashRate+" ";
+    	if( showFTC )
+    		currentTextToShow += "FTC: "+ftcHashRate+" ";
+    	if( showLTC )
+    		currentTextToShow += "LTC: "+ltcHashRate+" ";
+    	
+        // The PendingIntent to launch our activity if the user selects this notification
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, MainScreen.class), 0);
+       
+        
+        // change icon ...
+        oNotification = new Notification(R.drawable.ic_launcher, currentTextToShow,
+                System.currentTimeMillis());
+        
+        // Set the info for the views that show in the notification panel.
+        // yes deprecated ... but ...
+        oNotification.setLatestEventInfo(this, oContext.getText(R.string.app_name), currentTextToShow, contentIntent);
+        
+        
+      // TODO: test here if arams need to be set (kh/s dropping ... stuff like that
+        
+       
+       // Start in foreground - so we dont get killed
+       
+       // Send the notification.
+        mNM.notify(NOTIFICATION, oNotification);
+    }
+	
+	/**
      * Show a notification while this service is running.
      */
-    private void showNotification() {
+    private void showStartNotification() {
 
     	String currentTextToShow = "";
     	if( showBTC )
@@ -163,7 +271,7 @@ public class GmcStickyService extends Service{
     		currentTextToShow += "LTC: "+ltcHashRate+" ";
     	
         // Set the icon, scrolling text and timestamp
-        Notification notification = new Notification(R.drawable.ic_launcher, currentTextToShow,
+    	oNotification = new Notification(R.drawable.ic_launcher, currentTextToShow,
                 System.currentTimeMillis());
 
         // The PendingIntent to launch our activity if the user selects this notification
@@ -171,50 +279,15 @@ public class GmcStickyService extends Service{
                 new Intent(this, MainScreen.class), 0);
 
         // Set the info for the views that show in the notification panel.
-        notification.setLatestEventInfo(this, oContext.getText(R.string.app_name), currentTextToShow, contentIntent);
+        oNotification.setLatestEventInfo(this, oContext.getText(R.string.app_name), currentTextToShow, contentIntent);
         
        // Start in foreground - so we dont get killed
-        startForeground(NOTIFICATION, notification);
+        startForeground(NOTIFICATION, oNotification);
        // Send the notification.
        
         // mNM.notify(NOTIFICATION, notification);
     }
 
-    /*
-	@Override
-	public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
-		// TODO Auto-generated method stub
-		this.gmcInfo = para_giveMeCoinsInfo;
-		// Set the icon, scrolling text and timestamp
-        Notification notification = new Notification(R.drawable.ic_launcher, getText(R.string.app_name),
-                System.currentTimeMillis());
-
-        // The PendingIntent to launch our activity if the user selects this notification
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainScreen.class), 0);
-
-        // Set the info for the views that show in the notification panel.
-        notification.setLatestEventInfo(oContext, getText(R.string.app_name), MainScreen.readableHashSize(gmcInfo.getTotal_hashrate()), contentIntent);
-		mNM.notify(R.string.notification, notification);
-	}
-	*/
-    
-
-	private void showHashrateNotification(String para_hashRate)
-	{
-		 Notification notification = new Notification(R.drawable.ic_launcher, getText(R.string.app_name),
-	                System.currentTimeMillis());
-
-	        // The PendingIntent to launch our activity if the user selects this notification
-	        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-	                new Intent(this, MainScreen.class), 0);
-
-	        // Set the info for the views that show in the notification panel.
-	        notification.setLatestEventInfo(oContext, getText(R.string.app_name), para_hashRate, contentIntent);
-			mNM.notify(R.string.notification, notification);	
-		
-	}
-	
 	private GetInfoWorkerCallback btc_callback = new GetInfoWorkerCallback() {
 		
 		@Override
@@ -235,7 +308,7 @@ public class GmcStickyService extends Service{
 			if( showBTC )
 			{
 				btcHashRate = MainScreen.readableHashSize(gmcInfoBTC.getTotal_hashrate());
-				showNotification();
+				refreshNotification();
 			}
 			
 		}
@@ -256,7 +329,7 @@ public class GmcStickyService extends Service{
 			if( showFTC )
 			{
 				ftcHashRate = MainScreen.readableHashSize(gmcInfoFTC.getTotal_hashrate());
-				showNotification();
+				refreshNotification();
 			}
 		}
 	};
@@ -275,7 +348,7 @@ public class GmcStickyService extends Service{
 			if( showLTC )
 			{
 				ltcHashRate = MainScreen.readableHashSize(gmcInfoLTC.getTotal_hashrate());
-				showNotification();
+				refreshNotification();
 			}
 			
 		}
@@ -297,4 +370,51 @@ public class GmcStickyService extends Service{
 		return gmcInfoFTC;		
 	}
 
+
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		oGiveMeCoinsWorker.setRunning(false);
+	}
+	
+	
+
 }
+
+
+/*
+@Override
+public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
+	// TODO Auto-generated method stub
+	this.gmcInfo = para_giveMeCoinsInfo;
+	// Set the icon, scrolling text and timestamp
+    Notification notification = new Notification(R.drawable.ic_launcher, getText(R.string.app_name),
+            System.currentTimeMillis());
+
+    // The PendingIntent to launch our activity if the user selects this notification
+    PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+            new Intent(this, MainScreen.class), 0);
+
+    // Set the info for the views that show in the notification panel.
+    notification.setLatestEventInfo(oContext, getText(R.string.app_name), MainScreen.readableHashSize(gmcInfo.getTotal_hashrate()), contentIntent);
+	mNM.notify(R.string.notification, notification);
+}
+*/
+
+/*
+private void showHashrateNotification(String para_hashRate)
+{
+	 Notification notification = new Notification(R.drawable.ic_launcher, getText(R.string.app_name),
+                System.currentTimeMillis());
+
+        // The PendingIntent to launch our activity if the user selects this notification
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, MainScreen.class), 0);
+
+        // Set the info for the views that show in the notification panel.
+        notification.setLatestEventInfo(oContext, getText(R.string.app_name), para_hashRate, contentIntent);
+		mNM.notify(R.string.notification, notification);	
+	
+}
+*/

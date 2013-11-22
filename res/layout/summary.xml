@@ -5,7 +5,8 @@
         android:id="@+id/summary_layout"
         android:background="@color/ltc"
        >  
-       
+
+    
 	<LinearLayout
 	   
 	    android:layout_width="fill_parent"

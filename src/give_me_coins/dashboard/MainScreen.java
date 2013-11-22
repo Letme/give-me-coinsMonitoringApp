@@ -21,10 +21,13 @@
 package give_me_coins.dashboard;
 
 import java.text.DecimalFormat;
+import java.util.Currency;
+
 import give_me_coins.dashboard.util.SystemUiHider;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -311,6 +314,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			mSystemUiHider.hide();
 		}
 	};
+	private ProgressDialog oLoadingProgress;
 
 
 	/**
@@ -426,13 +430,30 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	 		{
     	 			summary.setBackgroundColor(currentColor);    	 			
     	 		}
+    	 		return true;
+	        case R.id.refresh:
+	        	updateNow();
+	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
 		
 	}
 	
-	 /**
+	 private void updateNow() {
+		// TODO Auto-generated method stub
+     	if( oStickyService != null )
+     	{
+     		oLoadingProgress = new ProgressDialog(this);
+     		oLoadingProgress.setTitle("Loading");
+     		oLoadingProgress.setMessage("Wait while loading...");
+     		oLoadingProgress.show();
+
+     		oStickyService.forceUpdate();
+     	}
+	}
+
+	/**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the primary
      * sections of the app.
      */
@@ -1199,11 +1220,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		isRunning=false;
 		try
 		{
-			asyncService.cancel(true);
+			oStickyService.detachListener(btc_callback, ltc_callback, ftc_callback);
 			asyncPoolService.cancel(true);
-			mService.timer.cancel();
 			mPoolService.timer.cancel();
-			mService.stop();
 			mPoolService.stop();
 		}
 		catch(Exception e)
@@ -1224,6 +1243,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			{
 				setToLocalGMCInfo(para_giveMeCoinsInfo);
 				mAppSectionsPagerAdapter.notifyDataSetChanged();
+				if(oLoadingProgress != null)oLoadingProgress.dismiss();
 			}
 			
 		}
@@ -1240,6 +1260,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			{
 				setToLocalGMCInfo(para_giveMeCoinsInfo);
 				mAppSectionsPagerAdapter.notifyDataSetChanged();
+				if(oLoadingProgress != null)oLoadingProgress.dismiss();
 			}
 			
 		}
@@ -1256,6 +1277,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			{
 				setToLocalGMCInfo(para_giveMeCoinsInfo);
 				mAppSectionsPagerAdapter.notifyDataSetChanged();
+				if(oLoadingProgress != null)oLoadingProgress.dismiss();
 			}
 			
 			

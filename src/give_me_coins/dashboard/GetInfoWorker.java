@@ -27,8 +27,11 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
 	private boolean isRunning = true;
     private int iConnectionTimeout = 5000;
     private ArrayList<GetInfoWorkerCallback> getInfoWorkerCallbacks;
+    private boolean[] showCoin = {true, true, true};
     private String[] currencySwitcher = {"btc","ltc","ftc"};
-    private int sleepTime = 10000; // 10 sec
+    private int sleepTime = 60000; // 1 min - default value
+    private boolean isSleeping = false;
+
 
     public String getUrlToGiveMeCoins() {
         return urlToGiveMeCoins;
@@ -39,74 +42,96 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
     }
 
     String urlToGiveMeCoins = null;
+	private Thread oCurrentWorkerThread;
+
 
     public boolean isRunning() {
         return isRunning;
     }
 
+    /**
+     * 
+     * @param isRunning = false stops running
+     */
     public void setRunning(boolean isRunning) {
         this.isRunning = isRunning;
     }
 
+    /**
+     * 
+     * @return time the process sleeps between refreshes
+     */
     public int getSleepTime() {
         return sleepTime;
     }
 
+    
+    /**
+     * sets time the process sleeps between refreshes
+     * @param sleepTime
+     */
     public void setSleepTime(int sleepTime) {
         this.sleepTime = sleepTime;
     }
 
+    
     public GetInfoWorker(GetInfoWorkerCallback para_getInfoWorkerCallbackBTC, GetInfoWorkerCallback para_getInfoWorkerCallbackLTC, GetInfoWorkerCallback para_getInfoWorkerCallbackFTC) {
         
     	getInfoWorkerCallbacks = new ArrayList<GetInfoWorkerCallback>();
     	
-    	getInfoWorkerCallbacks.add( para_getInfoWorkerCallbackBTC );
-        getInfoWorkerCallbacks.add( para_getInfoWorkerCallbackLTC );
+		getInfoWorkerCallbacks.add( para_getInfoWorkerCallbackBTC );
+		getInfoWorkerCallbacks.add( para_getInfoWorkerCallbackLTC );
         getInfoWorkerCallbacks.add( para_getInfoWorkerCallbackFTC );
         
     }
 
     @Override
     protected Void doInBackground(Void... params) {
-
+    	oCurrentWorkerThread = Thread.currentThread();
         while( isRunning )
         {
             if(urlToGiveMeCoins != null )
             {
 	            for(int i = 0; i<3;i++)
 	            {
-	                try {
-	                	String currentUrlString = urlToGiveMeCoins;
-
-                		currentUrlString = currentUrlString.replace("ltc?api_key", currencySwitcher[i]+"?api_key");
-	                	if( getInfoWorkerCallbacks.get(i) != null )
-	                	{
-		                    URL currentUrl = new URL(currentUrlString);
-		                    // bring it to UI
-		                    JSONObject currentJson = getJSONFromUrl(currentUrl);
-		                    if( currentJson != null )
-		                    {
-		                      //  Log.d(TAG,currentJson.toString() );
-		                    	try {
-									currentJson.put("currency", i);
-								} catch (JSONException e) {
-									// TODO Auto-generated catch block
-									Log.e(TAG,"couldnt add currency");
-								}
-		                        publishProgress( currentJson );
-		                    }
-		                    else
-		                    {
-		                        Log.e(TAG, "failed to get a valid json");
-		                    }
-	                	}
-	                } catch (MalformedURLException e) {
-	                    Log.e(TAG,e.toString());
-	                }
-	                
+	            	if( showCoin[i] && getInfoWorkerCallbacks.get(i) != null )
+	            	{
+	            		try {
+		                	String currentUrlString = urlToGiveMeCoins;
+	
+	                		currentUrlString = currentUrlString.replace("ltc?api_key", currencySwitcher[i]+"?api_key");
+		                	if( getInfoWorkerCallbacks.get(i) != null )
+		                	{
+			                    URL currentUrl = new URL(currentUrlString);
+			                    // bring it to UI
+			                    JSONObject currentJson = getJSONFromUrl(currentUrl);
+			                    if( currentJson != null )
+			                    {
+			                      //  Log.d(TAG,currentJson.toString() );
+			                    	try {
+										currentJson.put("currency", i);
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										Log.e(TAG,"couldnt add currency");
+									}
+			                        publishProgress( currentJson );
+			                    }
+			                    else
+			                    {
+			                        Log.e(TAG, "failed to get a valid json");
+			                    }
+		                	}
+		                } 
+	            		catch (MalformedURLException e) 
+	            		{
+		                    Log.e(TAG,e.toString());
+		                }
+	            	} 
 	            }
                 try {
+                	setSleeping(true);
                     Thread.sleep(sleepTime);
+                    setSleeping(false);
                 } catch (InterruptedException e) {
                    Log.e(TAG, "error sleeping"+e.toString());
                 }
@@ -184,4 +209,28 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
         return oRetJson;
 
     }
+
+    /**
+     * 
+     * @return tells if process is currently sleeping 
+     */
+	public boolean isSleeping() {
+		return isSleeping;
+	}
+
+	private void setSleeping(boolean isSleeping) {
+		this.isSleeping = isSleeping;
+	}
+
+	public void forceUpdate() {
+		oCurrentWorkerThread.interrupt();
+		
+	}
+
+	public void setCoinsToShow(boolean para_showBTC, boolean para_showLTC, boolean para_showFTC) 
+	{
+		showCoin[0] = para_showBTC;
+		showCoin[1] = para_showLTC;
+		showCoin[2] = para_showFTC;
+	}
 }

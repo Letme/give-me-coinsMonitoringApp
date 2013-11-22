@@ -69,7 +69,7 @@ public class GiveMeCoinsInfo {
 			}
 			else if(lhs.getHashrate() == rhs.getHashrate())
 			{
-				return 0;
+				return lhs.getUsername().compareTo( lhs.getUsername() ) ;
 			}
 			else
 			{

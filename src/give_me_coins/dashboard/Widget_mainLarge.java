@@ -23,8 +23,6 @@ package give_me_coins.dashboard;
 
 
 import java.util.ArrayList;
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningServiceInfo;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -172,7 +170,7 @@ public abstract class Widget_mainLarge extends AppWidgetProvider implements GetI
 		        overview.setTextViewText(R.id.workers_online, String.valueOf( countOnlineWorkers )+"/"+giveMeCoinWorkers.size() );
 		        remoteViews.addView(R.id.main_view, overview);
 		        
-		        
+		       		        
 				Intent intent = new Intent(oContext, ListviewWidgetService.class);
 				
 	            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, app_id);
@@ -184,8 +182,12 @@ public abstract class Widget_mainLarge extends AppWidgetProvider implements GetI
 	            
 				//RemoteViews rv = new RemoteViews(oContext.getPackageName(), R.layout.activity_widget_main);
 				remoteViews.setRemoteAdapter( R.id.list_view, intent);
+ 						      
 		        
 		        oAppWidgetManager.updateAppWidget(app_id, remoteViews);
+		        // now listview updates ... woho
+		        oAppWidgetManager.notifyAppWidgetViewDataChanged(app_id, R.id.list_view);
+
 			}
 			else
 			{
