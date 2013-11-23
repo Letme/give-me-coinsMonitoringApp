@@ -110,41 +110,43 @@ public class GmcStickyService extends Service{
 	{
 		
         SharedPreferences sp = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-		String key = sp.getString(getString(R.string.saved_api_key),null);
-		showBTC = sp.getBoolean("show_btc", true);
-		showLTC = sp.getBoolean("show_ltc", true);
-		showFTC = sp.getBoolean("show_ftc", true);
-		int sleepTime = sp.getInt("update_rate", 60000);
-		
-		oGiveMeCoinsWorker.setSleepTime(sleepTime);
-		oGiveMeCoinsWorker.setUrlToGiveMeCoins( URL_STRING+key );
-		oGiveMeCoinsWorker.setCoinsToShow(showBTC,showLTC, showFTC);
-		// kill old thread
-		if( oGiveMeCoinsWorker != null )
+		String key = sp.getString(getString(R.string.saved_api_key), null);
+		if( key != null)
 		{
-			
-			oGiveMeCoinsWorker.forceUpdate();
-			//oGiveMeCoinsWorker.setRunning(false);
-			//oGiveMeCoinsWorker.cancel(true);
-		}
-		else
-		{
-			// make new one ... 
-			oGiveMeCoinsWorker = new GetInfoWorker(btc_callback, ltc_callback, ftc_callback);
-			oGiveMeCoinsWorker.setUrlToGiveMeCoins( URL_STRING+key );
-			oGiveMeCoinsWorker.setCoinsToShow(showBTC,showLTC, showFTC);
-			showBTC = sp.getBoolean("show_btc", true);
-			showLTC = sp.getBoolean("show_ltc", true);
-			showFTC = sp.getBoolean("show_ftc", true);
+			showBTC = sp.getBoolean(getString(R.string.show_btc), true);
+			showLTC = sp.getBoolean(getString(R.string.show_ltc), true);
+			showFTC = sp.getBoolean(getString(R.string.show_ftc), true);
+			int sleepTime = sp.getInt(getString(R.string.update_interval), 60000);
 			
 			oGiveMeCoinsWorker.setSleepTime(sleepTime);
-			oGiveMeCoinsWorker.setRunning( true );
-			oGiveMeCoinsWorker.execute();
-		}
-
-		if(DEBUG)Log.d(TAG, "making new service ...");
+			oGiveMeCoinsWorker.setUrlToGiveMeCoins( URL_STRING+key );
+			oGiveMeCoinsWorker.setCoinsToShow(showBTC,showLTC, showFTC);
+			// kill old thread
+			if( oGiveMeCoinsWorker != null )
+			{
+				
+				oGiveMeCoinsWorker.forceUpdate();
+				//oGiveMeCoinsWorker.setRunning(false);
+				//oGiveMeCoinsWorker.cancel(true);
+			}
+			else
+			{
+				// make new one ... 
+				oGiveMeCoinsWorker = new GetInfoWorker(btc_callback, ltc_callback, ftc_callback);
+				oGiveMeCoinsWorker.setUrlToGiveMeCoins( URL_STRING+key );
+				oGiveMeCoinsWorker.setCoinsToShow(showBTC,showLTC, showFTC);
+				showBTC = sp.getBoolean("show_btc", true);
+				showLTC = sp.getBoolean("show_ltc", true);
+				showFTC = sp.getBoolean("show_ftc", true);
+				
+				oGiveMeCoinsWorker.setSleepTime(sleepTime);
+				oGiveMeCoinsWorker.setRunning( true );
+				oGiveMeCoinsWorker.execute();
+			}
+	
+			if(DEBUG)Log.d(TAG, "making new service ...");
 		
-
+		}
 
 		
 	}

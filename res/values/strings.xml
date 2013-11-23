@@ -46,5 +46,31 @@
     <string name="app_name_btc">give-me-coins.com BTC</string>
     <string name="notification">give-me-coins.com</string>
     <string name="refresh_text">Refresh</string>
-	
+    <string name="show_btc">Show BTC</string>
+    <string name="show_ltc">Show LTC</string>
+    <string name="show_ftc">Show FTC</string>
+    <string name="update_interval_helptext">The information will be updated in the chosen interval.</string>
+    <string name="update_interval">Update interval</string>
+    <string name="show_helptext">If unchecked this coin is not going to be shown in the app, and doesn\'t get updated. Saves traffic.</string>
+   	<string name="sec30">30 seconds</string>
+   	<string name="min1">1 minute</string>
+   	<string name="min2">2 minutes</string>
+   	<string name="min5">5 minutes</string>
+   	<string name="min10">10 minutes</string>
+   	<string name="min15">15 minutes</string>
+   	<string name="min20">20 minutes</string>
+   	<string name="min30">30 minutes</string>
+   	<string name="h1">1 hour</string>
+    <string-array name="update_time_intervals">
+        <item >@string/sec30</item>
+        <item >@string/min1</item>
+        <item >@string/min2</item>
+        <item >@string/min5</item>
+       	<item >@string/min10</item>
+        <item >@string/min15</item>
+        <item >@string/min20</item>
+        <item >@string/min30</item>
+        <item >@string/h1</item>        
+    </string-array>
+    
 </resources>
