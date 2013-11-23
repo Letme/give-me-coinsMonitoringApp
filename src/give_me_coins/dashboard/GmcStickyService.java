@@ -67,7 +67,7 @@ public class GmcStickyService extends Service{
 	private GiveMeCoinsInfo gmcInfoLTC = null;
 	private GiveMeCoinsInfo gmcInfoBTC = null;
 	
-	private boolean showBTC = false;
+	private boolean showBTC = true;
 	private boolean showFTC = true;
 	private boolean showLTC = true;
 	
@@ -134,10 +134,9 @@ public class GmcStickyService extends Service{
 				// make new one ... 
 				oGiveMeCoinsWorker = new GetInfoWorker(btc_callback, ltc_callback, ftc_callback);
 				oGiveMeCoinsWorker.setUrlToGiveMeCoins( URL_STRING+key );
+				
 				oGiveMeCoinsWorker.setCoinsToShow(showBTC,showLTC, showFTC);
-				showBTC = sp.getBoolean("show_btc", true);
-				showLTC = sp.getBoolean("show_ltc", true);
-				showFTC = sp.getBoolean("show_ftc", true);
+
 				
 				oGiveMeCoinsWorker.setSleepTime(sleepTime);
 				oGiveMeCoinsWorker.setRunning( true );
@@ -171,10 +170,10 @@ public class GmcStickyService extends Service{
         showStartNotification();
         SharedPreferences sp = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 		String key = sp.getString(getString(R.string.saved_api_key),null);
-		int sleepTime = sp.getInt("update_rate", 60000);
-		showBTC = sp.getBoolean("show_btc", true);
-		showLTC = sp.getBoolean("show_ltc", true);
-		showFTC = sp.getBoolean("show_ftc", true);
+		showBTC = sp.getBoolean(getString(R.string.show_btc), true);
+		showLTC = sp.getBoolean(getString(R.string.show_ltc), true);
+		showFTC = sp.getBoolean(getString(R.string.show_ftc), true);
+		int sleepTime = sp.getInt(getString(R.string.update_interval), 60000);
         // start getting info
 		if( key != null )
 		{

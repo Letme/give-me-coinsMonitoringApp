@@ -170,7 +170,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int confirmed_rewards=0x7f0a001c;
         public static final int confirmed_rewards_text=0x7f0a001b;
         public static final int dashboard_layout=0x7f0a0006;
-        public static final int delete_settings_button=0x7f0a0024;
+        public static final int delete_settings_button=0x7f0a0028;
         public static final int ftc_menu=0x7f0a0042;
         public static final int hash_rate_val=0x7f0a003f;
         public static final int hashrate_text=0x7f0a001a;
@@ -189,10 +189,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int progressBarSettings=0x7f0a001f;
         public static final int progressBarSummary=0x7f0a002c;
         public static final int root_view=0x7f0a0000;
-        public static final int save_settings_button=0x7f0a0023;
-        public static final int show_btc=0x7f0a0025;
-        public static final int show_ftc=0x7f0a0027;
-        public static final int show_ltc=0x7f0a0026;
+        public static final int save_settings_button=0x7f0a0027;
+        public static final int show_btc=0x7f0a0023;
+        public static final int show_ftc=0x7f0a0025;
+        public static final int show_ltc=0x7f0a0024;
         public static final int status=0x7f0a003e;
         public static final int summary_confirmedrewards=0x7f0a0034;
         public static final int summary_layout=0x7f0a002b;
@@ -215,7 +215,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int textView4=0x7f0a0039;
         public static final int textView5=0x7f0a0033;
         public static final int total_hash_rate=0x7f0a0002;
-        public static final int update_times=0x7f0a0028;
+        public static final int update_times=0x7f0a0026;
         public static final int worker_name=0x7f0a003d;
         public static final int workers_online=0x7f0a001e;
         public static final int workers_online_text=0x7f0a001d;

@@ -21,8 +21,6 @@
 package give_me_coins.dashboard;
 
 import java.text.DecimalFormat;
-import java.util.Currency;
-
 import give_me_coins.dashboard.util.SystemUiHider;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -54,9 +52,11 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -204,7 +204,18 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 
 		API_key_saved=sharedPref.getString(getString(R.string.saved_api_key),"");
-		
+		if( sharedPref.getBoolean(getString(R.string.show_ltc), true) )
+		{
+			coin_select = 1;
+		}
+		else if( sharedPref.getBoolean(getString(R.string.show_btc), true) )
+		{
+			coin_select = 2;
+		}
+		else if( sharedPref.getBoolean(getString(R.string.show_ftc), true) )
+		{
+			coin_select = 3;
+		}
 
 
 		// Start service to receive data
@@ -314,6 +325,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		}
 	};
 	private ProgressDialog oLoadingProgress;
+	private static Menu oMenu;
 
 
 	/**
@@ -343,13 +355,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		// TODO Auto-generated method stub
 		
 	}
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-	    // Inflate the menu items for use in the action bar
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.main_activity_actions, menu);
-	    return super.onCreateOptionsMenu(menu);
-	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
@@ -441,6 +447,47 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	}
 	
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+		 oMenu = menu;
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.main_activity_actions, menu);
+	    checkMenuStuff();
+	    return super.onCreateOptionsMenu(menu);
+	}
+	
+	
+	private static void checkMenuStuff() {
+		if( sharedPref.getBoolean(context.getString(R.string.show_btc), true) )
+			showOption(R.id.btc_menu);
+		else
+			hideOption(R.id.btc_menu);
+		
+		if( sharedPref.getBoolean(context.getString(R.string.show_ltc), true) )
+			showOption(R.id.ltc_menu);
+		else
+			hideOption(R.id.ltc_menu);
+		
+		if( sharedPref.getBoolean(context.getString(R.string.show_ftc), true) )
+			showOption(R.id.ftc_menu);
+		else
+			hideOption(R.id.ftc_menu);
+	}
+
+	private static void hideOption(int id)
+	{
+	    MenuItem item = oMenu.findItem(id);
+	    item.setVisible(false);
+	}
+
+	private static void showOption(int id)
+	{
+	    MenuItem item = oMenu.findItem(id);
+	    item.setVisible(true);
+	}
+	
+	
 	 private void updateNow() {
 		// TODO Auto-generated method stub
      	if( oStickyService != null )
@@ -529,6 +576,20 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             //Check if we have something in field
             apikeyoutput = (EditText) rootView.findViewById(R.id.api_key_value);
             String API_key = sharedPref.getString(getString(R.string.saved_api_key),"No api key found");
+            
+            // set show stuff
+            CheckBox show_btc = (CheckBox) rootView.findViewById(R.id.show_btc);
+            CheckBox show_ltc = (CheckBox) rootView.findViewById(R.id.show_ltc);
+            CheckBox show_ftc = (CheckBox) rootView.findViewById(R.id.show_ftc);
+            
+            show_btc.setChecked(sharedPref.getBoolean(getString(R.string.show_btc), true ) );
+            show_ltc.setChecked(sharedPref.getBoolean(getString(R.string.show_ltc), true ) );
+            show_ftc.setChecked(sharedPref.getBoolean(getString(R.string.show_ftc), true ) );
+            
+            
+            
+            setViewToTime(rootView.findViewById(R.id.update_times), sharedPref.getInt(getString(R.string.update_interval), 60000));
+            
             if(!API_key.matches("No api key found")) {
             	apikeyoutput.setText(API_key);
             }
@@ -558,16 +619,31 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	                                    API_key_saved=API_key_saved.substring(API_key_saved.indexOf("/pool/"),API_key_saved.length());
 	                                    SharedPreferences.Editor editor = sharedPref.edit();
 	                                    editor.putString(getString(R.string.saved_api_key), API_key_saved);
+	                                    
+	                                    CheckBox show_btc = (CheckBox) rootView.findViewById(R.id.show_btc);
+	                                    CheckBox show_ltc = (CheckBox) rootView.findViewById(R.id.show_ltc);
+	                                    CheckBox show_ftc = (CheckBox) rootView.findViewById(R.id.show_ftc);
+	                                    
+	                                    editor.putBoolean(getString(R.string.show_btc), show_btc.isChecked());
+	                                    editor.putBoolean(getString(R.string.show_ftc), show_ftc.isChecked());
+	                                    editor.putBoolean(getString(R.string.show_ltc), show_ltc.isChecked());
+	                                    
+	                                    editor.putInt(getString(R.string.update_interval), getMillisecondsFromView(rootView.findViewById(R.id.update_times)));
+	                                    
 	                                    if(DEBUG) Log.i(TAG,"Saving API_key_save:" + API_key_saved);
 	                                    editor.commit();
+	                                    checkMenuStuff();
 	                                    Toast.makeText(context, "Settings have been saved.",Toast.LENGTH_LONG).show();
 	                                }
                         		}
 	                        	startService();
+	                        	if(oStickyService != null)
+	                        		oStickyService.forceUpdate();
 	                        	mAppSectionsPagerAdapter.notifyDataSetChanged();
 	                        	
 	                        	//mAppSectionsPagerAdapter.getItemPosition(dashboard);
                         }
+
                     });
             // delete settings for further usage
             rootView.findViewById(R.id.delete_settings_button)
@@ -610,6 +686,80 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 	    		
             return rootView;
+        }
+        
+        
+        private int getMillisecondsFromView(View para_spinner) {
+			if( para_spinner != null )
+			{
+				Spinner timeSpinner = (Spinner) para_spinner;
+				
+				switch( timeSpinner.getSelectedItemPosition() ){
+					case 0:
+						return 30000;
+					case 1:
+						return 60000;
+					case 2:
+						return 120000;
+					case 3:
+						return 60000*5;
+					case 4:
+						return 600000;
+					case 5:
+						return 60000*15;
+					case 6:
+						return 1200000;
+					case 7:
+						return 60000*30;
+					case 8:
+						return 60000*60;
+					
+				}
+			}
+			return 60000;
+		}
+        
+        private void setViewToTime(View para_spinner, int milliseconds)
+        {
+		
+        	if( para_spinner != null )
+        	{
+        		Spinner timeSpinner = (Spinner) para_spinner;
+		    	switch( milliseconds ){
+					case 30000:
+						timeSpinner.setSelection(0);
+						break;
+					case 60000:
+						timeSpinner.setSelection(1);
+						break;
+					case 120000:
+						timeSpinner.setSelection(2);
+						break;
+					case 60000*5:
+						timeSpinner.setSelection(3);
+						break;
+					case 600000:
+						timeSpinner.setSelection(4);
+						break;
+					case 60000*15:
+						timeSpinner.setSelection(5);
+						break;
+					case 1200000:
+						timeSpinner.setSelection(6);
+						break;
+					case 60000*30:
+						timeSpinner.setSelection(7);
+						break;
+					case 60000*60:
+						timeSpinner.setSelection(8);
+						break;
+					default:
+						timeSpinner.setSelection(1);
+						break;
+					
+		    	}		
+        	}
+        	
         }
         
         @Override
@@ -768,28 +918,28 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		    				currentColor = getResources().getColor(R.color.ltc);
 		    				actionBar.setTitle("LTC");
 		    				actionBar.setDisplayShowTitleEnabled(true);
-		    				getNewGMCInfo();
+		    				//getNewGMCInfo();
 		    				//mAppSectionsPagerAdapter.notifyDataSetChanged();
 		    				break;
 		    			case 2:
 		    				currentColor = getResources().getColor(R.color.btc);
 		    				actionBar.setTitle("BTC");
 		    				actionBar.setDisplayShowTitleEnabled(true);
-		    				getNewGMCInfo();
+		    				//getNewGMCInfo();
 		    				//mAppSectionsPagerAdapter.notifyDataSetChanged();
 							break;
 		    			case 3:
 		    				currentColor =  getResources().getColor(R.color.ftc);
 		    				actionBar.setTitle("FTC");
 		    				actionBar.setDisplayShowTitleEnabled(true);
-		    				getNewGMCInfo();
+		    				//getNewGMCInfo();
 		    				//mAppSectionsPagerAdapter.notifyDataSetChanged();
 							break;
 		    			default:
 		    				currentColor = getResources().getColor(R.color.ltc);
 		    				 actionBar.setTitle("LTC");
 		    				 actionBar.setDisplayShowTitleEnabled(true);
-		    				 getNewGMCInfo();
+		    				 //getNewGMCInfo();
 		    				// mAppSectionsPagerAdapter.notifyDataSetChanged();
 		    				 break;
 		    		}
@@ -802,6 +952,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        			mService.start(URL+API_key_saved);
 		        		}
 		        	}*/
+		    		
 		        	
 		        	ScrollView main_layout = (ScrollView) (rootView.findViewById(R.id.summary_layout));
 		        	/*TextView usernameH = new TextView(getActivity());
@@ -809,6 +960,28 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 					usernameH.setTextColor(Color.RED);
 					main_layout.addView(usernameH);
 					*/
+		        	
+		        	if(username!=null) {
+	            		TextView usernameTV = (TextView) rootView.findViewById(R.id.summary_username);
+	            		usernameTV.setText(username);
+	            	}
+	            	if(confirmed_rewards!=null) {
+	            		TextView confrewardsTV = (TextView) rootView.findViewById(R.id.summary_confirmedrewards);
+	            		confrewardsTV.setText(confirmed_rewards);
+	            	}
+	            	if(total_hashrate!=null) {
+	            		TextView hashrateTV = (TextView) rootView.findViewById(R.id.summary_totalhash);
+	            		hashrateTV.setText(readableHashSize(Long.valueOf(total_hashrate.split("\\.")[0])));
+	            	}
+	            	if(round_estimate!=null) {
+	            		TextView estimateTV = (TextView) rootView.findViewById(R.id.summary_roundestimate);
+	            		estimateTV.setText(round_estimate);
+	            	}
+	            	if(round_shares!=null) {
+	            		TextView sharesTV = (TextView) rootView.findViewById(R.id.summary_roundshares);
+	            		sharesTV.setText(round_shares);
+	            	}
+		        	
 					TableLayout tl = (TableLayout)rootView.findViewById(R.id.myTableLayout);
 					//----------------- Dodaj header-----------------
 					TableRow trH = new TableRow(getActivity());
@@ -1326,6 +1499,25 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		if( oStickyService == null)
 		{
 			context.startService( new Intent(context, GmcStickyService.class) );
+		}
+		else
+		{
+			switch(coin_select)
+			{
+				case(1):
+					setToLocalGMCInfo(oStickyService.getLTCInfo());
+					break;
+				case(2):
+					setToLocalGMCInfo(oStickyService.getBTCInfo());
+					break;
+				case(3):
+					setToLocalGMCInfo(oStickyService.getFTCInfo());
+					break;
+				default:
+					setToLocalGMCInfo(oStickyService.getLTCInfo());
+					break;
+			}
+					
 		}
 		if( mPoolService==null) startService();
 	}

@@ -3,180 +3,199 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
        
-	<LinearLayout 
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:orientation="vertical"
-	    android:layout_margin="5dp" 
-	    android:padding="10dp"
-     	android:background="#FFFFFF"
-	   
-    >
-	    
-		<ProgressBar
-	        android:id="@+id/progressBarSettings"
-	        style="?android:attr/progressBarStyleHorizontal"
-	        android:layout_width="match_parent"
-	        android:layout_height="4dp"
-	        />
-
-		
-
-	<!--  
-	    <Button
-	            android:id="@+id/lunch_barcode_reader"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/qrcode_button" 
-	            android:visibility="invisible" />
-	-->
-		<TextView
-		    android:id="@+id/SettingstextView1"
+    <LinearLayout 
+         	android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:orientation="vertical"
+	    	android:background="@color/table_border"
+        >
+    
+		<LinearLayout 
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:text="@string/api_url_text"
-		    android:textAppearance="?android:attr/textAppearanceMedium" />
-	
-	<LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
+		    android:orientation="vertical"
+		    android:layout_margin="10dp" 
+		    android:padding="10dp"
+	     	android:background="@drawable/container_dropshadow"
+		   
 	    >
-	    
-		
-		<EditText
-		    android:id="@+id/api_key_value"
-		    android:layout_width="0dp"
-		    android:layout_gravity="center"
-		    android:layout_height="wrap_content"
-		    android:layout_weight="0.9"
-		    android:ems="10" 
-		    android:hint="@string/api_key_hint"
-		    />
-		
-		<ImageButton
-		    android:id="@+id/lunch_barcode_reader"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:contentDescription="@string/qrcode_button"
-		    android:src="@drawable/ic_action_camera" />
-		
-	</LinearLayout>
-
- 		<View 
-		    android:layout_width="match_parent"
-		    android:layout_height="2dp"
-		    android:background="@color/main_background"
-		     />
-		
-		 <LinearLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal" 
-	        >
-	        
-			<Button
-				android:id="@+id/save_settings_button"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/save_settings" />
-			<Button
-				android:id="@+id/delete_settings_button"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/delete_settings" />
+		    
+			<ProgressBar
+		        android:id="@+id/progressBarSettings"
+		        style="?android:attr/progressBarStyleHorizontal"
+		        android:layout_width="match_parent"
+		        android:layout_height="4dp"
+		        />
 	
-		</LinearLayout>
-		
- 		<View 
-		    android:layout_width="match_parent"
-		    android:layout_marginTop="3dp"
-		    android:layout_height="2dp"
-		    android:background="@color/main_background"
-		     />
-		
-     	<LinearLayout
-	         android:layout_width="wrap_content"
-	         android:layout_height="match_parent"
-	         android:orientation="vertical" 
-	         >
-			
-			<LinearLayout 
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:orientation="horizontal"
-			    >
-			    
-			     <CheckBox
-			         android:id="@+id/show_btc"
-			         android:layout_width="wrap_content"
-			         android:layout_height="wrap_content"
-			         android:text="@string/show_btc" />
-			     
-	   		     <CheckBox
-			         android:id="@+id/show_ltc"
-			         android:layout_width="wrap_content"
-			         android:layout_height="wrap_content"
-			         android:text="@string/show_ltc" />
-	
-			     <CheckBox
-			         android:id="@+id/show_ftc"
-			         android:layout_width="wrap_content"
-			         android:layout_height="wrap_content"
-			         android:text="@string/show_ftc" />
-			</LinearLayout>
-
+		<!--  
+		    <Button
+		            android:id="@+id/lunch_barcode_reader"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/qrcode_button" 
+		            android:visibility="invisible" />
+		-->
 			<TextView
-			    android:id="@+id/textView1"
+			    android:id="@+id/SettingstextView1"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="@string/show_helptext"
-			    android:textAppearance="?android:attr/textAppearanceSmall" 
-			    android:layout_marginLeft="10dp"
-			    android:layout_marginRight="10dp"
-			    />
+			    android:text="@string/api_url_text"
+			    android:textAppearance="?android:attr/textAppearanceMedium" />
 		
-   		</LinearLayout>
-   		
- 		<View 
+		<LinearLayout 
 		    android:layout_width="match_parent"
-		    android:layout_marginTop="3dp"
-		    android:layout_height="2dp"
-		    android:background="@color/main_background"
-		     />
-
- 		<Spinner
- 		    android:id="@+id/update_times"
- 		    android:layout_width="fill_parent"
- 		    android:layout_height="wrap_content" 
- 		    android:spinnerMode="dropdown"
- 		    android:entries="@array/update_time_intervals"
- 		    android:contentDescription="@string/update_interval_helptext"
- 		    />
-   		
- 		<View 
-		    android:layout_width="match_parent"
-		    android:layout_marginTop="3dp"
-		    android:layout_height="2dp"
-		    android:background="@color/main_background"
-		     />
-		  
-		 <TextView
-		     android:id="@+id/textView10"
-		     android:layout_width="wrap_content"
-		     android:layout_height="wrap_content"
-		     android:text="@string/help1_text"
-		     android:autoLink="web"
-		     android:textAppearance="?android:attr/textAppearanceSmall" 
-		     android:layout_marginTop="5dp"/>
-		 
-		 <TextView
-		     android:id="@+id/textView11"
-		     android:layout_width="wrap_content"
-		     android:layout_height="wrap_content"
-		     android:text="@string/help2_text"
-		     android:textAppearance="?android:attr/textAppearanceSmall"
-		     android:layout_marginTop="20dp" />
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal"
+		    >
+		    
+			
+			<EditText
+			    android:id="@+id/api_key_value"
+			    android:layout_width="0dp"
+			    android:layout_gravity="center"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="0.9"
+			    android:ems="10" 
+			    android:hint="@string/api_key_hint"
+			    />
+			
+			<ImageButton
+			    android:id="@+id/lunch_barcode_reader"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:contentDescription="@string/qrcode_button"
+			    android:src="@drawable/ic_action_camera" />
+			
+		</LinearLayout>
 	
+		 		<View 
+				    android:layout_width="match_parent"
+				    android:layout_height="2dp"
+				    android:background="@color/main_background"
+				     />
+				
+		
+				
+		 		<View 
+				    android:layout_width="match_parent"
+				    android:layout_marginTop="3dp"
+				    android:layout_height="2dp"
+				    android:background="@color/main_background"
+				     />
+				
+		     	<LinearLayout
+			         android:layout_width="wrap_content"
+			         android:layout_height="match_parent"
+			         android:orientation="vertical" 
+			         >
+					
+					<LinearLayout 
+					    android:layout_width="match_parent"
+					    android:layout_height="wrap_content"
+					    android:orientation="horizontal"
+					    >
+					    
+					     <CheckBox
+					         android:id="@+id/show_btc"
+					         android:layout_width="wrap_content"
+					         android:layout_height="wrap_content"
+					         android:text="@string/show_btc" />
+					     
+			   		     <CheckBox
+					         android:id="@+id/show_ltc"
+					         android:layout_width="wrap_content"
+					         android:layout_height="wrap_content"
+					         android:text="@string/show_ltc" />
+			
+					     <CheckBox
+					         android:id="@+id/show_ftc"
+					         android:layout_width="wrap_content"
+					         android:layout_height="wrap_content"
+					         android:text="@string/show_ftc" />
+					</LinearLayout>
+		
+					<TextView
+					    android:id="@+id/textView1"
+					    android:layout_width="wrap_content"
+					    android:layout_height="wrap_content"
+					    android:text="@string/show_helptext"
+					    android:textAppearance="?android:attr/textAppearanceSmall" 
+					    android:layout_marginLeft="10dp"
+					    android:layout_marginRight="10dp"
+					    />
+				
+		   		</LinearLayout>
+	   		
+		 		<View 
+				    android:layout_width="match_parent"
+				    android:layout_marginTop="3dp"
+				    android:layout_height="2dp"
+				    android:background="@color/main_background"
+				     />
+		
+		 		<Spinner
+		 		    android:id="@+id/update_times"
+		 		    android:layout_width="fill_parent"
+		 		    android:layout_height="wrap_content" 
+		 		    android:spinnerMode="dropdown"
+		 		    android:entries="@array/update_time_intervals"
+		 		    android:contentDescription="@string/update_interval_helptext"
+		 		    />
+		   		
+		 		<View 
+				    android:layout_width="match_parent"
+				    android:layout_marginTop="3dp"
+				    android:layout_height="2dp"
+				    android:background="@color/main_background"
+				     />
+			
+			 <LinearLayout
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="horizontal" 
+			        >
+			        
+					<Button
+						android:id="@+id/save_settings_button"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/save_settings" />
+					<Button
+						android:id="@+id/delete_settings_button"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/delete_settings" />
+			
+			</LinearLayout>
+			
+ 		</LinearLayout>
+	 		<LinearLayout
+	   		    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:orientation="vertical"
+			    android:layout_margin="10dp" 
+			    android:padding="10dp"
+		     	android:background="@drawable/container_dropshadow"
+		     	>
+		     	
+	
+			     
+				 <TextView
+				     android:id="@+id/textView10"
+				     android:layout_width="wrap_content"
+				     android:layout_height="wrap_content"
+				     android:text="@string/help1_text"
+				     android:autoLink="web"
+				     android:textAppearance="?android:attr/textAppearanceSmall" 
+				     android:layout_marginTop="5dp"/>
+				 
+				 <TextView
+				     android:id="@+id/textView11"
+				     android:layout_width="wrap_content"
+				     android:layout_height="wrap_content"
+				     android:text="@string/help2_text"
+				     android:textAppearance="?android:attr/textAppearanceSmall"
+				     android:layout_marginTop="20dp" />
+		</LinearLayout>
 	</LinearLayout>
 </ScrollView>
