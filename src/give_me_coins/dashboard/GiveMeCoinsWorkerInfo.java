@@ -77,8 +77,15 @@ public class GiveMeCoinsWorkerInfo {
 	        username = JSONHelper.getVal(para_workerInfos,"username", "N/A");
 	        alive = ( JSONHelper.getVal(para_workerInfos, "alive", 0) == 1);
 	        hashrate = JSONHelper.getVal(para_workerInfos,"hashrate",0);
-	        last_share_timestamp = JSONHelper.getVal(para_workerInfos,"last_share_timestamp",(long)0);
-    	}
+	        if( alive )
+	        {
+	        	last_share_timestamp = JSONHelper.getVal(para_workerInfos,"last_share_timestamp",(long)0);
+	        }
+	        else
+	        {
+	        	last_share_timestamp = 0;
+	        }
+       }
 
     }
 
