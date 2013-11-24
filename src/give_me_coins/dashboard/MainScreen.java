@@ -286,18 +286,18 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	}
 	
 	public static void startService() {
-		/*asyncService = new AsyncTask<Void, Void, Void>() {
+		asyncService = new AsyncTask<Void, Void, Void>() {
 		    @Override
 		    protected Void doInBackground(Void... params) {
-		    		if(DEBUG) Log.d("asyncService","Starting AsyncTask");
-		        	mService.start(URL+API_key_saved);
+		    		if(DEBUG) Log.d("asyncService","Starting oStickService AsyncTask");
+					context.startService( new Intent(context, GmcStickyService.class) );
 					return null;
 		    }
-		}.execute();*/
+		}.execute();
 		asyncPoolService = new AsyncTask<Void, Void, Void>() {
 		    @Override
 		    protected Void doInBackground(Void... params) {
-		    		if(DEBUG) Log.d("asyncPoolService","Starting AsyncTask");
+		    		if(DEBUG) Log.d("asyncPoolService","Starting PoolService AsyncTask");
 		        	mPoolService.start(URL+"/pool/api-ltc");
 					return null;
 		    }
@@ -686,7 +686,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         }
         
         
-        private int getMillisecondsFromView(View para_spinner) {
+        @Override
+		public void onDestroy() {
+			// TODO Auto-generated method stub
+			super.onDestroy();
+		}
+
+
+		private int getMillisecondsFromView(View para_spinner) {
 			if( para_spinner != null )
 			{
 				Spinner timeSpinner = (Spinner) para_spinner;
@@ -834,6 +841,12 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	        	//Read data from settings and write them here
 	        	return rootView;
     		}
+    	
+        @Override
+		public void onDestroy() {
+			// TODO Auto-generated method stub
+			super.onDestroy();
+		}
             @Override
             public void update() {
 	    		 if(pool_total_hashrate!=null) {
@@ -1139,6 +1152,12 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		    	    
 	        	return rootView;
     	}
+    	
+        @Override
+		public void onDestroy() {
+			// TODO Auto-generated method stub
+			super.onDestroy();
+		}
 
 		@Override
         public void update() {
@@ -1338,27 +1357,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	 }
     };
 
-
-	@Override
-	protected void onStop() {
-		if(DEBUG) Log.d(TAG,"onStop");
-		isRunning=false;
-		try
-		{
-			oStickyService.stopSelf();
-			asyncPoolService.cancel(true);
-			mPoolService.timer.cancel();
-			mPoolService.stop();
-		}
-		catch(Exception e)
-		{
-			Log.e(TAG,"error while trying to pause "+e.toString());
-		}
-		finish();
-		super.onStop();
-		
-	}
-
 	public static void getNewGMCInfo() {
 		// new info ...
 		 if( oStickyService != null)
@@ -1384,7 +1382,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		 }
 		 else {
 			 // It can happen that we do not have the service running
-			 context.startService( new Intent(context, GmcStickyService.class) );
+			 startService();
 			 if(DEBUG) Log.e(TAG,"oStickyService==null");
 		 } 
 		
@@ -1493,7 +1491,25 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		   }
 	}
 	
-	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
+		if(DEBUG) Log.d(TAG,"onDestroy");
+		isRunning=false;
+		actionBar.removeAllTabs();
+		try
+		{
+			oStickyService.stopSelf();
+			asyncPoolService.cancel(true);
+			mPoolService.timer.cancel();
+			mPoolService.stop();
+		}
+		catch(Exception e)
+		{
+			Log.e(TAG,"error while trying to stop "+e.toString());
+		}
+	}
 
 	@Override
 	protected void onResume() {
@@ -1503,7 +1519,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
 		if( oStickyService == null)
 		{
-			context.startService( new Intent(context, GmcStickyService.class) );
+			startService();
 		}
 		else
 		{
@@ -1552,12 +1568,12 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 					else {
 						if(DEBUG) Log.d(TAG,"Back pressed twice - EXITING");
 						BackKeyExit=0;
-						onStop();
+						finish();
 					}
 				}
 				if(event.getRepeatCount() == 1) {
 					if(DEBUG) Log.d(TAG,"Back pressed twice - EXITING");
-					onStop();
+					finish();
 				}
 				return true;
 			default:
