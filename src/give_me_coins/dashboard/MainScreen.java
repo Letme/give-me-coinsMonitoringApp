@@ -21,6 +21,7 @@
 package give_me_coins.dashboard;
 
 import java.text.DecimalFormat;
+
 import give_me_coins.dashboard.util.SystemUiHider;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -40,6 +41,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -534,14 +536,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                 	// Dashboard fragment
                 	dashboard= new DashBoardFragment();
                 	return dashboard;
-                	
                 default:
-                    // The other sections of the app are dummy placeholders.
-                    Fragment dummy = new DummySectionFragment();
-                    Bundle args = new Bundle();
-                    args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, i + 1);
-                    dummy.setArguments(args);
-                    return dummy;
+                	summary=new SummaryFragment();
+                	return summary;
             }
         }
         
@@ -788,6 +785,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     		actionBar.setDisplayShowTitleEnabled(true);
     		displayProgress.setProgress(Progress);
     		displayProgress.invalidate();
+    		
+    		BackKeyExit=0;
         }
     }
     
@@ -881,6 +880,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    	    displayProgress.setProgressDrawable(progressDrawable);
 	    		displayProgress.setProgress(Progress);
 	    		displayProgress.invalidate();
+	    		
+	    		BackKeyExit=0;
     	} 	
     }
     
@@ -1305,25 +1306,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    	    displayProgress.setProgressDrawable(progressDrawable);
 	    	    displayProgress.setProgress(Progress);
 	    	    displayProgress.invalidate();
+	    	    
+	    	    BackKeyExit=0;
     	} 	
-    }
-    
-    /**
-     * A dummy fragment representing a section of the app, but that simply displays dummy text.
-     */
-    public static class DummySectionFragment extends Fragment {
-
-        public static final String ARG_SECTION_NUMBER = "section_number";
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_section_dummy, container, false);
-            Bundle args = getArguments();
-            ((TextView) rootView.findViewById(android.R.id.text1)).setText(
-                    getString(R.string.dummy_section_text, args.getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
     }
     
     private static final Handler mHandler = new Handler() {
@@ -1356,8 +1341,21 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 	@Override
 	protected void onStop() {
+		if(DEBUG) Log.d(TAG,"onStop");
+		isRunning=false;
+		try
+		{
+			oStickyService.stopSelf();
+			asyncPoolService.cancel(true);
+			mPoolService.timer.cancel();
+			mPoolService.stop();
+		}
+		catch(Exception e)
+		{
+			Log.e(TAG,"error while trying to pause "+e.toString());
+		}
+		finish();
 		super.onStop();
-		
 		
 	}
 
@@ -1384,12 +1382,17 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			 		break;
 			 }
 		 }
+		 else {
+			 // It can happen that we do not have the service running
+			 context.startService( new Intent(context, GmcStickyService.class) );
+			 if(DEBUG) Log.e(TAG,"oStickyService==null");
+		 } 
 		
 	}
 
 	@Override
 	protected void onPause() {
-		super.onPause();
+		if(DEBUG) Log.d(TAG,"onPause");
 		isRunning=false;
 		try
 		{
@@ -1402,6 +1405,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		{
 			Log.e(TAG,"error while trying to pause "+e.toString());
 		}
+		super.onPause();
 
 	}
 	
@@ -1494,6 +1498,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	@Override
 	protected void onResume() {
 		super.onResume();
+		if(DEBUG) Log.d(TAG,"onResume");
 		isRunning=true;
 		oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
 		if( oStickyService == null)
@@ -1528,5 +1533,39 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    int digitGroups = (int) (Math.log10(size)/Math.log10(1000));
 	    return new DecimalFormat("#,##0.#").format(size/Math.pow(1000, digitGroups)) + " " + units[digitGroups];
 	}
+
+	static int BackKeyExit=0;
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		switch(keyCode) {
+			case KeyEvent.KEYCODE_HOME:
+				BackKeyExit=0;
+				onPause();
+				return true;
+			case KeyEvent.KEYCODE_BACK:
+				if(event.getRepeatCount() == 0) {
+					if(BackKeyExit == 0) {
+						Toast.makeText(context, "Press BACK twice to fully exit",Toast.LENGTH_LONG).show();
+						BackKeyExit=1;
+					}
+					else {
+						if(DEBUG) Log.d(TAG,"Back pressed twice - EXITING");
+						BackKeyExit=0;
+						onStop();
+					}
+				}
+				if(event.getRepeatCount() == 1) {
+					if(DEBUG) Log.d(TAG,"Back pressed twice - EXITING");
+					onStop();
+				}
+				return true;
+			default:
+				BackKeyExit=0;
+		}
+		if(DEBUG) Log.d(TAG,"Pressed: " + keyCode);
+		return super.onKeyDown(keyCode, event);
+	}
     
+	
 }

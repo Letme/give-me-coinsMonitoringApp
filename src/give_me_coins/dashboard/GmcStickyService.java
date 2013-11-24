@@ -371,7 +371,6 @@ public class GmcStickyService extends Service{
 		return gmcInfoFTC;		
 	}
 
-
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub

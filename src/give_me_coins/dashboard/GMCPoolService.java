@@ -192,21 +192,21 @@ public class GMCPoolService extends Service{
 		public void cancel() {
 	   		//Perform CLEANUP !!!!
 			try {
-				jsonAll.close();
+				if(jsonAll != null) jsonAll.close();
 				if(DEBUG) Log.d(TAG,"MAIN JSON closed");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		    try {
-				reader.close();
+		    	if(reader != null)reader.close();
 				if(DEBUG) Log.d(TAG,"BufferedReader closed");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	   		try {
-				inputStream.close();
+	   			if(inputStream != null) inputStream.close();
 				if(DEBUG) Log.d(TAG,"InputStream closed");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
