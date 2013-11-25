@@ -29,7 +29,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -47,7 +46,7 @@ public class GmcStickyService extends Service{
 	private static ArrayList<GetInfoWorkerCallback> oLtc_callbacks = null;
 	private static ArrayList<GetInfoWorkerCallback> oFtc_callbacks = null;
 	
-	private static GmcStickyService oInstace = null;
+	private static GmcStickyService oInstance = null;
 	
 	private Notification oNotification;
 	
@@ -161,7 +160,7 @@ public class GmcStickyService extends Service{
     	if( oFtc_callbacks == null )
     		oFtc_callbacks = new ArrayList<GetInfoWorkerCallback>();
     	
-    	oInstace = this;
+    	oInstance = this;
     	
         mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         oContext = this;
@@ -218,7 +217,7 @@ public class GmcStickyService extends Service{
 				oFtc_callbacks = new ArrayList<GetInfoWorkerCallback>();
 			oFtc_callbacks.add(para_ftc_callback);
 		}
-		return oInstace;	
+		return oInstance;	
 
 	}
 	
@@ -376,10 +375,18 @@ public class GmcStickyService extends Service{
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		oGiveMeCoinsWorker.setRunning(false);
+		oGiveMeCoinsWorker.forceUpdate();
+		oInstance = null;
 	}
-	
-	
 
+
+	public void stop() {
+		oGiveMeCoinsWorker.setRunning(false);
+		oGiveMeCoinsWorker.forceUpdate();
+		//oInstance.stopForeground(true);
+		stopSelf();
+		oInstance = null;
+	}
 }
 
 

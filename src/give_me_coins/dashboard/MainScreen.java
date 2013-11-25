@@ -1380,10 +1380,11 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			 		break;
 			 }
 		 }
-		 else {
+		 else 
+		 {
 			 // It can happen that we do not have the service running
-			 startService();
-			 if(DEBUG) Log.e(TAG,"oStickyService==null");
+			 //startService();
+			 //if(DEBUG) Log.e(TAG,"oStickyService==null");
 		 } 
 		
 	}
@@ -1394,7 +1395,11 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		isRunning=false;
 		try
 		{
-			oStickyService.detachListener(btc_callback, ltc_callback, ftc_callback);
+			if( oStickyService != null )
+			{
+				oStickyService.detachListener(btc_callback, ltc_callback, ftc_callback);
+			}
+			asyncService.cancel(true);
 			asyncPoolService.cancel(true);
 			mPoolService.timer.cancel();
 			mPoolService.stop();
@@ -1500,7 +1505,13 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		actionBar.removeAllTabs();
 		try
 		{
-			oStickyService.stopSelf();
+			if( oStickyService != null)
+			{
+				oStickyService.detachListener(btc_callback, ltc_callback, ftc_callback);
+				oStickyService.stop();
+				oStickyService = null;
+			}
+			asyncService.cancel(true);
 			asyncPoolService.cancel(true);
 			mPoolService.timer.cancel();
 			mPoolService.stop();
@@ -1514,15 +1525,17 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(DEBUG) Log.d(TAG,"onResume");
+		if(DEBUG) Log.e(TAG,"onResume");
 		isRunning=true;
 		oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
 		if( oStickyService == null)
 		{
+			if(DEBUG)Log.e(TAG,"oStickyService == null onResume");
 			startService();
 		}
 		else
 		{
+			oStickyService.forceUpdate();
 			switch(coin_select)
 			{
 				case(1):
