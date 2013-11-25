@@ -90,7 +90,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.google.zxing.client.android.SCAN" />
+               
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
