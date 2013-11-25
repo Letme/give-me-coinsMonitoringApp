@@ -72,5 +72,6 @@
         <item >@string/min30</item>
         <item >@string/h1</item>        
     </string-array>
+    <string name="show_notification">Show data in top Notification area</string>
     
 </resources>

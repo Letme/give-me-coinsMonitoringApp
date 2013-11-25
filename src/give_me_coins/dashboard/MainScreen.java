@@ -289,9 +289,10 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		asyncService = new AsyncTask<Void, Void, Void>() {
 		    @Override
 		    protected Void doInBackground(Void... params) {
-		    		if(DEBUG) Log.d("asyncService","Starting oStickService AsyncTask");
+		    		if(DEBUG) Log.d("asyncService","Starting oStickyService AsyncTask");
+		    		context.getApplicationContext();
 					context.startService( new Intent(context, GmcStickyService.class) );
-					return null;
+		    		return null;
 		    }
 		}.execute();
 		asyncPoolService = new AsyncTask<Void, Void, Void>() {
@@ -452,11 +453,16 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    // Inflate the menu items for use in the action bar
-		 oMenu = menu;
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.main_activity_actions, menu);
-	    checkMenuStuff();
-	    return super.onCreateOptionsMenu(menu);
+		if( sharedPref.getBoolean(context.getString(R.string.show_notification), true) ) 
+		{
+			 oMenu = menu;
+		    MenuInflater inflater = getMenuInflater();
+		    inflater.inflate(R.menu.main_activity_actions, menu);
+		    checkMenuStuff();
+		    return super.onCreateOptionsMenu(menu);
+		}
+		else
+			return false;
 	}
 	
 	
@@ -578,10 +584,12 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             CheckBox show_btc = (CheckBox) rootView.findViewById(R.id.show_btc);
             CheckBox show_ltc = (CheckBox) rootView.findViewById(R.id.show_ltc);
             CheckBox show_ftc = (CheckBox) rootView.findViewById(R.id.show_ftc);
+            CheckBox show_notification = (CheckBox) rootView.findViewById(R.id.show_notification);
             
             show_btc.setChecked(sharedPref.getBoolean(getString(R.string.show_btc), true ) );
             show_ltc.setChecked(sharedPref.getBoolean(getString(R.string.show_ltc), true ) );
             show_ftc.setChecked(sharedPref.getBoolean(getString(R.string.show_ftc), true ) );
+            show_notification.setChecked(sharedPref.getBoolean(getString(R.string.show_notification), true ) );
             
             
             
@@ -620,10 +628,12 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	                                    CheckBox show_btc = (CheckBox) rootView.findViewById(R.id.show_btc);
 	                                    CheckBox show_ltc = (CheckBox) rootView.findViewById(R.id.show_ltc);
 	                                    CheckBox show_ftc = (CheckBox) rootView.findViewById(R.id.show_ftc);
+	                                    CheckBox show_notification = (CheckBox) rootView.findViewById(R.id.show_notification);
 	                                    
 	                                    editor.putBoolean(getString(R.string.show_btc), show_btc.isChecked());
 	                                    editor.putBoolean(getString(R.string.show_ftc), show_ftc.isChecked());
 	                                    editor.putBoolean(getString(R.string.show_ltc), show_ltc.isChecked());
+	                                    editor.putBoolean(getString(R.string.show_notification), show_notification.isChecked());
 	                                    
 	                                    editor.putInt(getString(R.string.update_interval), getMillisecondsFromView(rootView.findViewById(R.id.update_times)));
 	                                    

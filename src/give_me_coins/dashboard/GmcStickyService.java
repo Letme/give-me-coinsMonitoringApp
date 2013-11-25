@@ -29,6 +29,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -47,6 +48,7 @@ public class GmcStickyService extends Service{
 	private static ArrayList<GetInfoWorkerCallback> oFtc_callbacks = null;
 	
 	private static GmcStickyService oInstance = null;
+	private Handler oHandler;
 	
 	private Notification oNotification;
 	
@@ -76,6 +78,7 @@ public class GmcStickyService extends Service{
 	private String btcHashRate = "0 kh/s";
 	private String ltcHashRate = "0 kh/s";
 	private String ftcHashRate = "0 kh/s";
+	
 	
 	@Override
 	public IBinder onBind(Intent intent) {
