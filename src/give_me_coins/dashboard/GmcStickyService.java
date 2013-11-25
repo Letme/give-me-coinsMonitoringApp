@@ -30,7 +30,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.util.Log;
 
 
@@ -62,6 +64,7 @@ public class GmcStickyService extends Service{
      */
     private NotificationManager mNM;
 	private GetInfoWorker oGiveMeCoinsWorker = null;
+	private Handler mHandler;
 	
 	private GiveMeCoinsInfo gmcInfoFTC = null;
 	private GiveMeCoinsInfo gmcInfoLTC = null;
@@ -83,7 +86,10 @@ public class GmcStickyService extends Service{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	public GmcStickyService(Context context, Handler handler) {
+		mHandler=handler;
+		
+	}
 	
 	public void detachListener(GetInfoWorkerCallback para_btcCallback, 
 				GetInfoWorkerCallback para_ltcCallback, GetInfoWorkerCallback para_ftcCallback)
@@ -149,10 +155,9 @@ public class GmcStickyService extends Service{
 
 		
 	}
-	
-	@Override
-    public void onCreate() {
-    	super.onCreate();
+
+	public synchronized void start() {
+    	//super.onCreate();
     	
     	if( oBtc_callbacks == null )
     		oBtc_callbacks = new ArrayList<GetInfoWorkerCallback>();
@@ -186,7 +191,6 @@ public class GmcStickyService extends Service{
 			oGiveMeCoinsWorker.setRunning( true );
 			oGiveMeCoinsWorker.execute();
 		}
-        
 	}
 	
 	/**
@@ -256,6 +260,9 @@ public class GmcStickyService extends Service{
        
        // Send the notification.
         mNM.notify(NOTIFICATION, oNotification);
+        
+		Message msg = mHandler.obtainMessage(MainScreen.DATA_READY);
+		mHandler.sendMessage(msg);
     }
 	
 	/**
@@ -351,7 +358,6 @@ public class GmcStickyService extends Service{
 				ltcHashRate = MainScreen.readableHashSize(gmcInfoLTC.getTotal_hashrate());
 				refreshNotification();
 			}
-			
 		}
 	};
 

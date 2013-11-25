@@ -223,6 +223,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		// Start service to receive data
 		//if(mService==null) mService= new GMCService(this,mHandler);
 		if(mPoolService==null) mPoolService=new GMCPoolService(this,mHandler);
+		oStickyService=new GmcStickyService(this,mHandler);
 		
 		  // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
@@ -290,7 +291,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		    @Override
 		    protected Void doInBackground(Void... params) {
 		    		if(DEBUG) Log.d("asyncService","Starting oStickService AsyncTask");
-					context.startService( new Intent(context, GmcStickyService.class) );
+		    		oStickyService.start();
 					return null;
 		    }
 		}.execute();
@@ -1461,14 +1462,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	
 	private static void setToLocalGMCInfo(GiveMeCoinsInfo para_giveMeCoinsInfo)
 	{
-		username = para_giveMeCoinsInfo.getUsername();
-		   round_estimate = String.valueOf( para_giveMeCoinsInfo.getRound_estimate() );
-		   total_hashrate = String.valueOf( para_giveMeCoinsInfo.getTotal_hashrate() );
-		   round_shares = String.valueOf( para_giveMeCoinsInfo.getRound_shares() );
-		   confirmed_rewards = String.valueOf( para_giveMeCoinsInfo.getConfirmed_rewards() );
-		   int i = 0;
-		   for(GiveMeCoinsWorkerInfo worker : para_giveMeCoinsInfo.getGiveMeCoinWorkers() )
-		   {
+			username = para_giveMeCoinsInfo.getUsername();
+			round_estimate = String.valueOf( para_giveMeCoinsInfo.getRound_estimate() );
+			total_hashrate = String.valueOf( para_giveMeCoinsInfo.getTotal_hashrate() );
+			round_shares = String.valueOf( para_giveMeCoinsInfo.getRound_shares() );
+			confirmed_rewards = String.valueOf( para_giveMeCoinsInfo.getConfirmed_rewards() );
+			int i = 0;
+			for(GiveMeCoinsWorkerInfo worker : para_giveMeCoinsInfo.getGiveMeCoinWorkers() )
+			{
 			   if(  worker.isAlive() )
 			   {
 				   worker_alive[i] = "1";
@@ -1520,6 +1521,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		if( oStickyService == null)
 		{
 			startService();
+			//context.startService( new Intent(context, GmcStickyService.class) );
+			oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
 		}
 		else
 		{
@@ -1537,10 +1540,13 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				default:
 					setToLocalGMCInfo(oStickyService.getLTCInfo());
 					break;
-			}
-					
+			}		
 		}
 		if( mPoolService==null) startService();
+		if( oStickyService != null)
+			oStickyService.forceUpdate();
+		updateNow();
+		mAppSectionsPagerAdapter.notifyDataSetChanged();
 	}
 	
 	public static String readableHashSize(long size) {
