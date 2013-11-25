@@ -165,16 +165,18 @@ public class GmcStickyService extends Service{
     	
     	oInstance = this;
     	
-        mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         oContext = this;
         // Display a notification about us starting.  We put an icon in the status bar.
         // and start foreground
-        showStartNotification();
         SharedPreferences sp = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 		String key = sp.getString(getString(R.string.saved_api_key),null);
 		showBTC = sp.getBoolean(getString(R.string.show_btc), true);
 		showLTC = sp.getBoolean(getString(R.string.show_ltc), true);
 		showFTC = sp.getBoolean(getString(R.string.show_ftc), true);
+        	
+		mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+		showStartNotification();
+        
 		int sleepTime = sp.getInt(getString(R.string.update_interval), 60000);
         // start getting info
 		if( key != null )
@@ -228,67 +230,77 @@ public class GmcStickyService extends Service{
      * Refresh notification
      */
     private void refreshNotification() {
-
-    	String currentTextToShow = "";
-    	if( showBTC )
-    		currentTextToShow += "BTC: "+btcHashRate+" ";
-    	if( showFTC )
-    		currentTextToShow += "FTC: "+ftcHashRate+" ";
-    	if( showLTC )
-    		currentTextToShow += "LTC: "+ltcHashRate+" ";
-    	
-        // The PendingIntent to launch our activity if the user selects this notification
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainScreen.class), 0);
-       
-        
-        // change icon ...
-        oNotification = new Notification(R.drawable.ic_launcher, currentTextToShow,
-                System.currentTimeMillis());
-        
-        // Set the info for the views that show in the notification panel.
-        // yes deprecated ... but ...
-        oNotification.setLatestEventInfo(this, oContext.getText(R.string.app_name), currentTextToShow, contentIntent);
-        
-        
-      // TODO: test here if arams need to be set (kh/s dropping ... stuff like that
-        
-       
-       // Start in foreground - so we dont get killed
-       
-       // Send the notification.
-        mNM.notify(NOTIFICATION, oNotification);
+    	SharedPreferences sp = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+    	if(sp.getBoolean(getString(R.string.show_notification), true)) {
+	    	String currentTextToShow = "";
+	    	if( showBTC )
+	    		currentTextToShow += "BTC: "+btcHashRate+" ";
+	    	if( showFTC )
+	    		currentTextToShow += "FTC: "+ftcHashRate+" ";
+	    	if( showLTC )
+	    		currentTextToShow += "LTC: "+ltcHashRate+" ";
+	    	
+	        // The PendingIntent to launch our activity if the user selects this notification
+	        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+	                new Intent(this, MainScreen.class), 0);
+	       
+	        
+	        // change icon ...
+	        oNotification = new Notification(R.drawable.ic_launcher, currentTextToShow,
+	                System.currentTimeMillis());
+	        
+	        // Set the info for the views that show in the notification panel.
+	        // yes deprecated ... but ...
+	        oNotification.setLatestEventInfo(this, oContext.getText(R.string.app_name), currentTextToShow, contentIntent);
+	        
+	        
+	      // TODO: test here if arams need to be set (kh/s dropping ... stuff like that
+	        
+	       
+	       // Start in foreground - so we dont get killed
+	       
+	       // Send the notification.
+	        mNM.notify(NOTIFICATION, oNotification);
+    	}
+    	else
+    		mNM.cancel(NOTIFICATION);
     }
 	
 	/**
      * Show a notification while this service is running.
      */
     private void showStartNotification() {
+    	SharedPreferences sp = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+    	if(sp.getBoolean(getString(R.string.show_notification), true)) {
+	    	String currentTextToShow = "";
+	    	if( showBTC )
+	    		currentTextToShow += "BTC: "+btcHashRate+" ";
+	    	if( showFTC )
+	    		currentTextToShow += "FTC: "+ftcHashRate+" ";
+	    	if( showLTC )
+	    		currentTextToShow += "LTC: "+ltcHashRate+" ";
+	    	
+	        // Set the icon, scrolling text and timestamp
+	    	oNotification = new Notification(R.drawable.ic_launcher, currentTextToShow,
+	                System.currentTimeMillis());
+	
+	        // The PendingIntent to launch our activity if the user selects this notification
+	        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+	                new Intent(this, MainScreen.class), 0);
+	
+	        // Set the info for the views that show in the notification panel.
+	        oNotification.setLatestEventInfo(this, oContext.getText(R.string.app_name), currentTextToShow, contentIntent);
+	        
+	       // Start in foreground - so we dont get killed
+	        startForeground(NOTIFICATION, oNotification);
 
-    	String currentTextToShow = "";
-    	if( showBTC )
-    		currentTextToShow += "BTC: "+btcHashRate+" ";
-    	if( showFTC )
-    		currentTextToShow += "FTC: "+ftcHashRate+" ";
-    	if( showLTC )
-    		currentTextToShow += "LTC: "+ltcHashRate+" ";
-    	
-        // Set the icon, scrolling text and timestamp
-    	oNotification = new Notification(R.drawable.ic_launcher, currentTextToShow,
-                System.currentTimeMillis());
-
-        // The PendingIntent to launch our activity if the user selects this notification
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainScreen.class), 0);
-
-        // Set the info for the views that show in the notification panel.
-        oNotification.setLatestEventInfo(this, oContext.getText(R.string.app_name), currentTextToShow, contentIntent);
-        
-       // Start in foreground - so we dont get killed
-        startForeground(NOTIFICATION, oNotification);
-       // Send the notification.
-       
-        // mNM.notify(NOTIFICATION, notification);
+	       // Send the notification.
+	       
+	        // mNM.notify(NOTIFICATION, notification);
+    	}
+    	else {
+    		mNM.cancel(NOTIFICATION);
+    	}
     }
 
 	private GetInfoWorkerCallback btc_callback = new GetInfoWorkerCallback() {

@@ -453,16 +453,11 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    // Inflate the menu items for use in the action bar
-		if( sharedPref.getBoolean(context.getString(R.string.show_notification), true) ) 
-		{
-			 oMenu = menu;
-		    MenuInflater inflater = getMenuInflater();
-		    inflater.inflate(R.menu.main_activity_actions, menu);
-		    checkMenuStuff();
-		    return super.onCreateOptionsMenu(menu);
-		}
-		else
-			return false;
+		oMenu = menu;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_activity_actions, menu);
+		checkMenuStuff();
+		return super.onCreateOptionsMenu(menu);
 	}
 	
 	
@@ -471,12 +466,12 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			showOption(R.id.btc_menu);
 		else
 			hideOption(R.id.btc_menu);
-		
+
 		if( sharedPref.getBoolean(context.getString(R.string.show_ltc), true) )
 			showOption(R.id.ltc_menu);
 		else
 			hideOption(R.id.ltc_menu);
-		
+
 		if( sharedPref.getBoolean(context.getString(R.string.show_ftc), true) )
 			showOption(R.id.ftc_menu);
 		else
@@ -1476,34 +1471,36 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	
 	private static void setToLocalGMCInfo(GiveMeCoinsInfo para_giveMeCoinsInfo)
 	{
-		username = para_giveMeCoinsInfo.getUsername();
-		   round_estimate = String.valueOf( para_giveMeCoinsInfo.getRound_estimate() );
-		   total_hashrate = String.valueOf( para_giveMeCoinsInfo.getTotal_hashrate() );
-		   round_shares = String.valueOf( para_giveMeCoinsInfo.getRound_shares() );
-		   confirmed_rewards = String.valueOf( para_giveMeCoinsInfo.getConfirmed_rewards() );
-		   int i = 0;
-		   for(GiveMeCoinsWorkerInfo worker : para_giveMeCoinsInfo.getGiveMeCoinWorkers() )
-		   {
-			   if(  worker.isAlive() )
-			   {
-				   worker_alive[i] = "1";
-			   }
-			   else
-			   {
-				   worker_alive[i] = "0";
-			   }
-			   worker_hashrate[i] = String.valueOf( worker.getHashrate() );
-			   worker_name[i] = worker.getUsername();
-			   worker_timestamp[i] = String.valueOf(worker.getLast_share_timestamp());
-			   
-			   i++;
-			   
-			   //TODO: refactor ... maybe to Arraylist so we can put infite workers in list
-			   if( i >= 10 )
-			   {
-				   break;
-			   }
-		   }
+		if(para_giveMeCoinsInfo!=null) {
+			username = para_giveMeCoinsInfo.getUsername();
+			round_estimate = String.valueOf( para_giveMeCoinsInfo.getRound_estimate() );
+			total_hashrate = String.valueOf( para_giveMeCoinsInfo.getTotal_hashrate() );
+			round_shares = String.valueOf( para_giveMeCoinsInfo.getRound_shares() );
+			confirmed_rewards = String.valueOf( para_giveMeCoinsInfo.getConfirmed_rewards() );
+			int i = 0;
+			for(GiveMeCoinsWorkerInfo worker : para_giveMeCoinsInfo.getGiveMeCoinWorkers() )
+			{
+				if(  worker.isAlive() )
+				{
+					worker_alive[i] = "1";
+				}
+				else
+				{
+					worker_alive[i] = "0";
+				}
+				worker_hashrate[i] = String.valueOf( worker.getHashrate() );
+				worker_name[i] = worker.getUsername();
+				worker_timestamp[i] = String.valueOf(worker.getLast_share_timestamp());
+	
+				i++;
+	
+				//TODO: refactor ... maybe to Arraylist so we can put infite workers in list
+				if( i >= 10 )
+				{
+					break;
+				}
+			}
+		}
 	}
 	
 	@Override
