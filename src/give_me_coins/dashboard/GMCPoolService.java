@@ -127,7 +127,15 @@ public class GMCPoolService extends Service{
 				    		Log.e(TAG,"Connecting failed!");
 				    		cancel();
 				    	}
-			if(jsonAll==null) jsonAll = new JsonReader(reader);
+			if(jsonAll==null) {
+				try {
+					jsonAll = new JsonReader(reader);
+				}
+				catch(NullPointerException e) {
+					Log.e(TAG,"JsonReader NullPointerException");
+					cancel();
+				}
+			}
 			//now lets parse the output form give-me-coins
 			if(DEBUG) Log.d(TAG,"Parsing json");
 
