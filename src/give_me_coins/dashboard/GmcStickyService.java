@@ -120,12 +120,14 @@ public class GmcStickyService extends Service{
 			showFTC = sp.getBoolean(getString(R.string.show_ftc), true);
 			int sleepTime = sp.getInt(getString(R.string.update_interval), 60000);
 			
-			oGiveMeCoinsWorker.setSleepTime(sleepTime);
-			oGiveMeCoinsWorker.setUrlToGiveMeCoins( URL_STRING+key );
-			oGiveMeCoinsWorker.setCoinsToShow(showBTC,showLTC, showFTC);
+			
+			
 			// kill old thread
 			if( oGiveMeCoinsWorker != null )
 			{
+				oGiveMeCoinsWorker.setSleepTime(sleepTime);
+				oGiveMeCoinsWorker.setUrlToGiveMeCoins( URL_STRING+key );
+				oGiveMeCoinsWorker.setCoinsToShow(showBTC,showLTC, showFTC);
 				
 				oGiveMeCoinsWorker.forceUpdate();
 				//oGiveMeCoinsWorker.setRunning(false);
