@@ -79,7 +79,7 @@ public class GiveMeCoinsWorkerInfo {
 	        hashrate = JSONHelper.getVal(para_workerInfos,"hashrate",0);
 	        if( alive )
 	        {
-	        	last_share_timestamp = JSONHelper.getVal(para_workerInfos,"last_share_timestamp",(long)0);
+	        	last_share_timestamp = JSONHelper.getVal(para_workerInfos, "last_share_timestamp", 0L);
 	        }
 	        else
 	        {
