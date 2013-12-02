@@ -90,7 +90,7 @@ public class GMCPoolService extends Service{
 		InputStream inputStream=null;
 		BufferedReader reader = null;
 		JsonReader jsonAll=null;
-		String url_string;
+		final String url_string;
 		private static final String TAG = "PoolReceiveDataThread";
 		
 		public PoolReceiveDataThread (String urls){

@@ -85,7 +85,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     private static final boolean DEBUG=true;
     
 	static String API_key_saved;
-	static String URL="https://give-me-coins.com";
+	static final String URL = "https://give-me-coins.com";
 	static boolean change=false;
 	/**
 	 * Whether or not the system UI should be auto-hidden after
@@ -113,7 +113,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	/**
 	 * The instance of the {@link SystemUiHider} for this activity.
 	 */
-	private SystemUiHider mSystemUiHider;
+	private final SystemUiHider mSystemUiHider = null;
 	
 	/**
 	 * Set stuff for Service handler to communicate with UI
@@ -138,10 +138,10 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 	public static final String PROGRESS = "Progress";
 	
-	public static String[] worker_alive = new String[MAX_WORKER_NUMBER];
-	public static String[] worker_hashrate = new String[MAX_WORKER_NUMBER];
-	public static String[] worker_name = new String[MAX_WORKER_NUMBER];
-	public static String[] worker_timestamp= new String[MAX_WORKER_NUMBER];
+	public static final String[] worker_alive = new String[MAX_WORKER_NUMBER];
+	public static final String[] worker_hashrate = new String[MAX_WORKER_NUMBER];
+	public static final String[] worker_name = new String[MAX_WORKER_NUMBER];
+	public static final String[] worker_timestamp= new String[MAX_WORKER_NUMBER];
     public static String username = null,
     		round_estimate= null,
     		total_hashrate= null,
@@ -176,9 +176,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		//create file for shared preference
 		context = this;
 		sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-		
+
 		oAct = this;
-		
+
 		// trying to get stuff from qrcode reader activity 		
 		Bundle extras = getIntent().getExtras(); 
 		String sApiKey = null;
@@ -310,7 +310,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	 * system UI. This is to prevent the jarring behavior of controls going away
 	 * while interacting with activity UI.
 	 */
-	View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
+	final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
 		@Override
 		public boolean onTouch(View view, MotionEvent motionEvent) {
 			if (AUTO_HIDE) {
@@ -320,8 +320,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		}
 	};
 
-	Handler mHideHandler = new Handler();
-	Runnable mHideRunnable = new Runnable() {
+	final Handler mHideHandler = new Handler();
+	final Runnable mHideRunnable = new Runnable() {
 		@Override
 		public void run() {
 			mSystemUiHider.hide();
@@ -1417,7 +1417,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 	}
 	
-	private GetInfoWorkerCallback btc_callback = new GetInfoWorkerCallback() {
+	private final GetInfoWorkerCallback btc_callback = new GetInfoWorkerCallback() {
 		
 		@Override
 		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
@@ -1451,7 +1451,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		}
 	};
 	
-	private GetInfoWorkerCallback ftc_callback = new GetInfoWorkerCallback() {
+	private final GetInfoWorkerCallback ftc_callback = new GetInfoWorkerCallback() {
 		
 		@Override
 		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {

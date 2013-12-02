@@ -56,8 +56,8 @@ public class GiveMeCoinsInfo {
     private double round_estimate = 0;
     private double payout_history = 0;
     private long round_shares = 0;
-    private ArrayList<GiveMeCoinsWorkerInfo> giveMeCoinWorkers;
-	private Comparator<? super GiveMeCoinsWorkerInfo> workerComparator = new Comparator<GiveMeCoinsWorkerInfo>()
+    private final ArrayList<GiveMeCoinsWorkerInfo> giveMeCoinWorkers;
+	private final Comparator<? super GiveMeCoinsWorkerInfo> workerComparator = new Comparator<GiveMeCoinsWorkerInfo>()
     {
 
 		@Override

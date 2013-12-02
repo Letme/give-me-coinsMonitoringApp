@@ -40,9 +40,9 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 	private static final boolean DEBUG = true;
 	private static final String TAG = "LIST_WIDGET_SERVICE";
 	public static int mCount = 10;
-    private Context oContext;
-    private int mCurrency;
-    private int mAppWidgetId;
+    private final Context oContext;
+    private final int mCurrency;
+    private final int mAppWidgetId;
 
     
     public StackRemoteViewsFactory(Context context, Intent intent) {

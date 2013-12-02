@@ -65,7 +65,7 @@ public class BarCodeReaderActivity extends Activity{
 	    
 	  }
 
-	  QRCodeReturnListener oQRCodeListener = new QRCodeReturnListener()
+	  final QRCodeReturnListener oQRCodeListener = new QRCodeReturnListener()
 	  {
 			@Override
 			public void validQRcode( String QRText )
