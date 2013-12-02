@@ -305,7 +305,7 @@ public class GmcStickyService extends Service{
     	}
     }
 
-	private GetInfoWorkerCallback btc_callback = new GetInfoWorkerCallback() {
+	private final GetInfoWorkerCallback btc_callback = new GetInfoWorkerCallback() {
 		
 		@Override
 		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
@@ -331,7 +331,7 @@ public class GmcStickyService extends Service{
 		}
 	};
 	
-	private GetInfoWorkerCallback ftc_callback = new GetInfoWorkerCallback() {
+	private final GetInfoWorkerCallback ftc_callback = new GetInfoWorkerCallback() {
 		
 		
 
@@ -351,7 +351,7 @@ public class GmcStickyService extends Service{
 		}
 	};
 	
-	private GetInfoWorkerCallback ltc_callback = new GetInfoWorkerCallback() {
+	private final GetInfoWorkerCallback ltc_callback = new GetInfoWorkerCallback() {
 		
 		@Override
 		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {

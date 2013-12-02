@@ -41,7 +41,7 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
         this.urlToGiveMeCoins = urlToGiveMeCoins;
     }
 
-    String urlToGiveMeCoins = null;
+    private String urlToGiveMeCoins = null;
 	private Thread oCurrentWorkerThread;
 
 

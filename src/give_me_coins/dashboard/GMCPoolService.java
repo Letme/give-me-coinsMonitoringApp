@@ -46,7 +46,7 @@ public class GMCPoolService extends Service{
 	private final Handler mHandler;
 	private static final String TAG = "GMCPoolService";
 	private PoolReceiveDataThread mReceiveData;
-	public static String url_fixed;
+	static String url_fixed;
 	Timer timer;
 	
 	public GMCPoolService(Context context, Handler handler) {

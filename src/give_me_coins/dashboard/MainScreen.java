@@ -84,9 +84,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     private static final String TAG = "MainScreen";
     private static final boolean DEBUG=true;
     
-	static String API_key_saved;
-	static final String URL = "https://give-me-coins.com";
-	static boolean change=false;
+	private static String API_key_saved;
+	private static final String URL = "https://give-me-coins.com";
+	private static boolean change=false;
 	/**
 	 * Whether or not the system UI should be auto-hidden after
 	 * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -121,28 +121,28 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	static GMCService mService = null;
 	private static GmcStickyService oStickyService = null;
 	static GMCPoolService mPoolService = null;
-	public static final int DATA_FAILED=1;
-	public static final int DATA_READY=2;
-	public static final int DATA_PROGRESS=3;
-	public static final int POOL_DATA_READY=4;
+	private static final int DATA_FAILED=1;
+	static final int DATA_READY=2;
+	static final int DATA_PROGRESS=3;
+	static final int POOL_DATA_READY=4;
 	
 	/**
 	 * ProgressBar stuff
 	 */
 	static int Progress=5;
-	final static float[] roundedCorners = new float[] { 5, 5, 5, 5, 5, 5, 5, 5 };
+	private final static float[] roundedCorners = new float[] { 5, 5, 5, 5, 5, 5, 5, 5 };
 	
 	
-	static final int MAX_WORKER_NUMBER=20;
+	private static final int MAX_WORKER_NUMBER=20;
 	//int i=0;
 
-	public static final String PROGRESS = "Progress";
+	private static final String PROGRESS = "Progress";
 	
-	public static final String[] worker_alive = new String[MAX_WORKER_NUMBER];
-	public static final String[] worker_hashrate = new String[MAX_WORKER_NUMBER];
-	public static final String[] worker_name = new String[MAX_WORKER_NUMBER];
-	public static final String[] worker_timestamp= new String[MAX_WORKER_NUMBER];
-    public static String username = null,
+	static final String[] worker_alive = new String[MAX_WORKER_NUMBER];
+	static final String[] worker_hashrate = new String[MAX_WORKER_NUMBER];
+	static final String[] worker_name = new String[MAX_WORKER_NUMBER];
+	static final String[] worker_timestamp= new String[MAX_WORKER_NUMBER];
+    static String username = null,
     		round_estimate= null,
     		total_hashrate= null,
     		round_shares= null,
@@ -152,19 +152,19 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     		pool_round_shares=null,
     		pool_last_block=null,
     		pool_difficulty=null;
-	
-	static AppSectionsPagerAdapter mAppSectionsPagerAdapter;
-	ViewPager mViewPager;
-	static Context context;
-	static Fragment barcode;
-	static Fragment dashboard;
-	static Fragment summary;
-	static ActionBar actionBar;
-	static AsyncTask asyncService;
-	static AsyncTask asyncPoolService;
+
+	private static AppSectionsPagerAdapter mAppSectionsPagerAdapter;
+	private ViewPager mViewPager;
+	private static Context context;
+	private static Fragment barcode;
+	private static Fragment dashboard;
+	private static Fragment summary;
+	private static ActionBar actionBar;
+	private static AsyncTask asyncService;
+	private static AsyncTask asyncPoolService;
 	private static boolean isRunning=true;
 	private static Activity oAct;
-	
+
 	static int coin_select=1;
 	
 	@Override
@@ -310,7 +310,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	 * system UI. This is to prevent the jarring behavior of controls going away
 	 * while interacting with activity UI.
 	 */
-	final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
+	private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
 		@Override
 		public boolean onTouch(View view, MotionEvent motionEvent) {
 			if (AUTO_HIDE) {
@@ -320,8 +320,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		}
 	};
 
-	final Handler mHideHandler = new Handler();
-	final Runnable mHideRunnable = new Runnable() {
+	private final Handler mHideHandler = new Handler();
+	private final Runnable mHideRunnable = new Runnable() {
 		@Override
 		public void run() {
 			mSystemUiHider.hide();
@@ -553,8 +553,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      * A Barcode reader fragment
      */
     public static class BarCodeReaderFragment extends Fragment implements UpdateableFragment {
-    	 EditText apikeyoutput;
-    	 View rootView;
+    	private EditText apikeyoutput;
+    	private View rootView;
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
@@ -806,7 +806,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      * Dashboard fragment function
      */
     public static class DashBoardFragment extends Fragment implements UpdateableFragment{
-    	View rootView;
+    	private View rootView;
     	@Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
@@ -907,7 +907,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      * Summary fragment function
      */
     public static class SummaryFragment extends Fragment implements UpdateableFragment{
-    	View rootView;
+    	private View rootView;
     	@Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
@@ -1434,7 +1434,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		}
 	};
 	
-	private GetInfoWorkerCallback ltc_callback = new GetInfoWorkerCallback() {
+	private final GetInfoWorkerCallback ltc_callback = new GetInfoWorkerCallback() {
 		
 		@Override
 		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
@@ -1570,7 +1570,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    return new DecimalFormat("#,##0.#").format(size/Math.pow(1000, digitGroups)) + " " + units[digitGroups];
 	}
 
-	static int BackKeyExit=0;
+	private static int BackKeyExit=0;
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub

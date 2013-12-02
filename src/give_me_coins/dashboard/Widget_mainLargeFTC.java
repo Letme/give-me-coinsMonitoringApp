@@ -28,7 +28,7 @@ import android.content.Context;
 
 public class Widget_mainLargeFTC extends Widget_mainLarge{
 
-		protected final int currency = 2;
+		private final int currency = 2;
 	
 		@Override
 		protected GmcStickyService openServiceInstance(GetInfoWorkerCallback callback)
