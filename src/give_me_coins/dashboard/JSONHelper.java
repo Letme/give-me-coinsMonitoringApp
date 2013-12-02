@@ -136,10 +136,11 @@ class JSONHelper {
         long retLong = para_defaultValue;
         try
         {
-            retLong =  para_jsonObject.getLong(para_name);
-
+            if (para_jsonObject.has(para_name) && !para_jsonObject.isNull(para_name)) {
+                retLong =  para_jsonObject.getLong(para_name);
+            }
         } catch (JSONException e) {
-            Log.d(TAG, "long json error "+e.toString());
+            Log.d(TAG, "long json error " + e.toString());
         }
         return retLong;
     }
