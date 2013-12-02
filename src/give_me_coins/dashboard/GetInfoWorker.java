@@ -37,7 +37,7 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
         return urlToGiveMeCoins;
     }
 
-    public void setUrlToGiveMeCoins(String urlToGiveMeCoins) {
+    void setUrlToGiveMeCoins(String urlToGiveMeCoins) {
         this.urlToGiveMeCoins = urlToGiveMeCoins;
     }
 
@@ -53,7 +53,7 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
      * 
      * @param isRunning = false stops running
      */
-    public void setRunning(boolean isRunning) {
+    void setRunning(boolean isRunning) {
         this.isRunning = isRunning;
     }
 
@@ -70,7 +70,7 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
      * sets time the process sleeps between refreshes
      * @param sleepTime
      */
-    public void setSleepTime(int sleepTime) {
+    void setSleepTime(int sleepTime) {
         this.sleepTime = sleepTime;
     }
 
@@ -222,12 +222,12 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
 		this.isSleeping = isSleeping;
 	}
 
-	public void forceUpdate() {
+	void forceUpdate() {
 		oCurrentWorkerThread.interrupt();
 		
 	}
 
-	public void setCoinsToShow(boolean para_showBTC, boolean para_showLTC, boolean para_showFTC) 
+	void setCoinsToShow(boolean para_showBTC, boolean para_showLTC, boolean para_showFTC)
 	{
 		showCoin[0] = para_showBTC;
 		showCoin[1] = para_showLTC;

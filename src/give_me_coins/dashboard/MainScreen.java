@@ -285,7 +285,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         
 	}
 	
-	public static void startService() {
+	private static void startService() {
 		asyncService = new AsyncTask<Void, Void, Void>() {
 		    @Override
 		    protected Void doInBackground(Void... params) {
@@ -1362,7 +1362,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	 }
     };
 
-	public static void getNewGMCInfo() {
+	private static void getNewGMCInfo() {
 		// new info ...
 		 if( oStickyService != null)
 		 {
@@ -1563,7 +1563,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		if( mPoolService==null) startService();
 	}
 	
-	public static String readableHashSize(long size) {
+	static String readableHashSize(long size) {
 	    if(size <= 0) return String.valueOf(size);
 	    final String[] units = new String[] { "Kh/s", "Mh/s", "Gh/s", "Th/s","Ph/s","Eh/s" }; //we left ouh h/s because API puts dot at kh/s!!
 	    int digitGroups = (int) (Math.log10(size)/Math.log10(1000));

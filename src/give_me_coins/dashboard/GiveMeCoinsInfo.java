@@ -78,8 +78,8 @@ public class GiveMeCoinsInfo {
 			
 		}	
     };
-    
-	
+
+
     public GiveMeCoinsInfo(JSONObject para_jsonReturn) {
 
         total_hashrate = JSONHelper.getVal(para_jsonReturn, "total_hashrate", 0);
@@ -108,10 +108,10 @@ public class GiveMeCoinsInfo {
         Collections.sort(giveMeCoinWorkers, workerComparator);
        
     }
-    
 
 
-    public ArrayList<GiveMeCoinsWorkerInfo> getGiveMeCoinWorkers() {
+
+    ArrayList<GiveMeCoinsWorkerInfo> getGiveMeCoinWorkers() {
         return giveMeCoinWorkers;
     }
 
@@ -119,7 +119,7 @@ public class GiveMeCoinsInfo {
         giveMeCoinWorkers.add(para_NewWorker);
     }
 
-    public int getTotal_hashrate() {
+    int getTotal_hashrate() {
         return total_hashrate;
     }
 
@@ -127,15 +127,15 @@ public class GiveMeCoinsInfo {
         this.total_hashrate = total_hashrate;
     }
 
-    public double getConfirmed_rewards() {
+    double getConfirmed_rewards() {
         return confirmed_rewards;
     }
 
-    public void setConfirmed_rewards(double confirmed_rewards) {
+    private void setConfirmed_rewards(double confirmed_rewards) {
         this.confirmed_rewards = confirmed_rewards;
     }
 
-    public String getUsername() {
+    String getUsername() {
         return username;
     }
 
@@ -143,7 +143,7 @@ public class GiveMeCoinsInfo {
         this.username = username;
     }
 
-    public double getRound_estimate() {
+    double getRound_estimate() {
         return round_estimate;
     }
 
@@ -159,7 +159,7 @@ public class GiveMeCoinsInfo {
         this.payout_history = payout_history;
     }
 
-    public long getRound_shares() {
+    long getRound_shares() {
         return round_shares;
     }
 

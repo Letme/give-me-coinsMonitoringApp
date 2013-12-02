@@ -60,7 +60,7 @@ public class TerrorCam implements Callback, PreviewCallback
 	private QRCodeReturnListener qrcl = null;
 
 
-	public void addQRCodeReturnListener(QRCodeReturnListener para_qr)
+	void addQRCodeReturnListener(QRCodeReturnListener para_qr)
 	{
 		qrcl = para_qr;
 	}
@@ -186,7 +186,7 @@ public class TerrorCam implements Callback, PreviewCallback
 		}
 	}
 
-	public void start()
+	void start()
 	{
 		if(DEBUG) Log.d( TAG, "start" );
 		try
@@ -208,7 +208,7 @@ public class TerrorCam implements Callback, PreviewCallback
 		oCamera.setPreviewCallback( this );
 	}
 
-	public void stop()
+	void stop()
 	{
 		if(DEBUG) Log.d( TAG, "stop" );
 		if ( inPreview )

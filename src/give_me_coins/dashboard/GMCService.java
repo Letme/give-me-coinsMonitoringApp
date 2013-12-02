@@ -226,7 +226,7 @@ public class GMCService extends Service{
 					cancel();
 		}
 
-		public void cancel() {
+		private void cancel() {
 	   		//Perform CLEANUP !!!!
 			try {
 				if(jsonAll!=null) jsonAll.close();

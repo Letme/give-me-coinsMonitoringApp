@@ -38,7 +38,7 @@ public class GiveMeCoinsWorkerInfo {
     private int hashrate = 0;
     private long last_share_timestamp = 0;
 
-    public String getUsername() {
+    String getUsername() {
         return username;
     }
 
@@ -46,7 +46,7 @@ public class GiveMeCoinsWorkerInfo {
         this.username = username;
     }
 
-    public boolean isAlive() {
+    boolean isAlive() {
         return alive;
     }
 
@@ -54,7 +54,7 @@ public class GiveMeCoinsWorkerInfo {
         this.alive = alive;
     }
 
-    public int getHashrate() {
+    int getHashrate() {
         return hashrate;
     }
 
@@ -62,7 +62,7 @@ public class GiveMeCoinsWorkerInfo {
         this.hashrate = hashrate;
     }
 
-    public long getLast_share_timestamp() {
+    long getLast_share_timestamp() {
         return last_share_timestamp;
     }
 
