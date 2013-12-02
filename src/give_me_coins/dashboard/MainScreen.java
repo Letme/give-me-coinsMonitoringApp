@@ -228,29 +228,15 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         // of the app.
         mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
 
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+
         // Set up the action bar.
         actionBar = getActionBar();
        
 	    // Specify that tabs should be displayed in the action bar.
 	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 	    actionBar.setDisplayShowTitleEnabled(false);
-	    
-	 // Set up the ViewPager, attaching the adapter and setting up a listener for when the
-        // user swipes between sections.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mAppSectionsPagerAdapter);
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                // When swiping between different app sections, select the corresponding tab.
-                // We can also use ActionBar.Tab#select() to do this if we have a reference to the
-                // Tab.
-                actionBar.setSelectedNavigationItem(position);
-            }
-        });
 
-        
-        actionBar.setBackgroundDrawable(new ColorDrawable(R.color.menu_background));
         // For each of the sections in the app, add a tab to the action bar.
         // Create a tab with text corresponding to the page title defined by the adapter.
         // Also specify this Activity object, which implements the TabListener interface, as the
@@ -270,7 +256,23 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         .setText("Pool")
                         //.setIcon(R.drawable.news)
                         .setTabListener(this));
+	    
+	 // Set up the ViewPager, attaching the adapter and setting up a listener for when the
+        // user swipes between sections.
+        mViewPager.setAdapter(mAppSectionsPagerAdapter);
+        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                // When swiping between different app sections, select the corresponding tab.
+                // We can also use ActionBar.Tab#select() to do this if we have a reference to the
+                // Tab.
+                actionBar.setSelectedNavigationItem(position);
+            }
+        });
+
         
+        actionBar.setBackgroundDrawable(new ColorDrawable(R.color.menu_background));
+
        // mViewPager.setCurrentItem(0);
 		if(API_key_saved != null && API_key_saved != "") {
     		if(API_key_saved.matches("No api key found")) {
