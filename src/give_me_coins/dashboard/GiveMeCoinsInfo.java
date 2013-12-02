@@ -115,7 +115,7 @@ public class GiveMeCoinsInfo {
         return giveMeCoinWorkers;
     }
 
-    public void addGiveMeCoinWorker( GiveMeCoinsWorkerInfo para_NewWorker){
+    private void addGiveMeCoinWorker( GiveMeCoinsWorkerInfo para_NewWorker){
         giveMeCoinWorkers.add(para_NewWorker);
     }
 
@@ -123,7 +123,7 @@ public class GiveMeCoinsInfo {
         return total_hashrate;
     }
 
-    public void setTotal_hashrate(int total_hashrate) {
+    private void setTotal_hashrate(int total_hashrate) {
         this.total_hashrate = total_hashrate;
     }
 
@@ -139,7 +139,7 @@ public class GiveMeCoinsInfo {
         return username;
     }
 
-    public void setUsername(String username) {
+    private void setUsername(String username) {
         this.username = username;
     }
 
@@ -147,15 +147,15 @@ public class GiveMeCoinsInfo {
         return round_estimate;
     }
 
-    public void setRound_estimate(double round_estimate) {
+    private void setRound_estimate(double round_estimate) {
         this.round_estimate = round_estimate;
     }
 
-    public double getPayout_history() {
+    private double getPayout_history() {
         return payout_history;
     }
 
-    public void setPayout_history(double payout_history) {
+    private void setPayout_history(double payout_history) {
         this.payout_history = payout_history;
     }
 
@@ -163,7 +163,7 @@ public class GiveMeCoinsInfo {
         return round_shares;
     }
 
-    public void setRound_shares(long round_shares) {
+    private void setRound_shares(long round_shares) {
         this.round_shares = round_shares;
     }
 

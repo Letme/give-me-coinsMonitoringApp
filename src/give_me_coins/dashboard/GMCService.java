@@ -54,7 +54,7 @@ public class GMCService extends Service{
 		
 	}
 	
-	public synchronized void start(String... urls) {
+	private synchronized void start(String... urls) {
 		if(urls.length==0) {
 			Log.e(TAG,"Bad URL handed to service");
 			MainScreen.mService=null;
@@ -80,7 +80,7 @@ public class GMCService extends Service{
 		}
 	}
 	
-	public synchronized void stop() {
+	private synchronized void stop() {
 		timer.cancel();
 		if(DEBUG) Log.d(TAG,"Timer cancelled");
 		if(mReceiveData!=null) {

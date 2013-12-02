@@ -33,7 +33,7 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
     private boolean isSleeping = false;
 
 
-    public String getUrlToGiveMeCoins() {
+    private String getUrlToGiveMeCoins() {
         return urlToGiveMeCoins;
     }
 
@@ -45,7 +45,7 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
 	private Thread oCurrentWorkerThread;
 
 
-    public boolean isRunning() {
+    private boolean isRunning() {
         return isRunning;
     }
 
@@ -61,7 +61,7 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
      * 
      * @return time the process sleeps between refreshes
      */
-    public int getSleepTime() {
+    private int getSleepTime() {
         return sleepTime;
     }
 
@@ -214,7 +214,7 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
      * 
      * @return tells if process is currently sleeping 
      */
-	public boolean isSleeping() {
+	private boolean isSleeping() {
 		return isSleeping;
 	}
 

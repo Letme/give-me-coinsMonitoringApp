@@ -43,7 +43,7 @@ public class JSONHelper {
     private static final String TAG = "JSONHelper";
 	private static final int iConnectionTimeout = 10000;
     
-    public static JSONObject getJSONFromUrl(URL para_url)
+    private static JSONObject getJSONFromUrl(URL para_url)
     {
         //	ProgressDialog oShowProgress = ProgressDialog.show(oAct, "Loading", "Loading", true, false);
         JSONObject oRetJson = null;
