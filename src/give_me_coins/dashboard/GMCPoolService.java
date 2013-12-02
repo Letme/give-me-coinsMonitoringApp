@@ -97,7 +97,8 @@ public class GMCPoolService extends Service{
 			if(DEBUG) Log.d(TAG,"public: " + urls);
 			url_string=urls;
 		}
-		
+
+		@Override
 		public void run() {
 			// TODO Auto-generated method stub
 						

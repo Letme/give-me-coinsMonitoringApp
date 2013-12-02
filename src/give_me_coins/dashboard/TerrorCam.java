@@ -235,6 +235,7 @@ public class TerrorCam implements Callback, PreviewCallback
 		}
 	}
 
+    @Override
 	public void onPreviewFrame( byte[] data, Camera camera )
 	{
 		try
