@@ -18,13 +18,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 package give_me_coins.dashboard;
 
 /**
  * Created by Patrik on 06.11.13.
  */
-public interface GetInfoWorkerCallback {
-
-    public void refreshValues( GiveMeCoinsInfo para_giveMeCoinsInfo);
+interface GetInfoWorkerCallback {
+    void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo);
 }

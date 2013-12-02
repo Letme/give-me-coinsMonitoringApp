@@ -34,7 +34,7 @@ import java.util.Iterator;
 /**
  * Created by Patrik on 06.11.13.
  */
-public class GiveMeCoinsInfo {
+class GiveMeCoinsInfo {
 
    private static final String TAG = "GiveMeCoinsInfo";
    private static final boolean DEBUG = false;
@@ -80,7 +80,7 @@ public class GiveMeCoinsInfo {
     };
 
 
-    public GiveMeCoinsInfo(JSONObject para_jsonReturn) {
+    GiveMeCoinsInfo(JSONObject para_jsonReturn) {
 
         total_hashrate = JSONHelper.getVal(para_jsonReturn, "total_hashrate", 0);
         confirmed_rewards = JSONHelper.getVal(para_jsonReturn, "confirmed_rewards", 0.0);

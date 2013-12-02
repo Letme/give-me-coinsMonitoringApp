@@ -45,7 +45,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     private int mAppWidgetId;
 
     
-    public StackRemoteViewsFactory(Context context, Intent intent) {
+    StackRemoteViewsFactory(Context context, Intent intent) {
         oContext = context;
         mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);

@@ -32,7 +32,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-public abstract class Widget_mainLarge extends AppWidgetProvider implements GetInfoWorkerCallback{
+abstract class Widget_mainLarge extends AppWidgetProvider implements GetInfoWorkerCallback {
 
     public static final String TOAST_ACTION = "com.example.givemecoinswidget.TOAST_ACTION";
     public static final String EXTRA_ITEM = "com.example.givemecoinswidget.EXTRA_ITEM";
@@ -122,15 +122,11 @@ public abstract class Widget_mainLarge extends AppWidgetProvider implements GetI
 		}
 		
 	}
-	
-	
-	
-	
-	protected abstract int getCurrency();
 
-	protected abstract ComponentName getComponentName(Context context);
-	protected abstract GmcStickyService openServiceInstance( GetInfoWorkerCallback callback );
-	protected abstract GiveMeCoinsInfo getCurrentInfo( GmcStickyService service );
+	abstract int getCurrency();
+	abstract ComponentName getComponentName(Context context);
+	abstract GmcStickyService openServiceInstance(GetInfoWorkerCallback callback);
+	abstract GiveMeCoinsInfo getCurrentInfo(GmcStickyService service);
 	
 	@Override
 	public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {

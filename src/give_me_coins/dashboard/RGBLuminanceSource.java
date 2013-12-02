@@ -25,13 +25,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import java.io.FileNotFoundException;
 
-public final class RGBLuminanceSource extends LuminanceSource {
+final class RGBLuminanceSource extends LuminanceSource {
 
 	private final byte[] luminances;
     private static final String TAG = "RGBLuminanceSource";
     private static final boolean DEBUG=false;
 
-	public RGBLuminanceSource(String path) throws FileNotFoundException {
+	private RGBLuminanceSource(String path) throws FileNotFoundException {
 		this(loadBitmap(path));
 	}
 

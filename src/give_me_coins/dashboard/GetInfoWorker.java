@@ -20,8 +20,7 @@ import javax.net.ssl.HttpsURLConnection;
 /**
  * Created by Patrik on 06.11.13.
  */
-public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
-{
+class GetInfoWorker extends AsyncTask<Void, JSONObject, Void> {
 
     private static final String TAG = "GetInfoWorker";
 	private boolean isRunning = true;
@@ -75,7 +74,7 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
     }
 
     
-    public GetInfoWorker(GetInfoWorkerCallback para_getInfoWorkerCallbackBTC, GetInfoWorkerCallback para_getInfoWorkerCallbackLTC, GetInfoWorkerCallback para_getInfoWorkerCallbackFTC) {
+    GetInfoWorker(GetInfoWorkerCallback para_getInfoWorkerCallbackBTC, GetInfoWorkerCallback para_getInfoWorkerCallbackLTC, GetInfoWorkerCallback para_getInfoWorkerCallbackFTC) {
         
     	getInfoWorkerCallbacks = new ArrayList<GetInfoWorkerCallback>();
     	

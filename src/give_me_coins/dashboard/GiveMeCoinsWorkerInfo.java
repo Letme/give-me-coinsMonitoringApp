@@ -29,7 +29,7 @@ import org.json.JSONObject;
 /**
  * Created by Patrik on 06.11.13.
  */
-public class GiveMeCoinsWorkerInfo {
+class GiveMeCoinsWorkerInfo {
 
 
   //  {"analpet.1":{"alive":"1","hashrate":"128","last_share_timestamp":"1383696561","username":"analpet.1"}
@@ -70,7 +70,7 @@ public class GiveMeCoinsWorkerInfo {
         this.last_share_timestamp = last_share_timestamp;
     }
 
-    public GiveMeCoinsWorkerInfo( JSONObject para_workerInfos) {
+    GiveMeCoinsWorkerInfo(JSONObject para_workerInfos) {
 
     	if( para_workerInfos != null )
     	{

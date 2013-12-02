@@ -38,7 +38,7 @@ import org.json.JSONObject;
 /**
  * Created by Patrik on 07.11.13.
  */
-public class JSONHelper {
+class JSONHelper {
 
     private static final String TAG = "JSONHelper";
 	private static final int iConnectionTimeout = 10000;

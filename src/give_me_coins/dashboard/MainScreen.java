@@ -508,12 +508,11 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the primary
      * sections of the app.
      */
-    public static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
-
-	
-        public AppSectionsPagerAdapter(FragmentManager fm) {
+    static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
+        AppSectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
+
         @Override
         public int getItemPosition(Object object) {
             if (object instanceof UpdateableFragment) {
@@ -552,7 +551,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     /**
      * A Barcode reader fragment
      */
-    public static class BarCodeReaderFragment extends Fragment implements UpdateableFragment {
+    static class BarCodeReaderFragment extends Fragment implements UpdateableFragment {
     	 EditText apikeyoutput;
     	 View rootView;
         @Override
@@ -805,7 +804,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     /*
      * Dashboard fragment function
      */
-    public static class DashBoardFragment extends Fragment implements UpdateableFragment{
+    static class DashBoardFragment extends Fragment implements UpdateableFragment {
     	View rootView;
     	@Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -906,7 +905,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     /*
      * Summary fragment function
      */
-    public static class SummaryFragment extends Fragment implements UpdateableFragment{
+    static class SummaryFragment extends Fragment implements UpdateableFragment {
     	View rootView;
     	@Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,

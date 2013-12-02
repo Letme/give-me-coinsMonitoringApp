@@ -31,19 +31,19 @@ public class Widget_mainLargeFTC extends Widget_mainLarge{
 		protected int currency = 2;
 	
 		@Override
-		protected GmcStickyService openServiceInstance(GetInfoWorkerCallback callback)
+		GmcStickyService openServiceInstance(GetInfoWorkerCallback callback)
 		{
 			return GmcStickyService.getInstance(null, null, callback);
 		}
 		
 		@Override
-		protected ComponentName getComponentName(Context context) {
+		ComponentName getComponentName(Context context) {
 			// TODO Auto-generated method stub
 			return new ComponentName(context, Widget_mainLargeFTC.class);
 		}
 
 		@Override
-		protected GiveMeCoinsInfo getCurrentInfo( GmcStickyService para_service ) {
+		GiveMeCoinsInfo getCurrentInfo(GmcStickyService para_service) {
 			// TODO Auto-generated method stub
 			if( para_service != null)
 				return para_service.getFTCInfo();
@@ -52,7 +52,7 @@ public class Widget_mainLargeFTC extends Widget_mainLarge{
 		}
 
 		@Override
-		protected int getCurrency() {
+		int getCurrency() {
 			// TODO Auto-generated method stub
 			return currency;
 		}
