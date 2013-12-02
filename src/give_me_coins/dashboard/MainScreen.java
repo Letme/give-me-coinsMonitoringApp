@@ -222,7 +222,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 		// Start service to receive data
 		//if(mService==null) mService= new GMCService(this,mHandler);
-		if(mPoolService==null) mPoolService=new GMCPoolService(this,mHandler);
+		if(mPoolService==null) mPoolService = new GMCPoolService(mHandler);
 		
 		  // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.

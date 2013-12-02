@@ -49,7 +49,7 @@ public class GMCService extends Service{
 	static String url_fixed;
 	private Timer timer;
 	
-	public GMCService(Context context, Handler handler) {
+	public GMCService(Handler handler) {
 		mHandler=handler;
 		
 	}

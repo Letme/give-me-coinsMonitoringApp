@@ -49,7 +49,7 @@ public class GMCPoolService extends Service{
 	static String url_fixed;
 	Timer timer;
 	
-	public GMCPoolService(Context context, Handler handler) {
+	public GMCPoolService(Handler handler) {
 		mHandler=handler;
 		
 	}
