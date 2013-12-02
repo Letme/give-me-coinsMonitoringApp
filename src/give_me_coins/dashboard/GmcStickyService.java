@@ -48,7 +48,7 @@ public class GmcStickyService extends Service{
 	private static ArrayList<GetInfoWorkerCallback> oFtc_callbacks = null;
 	
 	private static GmcStickyService oInstance = null;
-	private Handler oHandler;
+	private final Handler oHandler = null;
 	
 	private Notification oNotification;
 	
@@ -73,7 +73,7 @@ public class GmcStickyService extends Service{
 	private boolean showLTC = true;
 	
 	// so we can put all in (FTC, BTC, LTC) before we call the notification
-	private int alreadyUpdated = 0;
+	private final int alreadyUpdated = 0;
 	
 	private String btcHashRate = "0 kh/s";
 	private String ltcHashRate = "0 kh/s";
