@@ -52,11 +52,11 @@ public class TerrorCam implements Callback, PreviewCallback
     private static final boolean DEBUG=true;
     
     
-	private SurfaceHolder oPreviewHolder = null;
+	private final SurfaceHolder oPreviewHolder;
 	private Camera oCamera = null;
 	private boolean inPreview = false;
 	private boolean cameraConfigured = false;
-	private Activity oAct = null;
+	private final Activity oAct;
 	private QRCodeReturnListener qrcl = null;
 
 

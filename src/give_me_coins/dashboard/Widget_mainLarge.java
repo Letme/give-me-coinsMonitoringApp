@@ -34,8 +34,8 @@ import android.widget.RemoteViews;
 
 public abstract class Widget_mainLarge extends AppWidgetProvider implements GetInfoWorkerCallback{
 
-    public static final String TOAST_ACTION = "com.example.givemecoinswidget.TOAST_ACTION";
-    public static final String EXTRA_ITEM = "com.example.givemecoinswidget.EXTRA_ITEM";
+    private static final String TOAST_ACTION = "com.example.givemecoinswidget.TOAST_ACTION";
+    private static final String EXTRA_ITEM = "com.example.givemecoinswidget.EXTRA_ITEM";
     public static final String CURRENCY = "Currency";
 	
 	private static final String TAG = "GiveMeCoinsWidget";

@@ -56,30 +56,9 @@ public class GiveMeCoinsInfo {
     private double round_estimate = 0;
     private double payout_history = 0;
     private long round_shares = 0;
-    private ArrayList<GiveMeCoinsWorkerInfo> giveMeCoinWorkers;
-	private Comparator<? super GiveMeCoinsWorkerInfo> workerComparator = new Comparator<GiveMeCoinsWorkerInfo>()
-    {
+    private final ArrayList<GiveMeCoinsWorkerInfo> giveMeCoinWorkers;
 
-		@Override
-		public int compare(GiveMeCoinsWorkerInfo lhs, GiveMeCoinsWorkerInfo rhs) {
 
-			if( lhs.getHashrate() > rhs.getHashrate() )
-			{
-				return -1;
-			}
-			else if(lhs.getHashrate() == rhs.getHashrate())
-			{
-				return lhs.getUsername().compareTo( lhs.getUsername() ) ;
-			}
-			else
-			{
-				return 1;
-			}
-			
-		}	
-    };
-    
-	
     public GiveMeCoinsInfo(JSONObject para_jsonReturn) {
 
         total_hashrate = JSONHelper.getVal(para_jsonReturn, "total_hashrate", 0);
@@ -105,6 +84,29 @@ public class GiveMeCoinsInfo {
 				Log.e(TAG, "error - decoding workers "+e.toString());
 			}
         }
+
+        final Comparator<? super GiveMeCoinsWorkerInfo> workerComparator = new Comparator<GiveMeCoinsWorkerInfo>()
+        {
+
+            @Override
+            public int compare(GiveMeCoinsWorkerInfo lhs, GiveMeCoinsWorkerInfo rhs) {
+
+                if( lhs.getHashrate() > rhs.getHashrate() )
+                {
+                    return -1;
+                }
+                else if(lhs.getHashrate() == rhs.getHashrate())
+                {
+                    return lhs.getUsername().compareTo( lhs.getUsername() ) ;
+                }
+                else
+                {
+                    return 1;
+                }
+
+            }
+        };
+
         Collections.sort(giveMeCoinWorkers, workerComparator);
        
     }
