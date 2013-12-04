@@ -24,10 +24,10 @@ class GetInfoWorker extends AsyncTask<Void, JSONObject, Void> {
 
     private static final String TAG = "GetInfoWorker";
 	private boolean isRunning = true;
-    private int iConnectionTimeout = 5000;
-    private ArrayList<GetInfoWorkerCallback> getInfoWorkerCallbacks;
-    private boolean[] showCoin = {true, true, true};
-    private String[] currencySwitcher = {"btc","ltc","ftc"};
+    private final int iConnectionTimeout = 5000;
+    private final ArrayList<GetInfoWorkerCallback> getInfoWorkerCallbacks;
+    private final boolean[] showCoin = {true, true, true};
+    private final String[] currencySwitcher = {"btc","ltc","ftc"};
     private int sleepTime = 60000; // 1 min - default value
     private boolean isSleeping = false;
 
@@ -40,7 +40,7 @@ class GetInfoWorker extends AsyncTask<Void, JSONObject, Void> {
         this.urlToGiveMeCoins = urlToGiveMeCoins;
     }
 
-    String urlToGiveMeCoins = null;
+    private String urlToGiveMeCoins = null;
 	private Thread oCurrentWorkerThread;
 
 

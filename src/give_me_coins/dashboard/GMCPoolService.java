@@ -30,9 +30,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -46,10 +44,10 @@ public class GMCPoolService extends Service{
 	private final Handler mHandler;
 	private static final String TAG = "GMCPoolService";
 	private PoolReceiveDataThread mReceiveData;
-	public static String url_fixed;
+	static String url_fixed;
 	Timer timer;
 	
-	public GMCPoolService(Context context, Handler handler) {
+	public GMCPoolService(Handler handler) {
 		mHandler=handler;
 		
 	}
@@ -90,7 +88,7 @@ public class GMCPoolService extends Service{
 		InputStream inputStream=null;
 		BufferedReader reader = null;
 		JsonReader jsonAll=null;
-		String url_string;
+		final String url_string;
 		private static final String TAG = "PoolReceiveDataThread";
 		
 		public PoolReceiveDataThread (String urls){

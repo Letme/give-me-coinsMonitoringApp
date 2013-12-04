@@ -30,9 +30,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -46,10 +44,10 @@ public class GMCService extends Service{
 	private final Handler mHandler;
 	private static final String TAG = "GMCService";
 	private ReceiveDataThread mReceiveData;
-	public static String url_fixed;
-	Timer timer;
+	static String url_fixed;
+	private Timer timer;
 	
-	public GMCService(Context context, Handler handler) {
+	public GMCService(Handler handler) {
 		mHandler=handler;
 		
 	}
@@ -91,11 +89,11 @@ public class GMCService extends Service{
 	}
 	
 	private class ReceiveDataThread extends Thread {
-		URL url=null;
-		InputStream inputStream=null;
-		BufferedReader reader = null;
-		JsonReader jsonAll=null;
-		String url_string;
+		private URL url=null;
+		private InputStream inputStream=null;
+		private BufferedReader reader = null;
+		private JsonReader jsonAll=null;
+		private String url_string;
 		private static final String TAG = "ReceiveDataThread";
 		
 		public ReceiveDataThread (String urls){

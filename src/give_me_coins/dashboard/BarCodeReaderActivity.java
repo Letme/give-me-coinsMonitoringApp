@@ -38,8 +38,6 @@ public class BarCodeReaderActivity extends Activity{
 	    private static final String TAG = "BarCodeReaderActivity";
 	    private static final boolean DEBUG=true;
 	    
-		
-	  private SurfaceView preview = null;
 	  private Activity oAct = null;
 	  private TerrorCam oTerrorCam = null;
 	  
@@ -50,7 +48,7 @@ public class BarCodeReaderActivity extends Activity{
 	    setContentView(R.layout.barcodefragment);
 	    
 
-	    preview = (SurfaceView)findViewById(R.id.cameraPrev);
+	    SurfaceView preview = (SurfaceView)findViewById(R.id.cameraPrev);
 	    
 	   // int width = preview.getWidth();
 	   // int height = preview.getHeight();
@@ -65,7 +63,7 @@ public class BarCodeReaderActivity extends Activity{
 	    
 	  }
 
-	  QRCodeReturnListener oQRCodeListener = new QRCodeReturnListener()
+	  private final QRCodeReturnListener oQRCodeListener = new QRCodeReturnListener()
 	  {
 			@Override
 			public void validQRcode( String QRText )
