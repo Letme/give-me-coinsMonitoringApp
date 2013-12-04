@@ -1475,10 +1475,15 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	{
 		if(para_giveMeCoinsInfo!=null) {
 			username = para_giveMeCoinsInfo.getUsername();
-			round_estimate = String.valueOf( para_giveMeCoinsInfo.getRound_estimate() );
+			
 			total_hashrate = String.valueOf( para_giveMeCoinsInfo.getTotal_hashrate() );
-			round_shares = String.valueOf( para_giveMeCoinsInfo.getRound_shares() );
-			confirmed_rewards = String.valueOf( para_giveMeCoinsInfo.getConfirmed_rewards() );
+			round_shares = String.valueOf(para_giveMeCoinsInfo.getRound_shares());
+			
+			DecimalFormat df = new DecimalFormat("#,###.########");
+			round_estimate = df.format( para_giveMeCoinsInfo.getRound_estimate() );
+			
+			//round_shares = String.valueOf( para_giveMeCoinsInfo.getRound_shares() );
+			confirmed_rewards = df.format( para_giveMeCoinsInfo.getConfirmed_rewards() );
 			int i = 0;
 			for(GiveMeCoinsWorkerInfo worker : para_giveMeCoinsInfo.getGiveMeCoinWorkers() )
 			{
