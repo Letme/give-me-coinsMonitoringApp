@@ -93,10 +93,10 @@ public class BarCodeReaderActivity extends Activity{
 		  super.onPause();
 		  oTerrorCam.stop();
 	  }
-	  
-	    public void onBackPressed() {
+
+	  @Override
+	  public void onBackPressed() {
 	    	if(DEBUG) Log.d(TAG, "onBackPressed Called");
 	        finish(); 
-	    }  
-
+	  }
 }

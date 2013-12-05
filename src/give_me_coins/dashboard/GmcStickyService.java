@@ -87,7 +87,7 @@ public class GmcStickyService extends Service{
 	}
 
 	
-	public void detachListener(GetInfoWorkerCallback para_btcCallback, 
+	void detachListener(GetInfoWorkerCallback para_btcCallback,
 				GetInfoWorkerCallback para_ltcCallback, GetInfoWorkerCallback para_ftcCallback)
 	{
 		if( para_btcCallback != null )
@@ -108,7 +108,7 @@ public class GmcStickyService extends Service{
 	 * kills old thread and makes new one ... 
 	 * can also be called if aki key changes ...
 	 */
-	public void forceUpdate()
+	void forceUpdate()
 	{
 		
         SharedPreferences sp = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
@@ -202,7 +202,7 @@ public class GmcStickyService extends Service{
 	 * @param para_ftc_callback -> get info about FTC stuff
 	 * @return
 	 */
-	public static GmcStickyService getInstance(GetInfoWorkerCallback para_btc_callback, GetInfoWorkerCallback para_ltc_callback, GetInfoWorkerCallback para_ftc_callback)
+	static GmcStickyService getInstance(GetInfoWorkerCallback para_btc_callback, GetInfoWorkerCallback para_ltc_callback, GetInfoWorkerCallback para_ftc_callback)
 	{
 		
 		if( para_btc_callback != null )
@@ -372,17 +372,17 @@ public class GmcStickyService extends Service{
 	};
 
 
-	public GiveMeCoinsInfo getBTCInfo()
+	GiveMeCoinsInfo getBTCInfo()
 	{
 		return gmcInfoBTC;		
 	}
 	
-	public GiveMeCoinsInfo getLTCInfo()
+	GiveMeCoinsInfo getLTCInfo()
 	{
 		return gmcInfoLTC;		
 	}
 	
-	public GiveMeCoinsInfo getFTCInfo()
+	GiveMeCoinsInfo getFTCInfo()
 	{
 		return gmcInfoFTC;		
 	}
@@ -397,7 +397,7 @@ public class GmcStickyService extends Service{
 	}
 
 
-	public void stop() {
+	void stop() {
 		oGiveMeCoinsWorker.setRunning(false);
 		oGiveMeCoinsWorker.forceUpdate();
 		//oInstance.stopForeground(true);

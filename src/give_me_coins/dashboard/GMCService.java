@@ -52,7 +52,7 @@ public class GMCService extends Service{
 		
 	}
 	
-	public synchronized void start(String... urls) {
+	private synchronized void start(String... urls) {
 		if(urls.length==0) {
 			Log.e(TAG,"Bad URL handed to service");
 			MainScreen.mService=null;
@@ -78,7 +78,7 @@ public class GMCService extends Service{
 		}
 	}
 	
-	public synchronized void stop() {
+	private synchronized void stop() {
 		timer.cancel();
 		if(DEBUG) Log.d(TAG,"Timer cancelled");
 		if(mReceiveData!=null) {
@@ -104,6 +104,7 @@ public class GMCService extends Service{
 			}
 		}
 		
+        @Override
 		public void run() {
 			// TODO Auto-generated method stub
 						
@@ -223,7 +224,7 @@ public class GMCService extends Service{
 					cancel();
 		}
 
-		public void cancel() {
+		private void cancel() {
 	   		//Perform CLEANUP !!!!
 			try {
 				if(jsonAll!=null) jsonAll.close();

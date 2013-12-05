@@ -51,7 +51,7 @@ public class GMCPoolService extends Service{
 		mHandler=handler;
 		
 	}
-	public synchronized void start(String... urls) {
+	synchronized void start(String... urls) {
 		if(urls.length==0) {
 			Log.e(TAG,"Bad URL handed to service");
 			MainScreen.mPoolService=null;
@@ -73,7 +73,7 @@ public class GMCPoolService extends Service{
 		}
 	}
 	
-	public synchronized void stop() {
+	synchronized void stop() {
 		timer.cancel();
 		if(DEBUG) Log.d(TAG,"Timer cancelled");
 		if(mReceiveData!=null) {
@@ -95,7 +95,8 @@ public class GMCPoolService extends Service{
 			if(DEBUG) Log.d(TAG,"public: " + urls);
 			url_string=urls;
 		}
-		
+
+		@Override
 		public void run() {
 			// TODO Auto-generated method stub
 						
@@ -195,7 +196,7 @@ public class GMCPoolService extends Service{
 					cancel();
 		}
 
-		public void cancel() {
+		private void cancel() {
 	   		//Perform CLEANUP !!!!
 			try {
 				if(jsonAll != null) jsonAll.close();

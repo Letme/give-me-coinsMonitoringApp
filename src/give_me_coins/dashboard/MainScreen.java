@@ -287,7 +287,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         
 	}
 	
-	public static void startService() {
+	private static void startService() {
 		asyncService = new AsyncTask<Void, Void, Void>() {
 		    @Override
 		    protected Void doInBackground(Void... params) {
@@ -510,12 +510,11 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the primary
      * sections of the app.
      */
-    public static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
-
-	
-        public AppSectionsPagerAdapter(FragmentManager fm) {
+    static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
+        AppSectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
+
         @Override
         public int getItemPosition(Object object) {
             if (object instanceof UpdateableFragment) {
@@ -554,7 +553,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     /**
      * A Barcode reader fragment
      */
-    public static class BarCodeReaderFragment extends Fragment implements UpdateableFragment {
+    static class BarCodeReaderFragment extends Fragment implements UpdateableFragment {
     	private EditText apikeyoutput;
     	private View rootView;
         @Override
@@ -807,7 +806,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     /*
      * Dashboard fragment function
      */
-    public static class DashBoardFragment extends Fragment implements UpdateableFragment{
+    static class DashBoardFragment extends Fragment implements UpdateableFragment{
     	private View rootView;
     	@Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -908,7 +907,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     /*
      * Summary fragment function
      */
-    public static class SummaryFragment extends Fragment implements UpdateableFragment{
+    static class SummaryFragment extends Fragment implements UpdateableFragment{
     	private View rootView;
     	@Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -1364,7 +1363,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	 }
     };
 
-	public static void getNewGMCInfo() {
+	private static void getNewGMCInfo() {
 		// new info ...
 		 if( oStickyService != null)
 		 {
@@ -1570,7 +1569,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		if( mPoolService==null) startService();
 	}
 	
-	public static String readableHashSize(long size) {
+	static String readableHashSize(long size) {
 	    if(size <= 0) return String.valueOf(size);
 	    final String[] units = new String[] { "Kh/s", "Mh/s", "Gh/s", "Th/s","Ph/s","Eh/s" }; //we left ouh h/s because API puts dot at kh/s!!
 	    int digitGroups = (int) (Math.log10(size)/Math.log10(1000));

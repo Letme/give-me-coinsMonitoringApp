@@ -45,26 +45,29 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     private final int mAppWidgetId;
 
     
-    public StackRemoteViewsFactory(Context context, Intent intent) {
+    StackRemoteViewsFactory(Context context, Intent intent) {
         oContext = context;
         mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
         mCurrency = intent.getIntExtra(Widget_mainLarge.CURRENCY,0);
     }
 
+    @Override
     public void onCreate() {
 
     }
 
+    @Override
     public void onDestroy() {
       
     }
 
+    @Override
     public int getCount() {
         return mCount;
     }
 
-
+    @Override
     public RemoteViews getViewAt(int position) {
         // position will always range from 0 to getCount() - 1.
     	if(DEBUG)Log.d(TAG,"getViewAt "+position);
@@ -123,6 +126,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         return rv;
     }
 
+    @Override
     public RemoteViews getLoadingView() {
         // You can create a custom loading view (for instance when getViewAt() is slow.) If you
         // return null here, you will get the default loading view.
@@ -130,21 +134,25 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         return null;
     }
 
+    @Override
     public int getViewTypeCount() {
     	//if(DEBUG)Log.d(TAG,"getViewTypeCount");
         return 1;
     }
 
+    @Override
     public long getItemId(int position) {
     	//if(DEBUG)Log.d(TAG,"getItemId");
         return position;
     }
 
+    @Override
     public boolean hasStableIds() {
     	//if(DEBUG)Log.d(TAG,"hasStableIds");
         return true;
     }
 
+    @Override
     public void onDataSetChanged() {
         // This is triggered when you call AppWidgetManager notifyAppWidgetViewDataChanged
         // on the collection view corresponding to this factory. You can do heaving lifting in

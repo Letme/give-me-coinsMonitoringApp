@@ -25,13 +25,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import java.io.FileNotFoundException;
 
-public final class RGBLuminanceSource extends LuminanceSource {
+final class RGBLuminanceSource extends LuminanceSource {
 
 	private final byte[] luminances;
     private static final String TAG = "RGBLuminanceSource";
     private static final boolean DEBUG=false;
 
-	public RGBLuminanceSource(String path) throws FileNotFoundException {
+	private RGBLuminanceSource(String path) throws FileNotFoundException {
 		this(loadBitmap(path));
 	}
 
@@ -66,6 +66,7 @@ public final class RGBLuminanceSource extends LuminanceSource {
 		}
 	}
 
+    @Override
 	public byte[] getRow(int y, byte[] row) {
 		if (y < 0 || y >= getHeight()) {
 			throw new IllegalArgumentException(
@@ -83,6 +84,7 @@ public final class RGBLuminanceSource extends LuminanceSource {
 	// Since this class does not support cropping, the underlying byte array
 	// already contains
 	// exactly what the caller is asking for, so give it to them without a copy.
+    @Override
 	public byte[] getMatrix() {
 		return luminances;
 	}

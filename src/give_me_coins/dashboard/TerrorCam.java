@@ -45,7 +45,7 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-public class TerrorCam implements Callback, PreviewCallback
+class TerrorCam implements Callback, PreviewCallback
 {
 
 	private static final String TAG = "QRCodeReaderCam";
@@ -60,22 +60,22 @@ public class TerrorCam implements Callback, PreviewCallback
 	private QRCodeReturnListener qrcl = null;
 
 
-	public void addQRCodeReturnListener(QRCodeReturnListener para_qr)
+	void addQRCodeReturnListener(QRCodeReturnListener para_qr)
 	{
 		qrcl = para_qr;
 	}
 	
-	public interface QRCodeReturnListener
+	interface QRCodeReturnListener
 	{
 		/**
 		 * packet received
 		 * @param head - function name
 		 * @param params - parameters
 		 */
-		public void validQRcode(String QRText);
+		void validQRcode(String QRText);
 	}
 	
-	public TerrorCam( SurfaceView para_prev, Activity para_act )
+	TerrorCam(SurfaceView para_prev, Activity para_act)
 	{
 		oPreviewHolder = para_prev.getHolder();
 
@@ -186,7 +186,7 @@ public class TerrorCam implements Callback, PreviewCallback
 		}
 	}
 
-	public void start()
+	void start()
 	{
 		if(DEBUG) Log.d( TAG, "start" );
 		try
@@ -208,7 +208,7 @@ public class TerrorCam implements Callback, PreviewCallback
 		oCamera.setPreviewCallback( this );
 	}
 
-	public void stop()
+	void stop()
 	{
 		if(DEBUG) Log.d( TAG, "stop" );
 		if ( inPreview )
@@ -235,6 +235,7 @@ public class TerrorCam implements Callback, PreviewCallback
 		}
 	}
 
+    @Override
 	public void onPreviewFrame( byte[] data, Camera camera )
 	{
 		try

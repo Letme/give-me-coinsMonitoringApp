@@ -26,7 +26,7 @@ import org.json.JSONObject;
 /**
  * Created by Patrik on 06.11.13.
  */
-public class GiveMeCoinsWorkerInfo {
+class GiveMeCoinsWorkerInfo {
 
 
   //  {"analpet.1":{"alive":"1","hashrate":"128","last_share_timestamp":"1383696561","username":"analpet.1"}
@@ -35,39 +35,39 @@ public class GiveMeCoinsWorkerInfo {
     private int hashrate = 0;
     private long last_share_timestamp = 0;
 
-    public String getUsername() {
+    String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    private void setUsername(String username) {
         this.username = username;
     }
 
-    public boolean isAlive() {
+    boolean isAlive() {
         return alive;
     }
 
-    public void setAlive(boolean alive) {
+    private void setAlive(boolean alive) {
         this.alive = alive;
     }
 
-    public int getHashrate() {
+    int getHashrate() {
         return hashrate;
     }
 
-    public void setHashrate(int hashrate) {
+    private void setHashrate(int hashrate) {
         this.hashrate = hashrate;
     }
 
-    public long getLast_share_timestamp() {
+    long getLast_share_timestamp() {
         return last_share_timestamp;
     }
 
-    public void setLast_share_timestamp(long last_share_timestamp) {
+    private void setLast_share_timestamp(long last_share_timestamp) {
         this.last_share_timestamp = last_share_timestamp;
     }
 
-    public GiveMeCoinsWorkerInfo( JSONObject para_workerInfos) {
+    GiveMeCoinsWorkerInfo(JSONObject para_workerInfos) {
 
     	if( para_workerInfos != null )
     	{

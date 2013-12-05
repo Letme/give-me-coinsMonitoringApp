@@ -38,12 +38,12 @@ import org.json.JSONObject;
 /**
  * Created by Patrik on 07.11.13.
  */
-public class JSONHelper {
+class JSONHelper {
 
     private static final String TAG = "JSONHelper";
 	private static final int iConnectionTimeout = 10000;
     
-    public static JSONObject getJSONFromUrl(URL para_url)
+    private static JSONObject getJSONFromUrl(URL para_url)
     {
         //	ProgressDialog oShowProgress = ProgressDialog.show(oAct, "Loading", "Loading", true, false);
         JSONObject oRetJson = null;
@@ -92,7 +92,7 @@ public class JSONHelper {
 
     }
 
-	public static String getVal(JSONObject para_jsonObject, String para_name, String para_defaultValue)
+	static String getVal(JSONObject para_jsonObject, String para_name, String para_defaultValue)
     {
            String retString = para_defaultValue;
            try
@@ -105,7 +105,7 @@ public class JSONHelper {
             return retString;
     }
 
-    public static int getVal(JSONObject para_jsonObject, String para_name, int para_defaultValue)
+    static int getVal(JSONObject para_jsonObject, String para_name, int para_defaultValue)
     {
         int retInteger = para_defaultValue;
         try
@@ -118,7 +118,7 @@ public class JSONHelper {
         return retInteger;
     }
 
-    public static double getVal(JSONObject para_jsonObject, String para_name, double para_defaultValue)
+    static double getVal(JSONObject para_jsonObject, String para_name, double para_defaultValue)
     {
         double retDouble = para_defaultValue;
         try
@@ -131,7 +131,7 @@ public class JSONHelper {
         return retDouble;
     }
 
-    public static long getVal(JSONObject para_jsonObject, String para_name, long para_defaultValue)
+    static long getVal(JSONObject para_jsonObject, String para_name, long para_defaultValue)
     {
         long retLong = para_defaultValue;
         try
@@ -145,7 +145,7 @@ public class JSONHelper {
         return retLong;
     }
 
-    public static JSONObject getVal(JSONObject para_jsonObject, String para_name, JSONObject para_defaultValue) {
+    static JSONObject getVal(JSONObject para_jsonObject, String para_name, JSONObject para_defaultValue) {
 
         JSONObject retObj = para_defaultValue;
         try

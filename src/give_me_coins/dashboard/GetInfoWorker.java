@@ -20,8 +20,7 @@ import javax.net.ssl.HttpsURLConnection;
 /**
  * Created by Patrik on 06.11.13.
  */
-public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
-{
+class GetInfoWorker extends AsyncTask<Void, JSONObject, Void> {
 
     private static final String TAG = "GetInfoWorker";
 	private boolean isRunning = true;
@@ -33,11 +32,11 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
     private boolean isSleeping = false;
 
 
-    public String getUrlToGiveMeCoins() {
+    private String getUrlToGiveMeCoins() {
         return urlToGiveMeCoins;
     }
 
-    public void setUrlToGiveMeCoins(String urlToGiveMeCoins) {
+    void setUrlToGiveMeCoins(String urlToGiveMeCoins) {
         this.urlToGiveMeCoins = urlToGiveMeCoins;
     }
 
@@ -45,7 +44,7 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
 	private Thread oCurrentWorkerThread;
 
 
-    public boolean isRunning() {
+    private boolean isRunning() {
         return isRunning;
     }
 
@@ -53,7 +52,7 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
      * 
      * @param isRunning = false stops running
      */
-    public void setRunning(boolean isRunning) {
+    void setRunning(boolean isRunning) {
         this.isRunning = isRunning;
     }
 
@@ -61,7 +60,7 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
      * 
      * @return time the process sleeps between refreshes
      */
-    public int getSleepTime() {
+    private int getSleepTime() {
         return sleepTime;
     }
 
@@ -70,12 +69,12 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
      * sets time the process sleeps between refreshes
      * @param sleepTime
      */
-    public void setSleepTime(int sleepTime) {
+    void setSleepTime(int sleepTime) {
         this.sleepTime = sleepTime;
     }
 
     
-    public GetInfoWorker(GetInfoWorkerCallback para_getInfoWorkerCallbackBTC, GetInfoWorkerCallback para_getInfoWorkerCallbackLTC, GetInfoWorkerCallback para_getInfoWorkerCallbackFTC) {
+    GetInfoWorker(GetInfoWorkerCallback para_getInfoWorkerCallbackBTC, GetInfoWorkerCallback para_getInfoWorkerCallbackLTC, GetInfoWorkerCallback para_getInfoWorkerCallbackFTC) {
         
     	getInfoWorkerCallbacks = new ArrayList<GetInfoWorkerCallback>();
     	
@@ -214,7 +213,7 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
      * 
      * @return tells if process is currently sleeping 
      */
-	public boolean isSleeping() {
+	private boolean isSleeping() {
 		return isSleeping;
 	}
 
@@ -222,12 +221,12 @@ public class GetInfoWorker extends AsyncTask<Void,JSONObject, Void >
 		this.isSleeping = isSleeping;
 	}
 
-	public void forceUpdate() {
+	void forceUpdate() {
 		oCurrentWorkerThread.interrupt();
 		
 	}
 
-	public void setCoinsToShow(boolean para_showBTC, boolean para_showLTC, boolean para_showFTC) 
+	void setCoinsToShow(boolean para_showBTC, boolean para_showLTC, boolean para_showFTC)
 	{
 		showCoin[0] = para_showBTC;
 		showCoin[1] = para_showLTC;

@@ -30,19 +30,19 @@ public class Widget_mainLargeBTC extends Widget_mainLarge{
 		private final int currency = 0;
 	
 		@Override
-		protected GmcStickyService openServiceInstance(GetInfoWorkerCallback callback)
+		GmcStickyService openServiceInstance(GetInfoWorkerCallback callback)
 		{
 			return GmcStickyService.getInstance(callback, null, null);
 		}
 		
 		@Override
-		protected ComponentName getComponentName(Context context) {
+		ComponentName getComponentName(Context context) {
 			// TODO Auto-generated method stub
 			return new ComponentName(context, Widget_mainLargeBTC.class);
 		}
 
 		@Override
-		protected GiveMeCoinsInfo getCurrentInfo( GmcStickyService para_service ) {
+		GiveMeCoinsInfo getCurrentInfo(GmcStickyService para_service) {
 			// TODO Auto-generated method stub
 			if( para_service != null)
 				return para_service.getBTCInfo();
@@ -51,7 +51,7 @@ public class Widget_mainLargeBTC extends Widget_mainLarge{
 		}
 
 		@Override
-		protected int getCurrency() {
+		int getCurrency() {
 			// TODO Auto-generated method stub
 			return currency;
 		}
