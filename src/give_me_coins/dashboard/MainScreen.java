@@ -595,12 +595,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             
             if (!"No api key found".equals(API_key)) {
             	apikeyoutput.setText(API_key);
-            }
-            else {
-            	if(apikeyoutput.getText().length()>0) {
-            		apikeyoutput.setText(R.string.add_api_key_text);
-            		API_key_saved=apikeyoutput.getText().toString();
-            	}
+            } else if (apikeyoutput.getText().length() > 0) {
+                apikeyoutput.setText(R.string.add_api_key_text);
+                API_key_saved=apikeyoutput.getText().toString();
             }
             
             
