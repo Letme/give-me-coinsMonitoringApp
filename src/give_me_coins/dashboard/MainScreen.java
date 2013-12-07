@@ -158,7 +158,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 	private static AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 	private ViewPager mViewPager;
-	private Context context;
 	private static Fragment barcode;
 	private static Fragment dashboard;
 	private static Fragment summary;
@@ -176,8 +175,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		setContentView(R.layout.main_screen);
 
 		//create file for shared preference
-		context = this;
-		sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+		sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
 		oAct = this;
 
@@ -194,7 +192,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             	editor.putString(getString(R.string.saved_api_key), sApiKey);
             	if(DEBUG) Log.d(TAG,"Saving sApiKey:" + sApiKey);
             	editor.commit();
-            	Toast.makeText(context, "Settings have been saved.",Toast.LENGTH_LONG).show();
+            	Toast.makeText(this, "Settings have been saved.", Toast.LENGTH_LONG).show();
 			}
 		}
 		else
@@ -289,7 +287,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		    @Override
 		    protected Void doInBackground(Void... params) {
 		    		if(DEBUG) Log.d("asyncService","Starting oStickyService AsyncTask");
-					context.startService( new Intent(context, GmcStickyService.class) );
+					startService(new Intent(MainScreen.this, GmcStickyService.class));
 		    		return null;
 		    }
 		}.execute();
@@ -367,7 +365,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    switch (item.getItemId()) {
 	        case R.id.ltc_menu:
     	 		coin_select=1;
-    	 		Toast.makeText(context, "Coin changed to LTC",Toast.LENGTH_LONG).show();
+    	 		Toast.makeText(this, "Coin changed to LTC", Toast.LENGTH_LONG).show();
 				if(API_key_saved.contains("api-btc")) {
 					API_key_saved=API_key_saved.replace("api-btc", "api-ltc");
 					change=true;
@@ -391,7 +389,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	            return true;
 	        case R.id.btc_menu:
 	        	coin_select=2;
-    	 		Toast.makeText(context, "Coin changed to BTC",Toast.LENGTH_LONG).show();
+    	 		Toast.makeText(this, "Coin changed to BTC", Toast.LENGTH_LONG).show();
 				if(API_key_saved.contains("api-ltc")) {
 					API_key_saved=API_key_saved.replace("api-ltc", "api-btc");
 					change=true;
@@ -415,7 +413,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	            return true;
 	        case R.id.ftc_menu:
 	        	coin_select=3;
-     			Toast.makeText(context, "Coin changed to FTC",Toast.LENGTH_LONG).show();
+     			Toast.makeText(this, "Coin changed to FTC", Toast.LENGTH_LONG).show();
     			if(API_key_saved.contains("api-ltc")) {
     				API_key_saved=API_key_saved.replace("api-ltc", "api-ftc");
     				change=true;
@@ -460,17 +458,17 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	
 	
 	private void checkMenuStuff() {
-		if( sharedPref.getBoolean(context.getString(R.string.show_btc), true) )
+		if (sharedPref.getBoolean(getString(R.string.show_btc), true))
 			showOption(R.id.btc_menu);
 		else
 			hideOption(R.id.btc_menu);
 
-		if( sharedPref.getBoolean(context.getString(R.string.show_ltc), true) )
+		if (sharedPref.getBoolean(getString(R.string.show_ltc), true))
 			showOption(R.id.ltc_menu);
 		else
 			hideOption(R.id.ltc_menu);
 
-		if( sharedPref.getBoolean(context.getString(R.string.show_ftc), true) )
+		if (sharedPref.getBoolean(getString(R.string.show_ftc), true))
 			showOption(R.id.ftc_menu);
 		else
 			hideOption(R.id.ftc_menu);
@@ -1602,7 +1600,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			case KeyEvent.KEYCODE_BACK:
 				if(event.getRepeatCount() == 0) {
 					if(BackKeyExit == 0) {
-						Toast.makeText(context, "Press BACK twice to fully exit",Toast.LENGTH_LONG).show();
+						Toast.makeText(this, "Press BACK twice to fully exit", Toast.LENGTH_LONG).show();
 						BackKeyExit=1;
 					}
 					else {
