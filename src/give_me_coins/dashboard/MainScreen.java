@@ -158,13 +158,13 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 	private static AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 	private ViewPager mViewPager;
-	private static Context context;
+	private Context context;
 	private static Fragment barcode;
 	private static Fragment dashboard;
 	private static Fragment summary;
-	private static ActionBar actionBar;
-	private static AsyncTask asyncService;
-	private static AsyncTask asyncPoolService;
+	private ActionBar actionBar;
+	private AsyncTask asyncService;
+	private AsyncTask asyncPoolService;
 	private static boolean isRunning=true;
 	private static Activity oAct;
 
@@ -285,7 +285,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         
 	}
 	
-	private static void startService() {
+	private void startService() {
 		asyncService = new AsyncTask<Void, Void, Void>() {
 		    @Override
 		    protected Void doInBackground(Void... params) {
@@ -460,7 +460,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	}
 	
 	
-	private static void checkMenuStuff() {
+	private void checkMenuStuff() {
 		if( sharedPref.getBoolean(context.getString(R.string.show_btc), true) )
 			showOption(R.id.btc_menu);
 		else
@@ -595,8 +595,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                 apikeyoutput.setText(R.string.add_api_key_text);
                 API_key_saved=apikeyoutput.getText().toString();
             }
-            
-            
+
+            final Activity activity = getActivity();
+
             // Save settings for further usage
             rootView.findViewById(R.id.save_settings_button)
                     .setOnClickListener(new View.OnClickListener() {
@@ -622,19 +623,19 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         		if(instring !=1) {
                         			//Toast.makeText(context, "Removing http://",Toast.LENGTH_LONG).show();
                         			if(instring==-1) {
-	                                    Toast.makeText(context, "You need to add /pool/ infront of your API-key",Toast.LENGTH_LONG).show();
+	                                    Toast.makeText(activity, "You need to add /pool/ in front of your API-key", Toast.LENGTH_LONG).show();
 	                                    API_key_saved="No api key found";
 	                                } else if(API_key_saved.length()>0) {
 	                                    API_key_saved=API_key_saved.substring(API_key_saved.indexOf("/pool/"),API_key_saved.length());
 	                                    editor.putString(getString(R.string.saved_api_key), API_key_saved);      
 	                                    if(DEBUG) Log.i(TAG,"Saving API_key_save:" + API_key_saved);
 	                                    editor.commit();
-	                                    Toast.makeText(context, "Settings have been saved.",Toast.LENGTH_LONG).show();
+	                                    Toast.makeText(activity, "Settings have been saved.", Toast.LENGTH_LONG).show();
 	                                }
                         		}
                         		if(show_notification.isChecked()) {
                         			editor.commit();
-		                        	startService();
+                                    ((MainScreen) activity).startService();
 		                        	if(oStickyService != null)
 		                        		oStickyService.forceUpdate();
                         		} else {
@@ -642,8 +643,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         			if(oStickyService != null)
                         				oStickyService.forceUpdate();
                         		}
-                        		
-                        		checkMenuStuff();
+
+	                        	activity.invalidateOptionsMenu();
 	                        	mAppSectionsPagerAdapter.notifyDataSetChanged();
 	                        	
 	                        	//mAppSectionsPagerAdapter.getItemPosition(dashboard);
@@ -660,7 +661,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	                        	if(DEBUG) Log.d(TAG,"Removing API_key_save");
 	                        	apikeyoutput.setText(" ");
 	                        	editor.commit();
-	                        	Toast.makeText(context, "Settings cleared.",Toast.LENGTH_LONG).show();
+	                        	Toast.makeText(activity, "Settings cleared.", Toast.LENGTH_LONG).show();
 	                        	mAppSectionsPagerAdapter.notifyDataSetChanged();
 	                        	//mAppSectionsPagerAdapter.getItemPosition(dashboard);
                         }
@@ -684,7 +685,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
 	    		}
 	    		//actionBar.setTitle("Settings");
-	    		actionBar.setDisplayShowTitleEnabled(true);
+	    		activity.getActionBar().setDisplayShowTitleEnabled(true);
 	    		// Adds the drawable to your progressBar
 	    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
 	    	    displayProgress.setProgressDrawable(progressDrawable);
@@ -923,11 +924,13 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      * Summary fragment function
      */
     @SuppressLint("ValidFragment")
-	static class SummaryFragment extends Fragment implements UpdateableFragment{
+    static class SummaryFragment extends Fragment implements UpdateableFragment{
+        private ActionBar actionBar;
     	private View rootView;
+
     	@Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	    		 actionBar = getActivity().getActionBar();
    
 	    		 rootView = inflater.inflate(R.layout.summary, container, false);
 	    		 getNewGMCInfo();
@@ -942,7 +945,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        	}
 		        	
 	                ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
-		            
+
 	                int currentColor = 0;
 	            	//determine what color it needs to be
 		    		switch(coin_select) {
