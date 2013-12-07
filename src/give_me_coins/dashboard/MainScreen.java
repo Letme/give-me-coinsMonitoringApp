@@ -162,7 +162,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	private static Fragment barcode;
 	private static Fragment dashboard;
 	private static Fragment summary;
-	private ActionBar actionBar;
 	private AsyncTask asyncService;
 	private AsyncTask asyncPoolService;
 	private static boolean isRunning=true;
@@ -232,7 +231,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         mViewPager = (ViewPager) findViewById(R.id.pager);
 
         // Set up the action bar.
-        actionBar = getActionBar();
+        final ActionBar actionBar = getActionBar();
        
 	    // Specify that tabs should be displayed in the action bar.
 	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -1530,7 +1529,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		
 		if(DEBUG) Log.d(TAG,"onDestroy");
 		isRunning=false;
-		actionBar.removeAllTabs();
+		getActionBar().removeAllTabs();
 		try
 		{
 			if( oStickyService != null)
