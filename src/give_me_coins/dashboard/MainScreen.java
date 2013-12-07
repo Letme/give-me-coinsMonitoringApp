@@ -796,8 +796,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     			default:
     				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
     		}
-    		//actionBar.setTitle("Settings");
-    		actionBar.setDisplayShowTitleEnabled(true);
+
             ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSettings);
     		displayProgress.setProgress(Progress);
     		displayProgress.invalidate();
