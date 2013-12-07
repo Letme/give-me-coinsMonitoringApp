@@ -56,7 +56,7 @@ class GiveMeCoinsInfo {
     private double round_estimate = 0;
     private double payout_history = 0;
     private long round_shares = 0;
-    private final ArrayList<GiveMeCoinsWorkerInfo> giveMeCoinWorkers;
+    private final ArrayList<GiveMeCoinsWorkerInfo> giveMeCoinWorkers = new ArrayList<GiveMeCoinsWorkerInfo>();
 
 
     GiveMeCoinsInfo(JSONObject para_jsonReturn) {
@@ -67,8 +67,7 @@ class GiveMeCoinsInfo {
         round_estimate = JSONHelper.getVal(para_jsonReturn, "round_estimate", 0.0);
         payout_history = JSONHelper.getVal(para_jsonReturn, "payout_history", 0.0);
         round_shares = JSONHelper.getVal(para_jsonReturn, "round_shares", (long) 1);
-        giveMeCoinWorkers = new ArrayList<GiveMeCoinsWorkerInfo>();
-        		
+
         JSONObject workers = JSONHelper.getVal(para_jsonReturn, "workers", new JSONObject());
         Iterator<?> keys = workers.keys();
         

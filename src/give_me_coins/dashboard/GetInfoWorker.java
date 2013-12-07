@@ -25,7 +25,7 @@ class GetInfoWorker extends AsyncTask<Void, JSONObject, Void> {
     private static final String TAG = "GetInfoWorker";
 	private boolean isRunning = true;
     private final int iConnectionTimeout = 5000;
-    private final ArrayList<GetInfoWorkerCallback> getInfoWorkerCallbacks;
+    private final ArrayList<GetInfoWorkerCallback> getInfoWorkerCallbacks = new ArrayList<GetInfoWorkerCallback>();
     private final boolean[] showCoin = {true, true, true};
     private final String[] currencySwitcher = {"btc","ltc","ftc"};
     private int sleepTime = 60000; // 1 min - default value
@@ -75,13 +75,10 @@ class GetInfoWorker extends AsyncTask<Void, JSONObject, Void> {
 
     
     GetInfoWorker(GetInfoWorkerCallback para_getInfoWorkerCallbackBTC, GetInfoWorkerCallback para_getInfoWorkerCallbackLTC, GetInfoWorkerCallback para_getInfoWorkerCallbackFTC) {
-        
-    	getInfoWorkerCallbacks = new ArrayList<GetInfoWorkerCallback>();
-    	
 		getInfoWorkerCallbacks.add( para_getInfoWorkerCallbackBTC );
 		getInfoWorkerCallbacks.add( para_getInfoWorkerCallbackLTC );
         getInfoWorkerCallbacks.add( para_getInfoWorkerCallbackFTC );
-        
+
     }
 
     @Override
@@ -168,8 +165,6 @@ class GetInfoWorker extends AsyncTask<Void, JSONObject, Void> {
         {
 
             //Log.d(TAG,para_url.toString());
-            BufferedInputStream oInput = null;
-
             HttpsURLConnection oConnection = (HttpsURLConnection) para_url.openConnection();
             //	HttpsURLConnection.setDefaultHostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 
@@ -177,7 +172,7 @@ class GetInfoWorker extends AsyncTask<Void, JSONObject, Void> {
             oConnection.setReadTimeout(iConnectionTimeout*2);
             //		connection.setRequestProperty ("Authorization", sAuthorization);
             oConnection.connect();
-            oInput = new BufferedInputStream( oConnection.getInputStream() );
+            BufferedInputStream oInput = new BufferedInputStream( oConnection.getInputStream() );
             BufferedReader reader = new BufferedReader( new InputStreamReader(oInput) );
             String sReturn = reader.readLine();
             //Log.d(TAG,sReturn);
