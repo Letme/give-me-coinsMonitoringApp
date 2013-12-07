@@ -42,7 +42,6 @@ public class GmcStickyService extends Service{
 
 	private static final String URL_STRING = "https://give-me-coins.com";
 
-	private Context oContext;
 	private static ArrayList<GetInfoWorkerCallback> oBtc_callbacks = null;
 	private static ArrayList<GetInfoWorkerCallback> oLtc_callbacks = null;
 	private static ArrayList<GetInfoWorkerCallback> oFtc_callbacks = null;
@@ -167,7 +166,6 @@ public class GmcStickyService extends Service{
     	
     	oInstance = this;
     	
-        oContext = this;
         // Display a notification about us starting.  We put an icon in the status bar.
         // and start foreground
         SharedPreferences sp = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
@@ -253,7 +251,7 @@ public class GmcStickyService extends Service{
 	        
 	        // Set the info for the views that show in the notification panel.
 	        // yes deprecated ... but ...
-	        oNotification.setLatestEventInfo(this, oContext.getText(R.string.app_name), currentTextToShow, contentIntent);
+	        oNotification.setLatestEventInfo(this, getText(R.string.app_name), currentTextToShow, contentIntent);
 	        
 	        
 	      // TODO: test here if arams need to be set (kh/s dropping ... stuff like that
@@ -291,7 +289,7 @@ public class GmcStickyService extends Service{
 	                new Intent(this, MainScreen.class), 0);
 	
 	        // Set the info for the views that show in the notification panel.
-	        oNotification.setLatestEventInfo(this, oContext.getText(R.string.app_name), currentTextToShow, contentIntent);
+	        oNotification.setLatestEventInfo(this, getText(R.string.app_name), currentTextToShow, contentIntent);
 	        
 	       // Start in foreground - so we dont get killed
 	        startForeground(NOTIFICATION, oNotification);
