@@ -278,7 +278,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
        // mViewPager.setCurrentItem(0);
 		if(API_key_saved != null && API_key_saved != "") {
-    		if (API_key_saved.equals("No api key found")) {
+    		if ("No api key found".equals(API_key_saved)) {
     			
     		}
     		else {
@@ -595,7 +595,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             
             setViewToTime(rootView.findViewById(R.id.update_times), sharedPref.getInt(getString(R.string.update_interval), 60000));
             
-            if (!API_key.equals("No api key found")) {
+            if (!"No api key found".equals(API_key)) {
             	apikeyoutput.setText(API_key);
             }
             else {
@@ -946,7 +946,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        	String API_key_text=sharedPref.getString(getString(R.string.saved_api_key),"No api key found");
 		        	
 		        	//safeguard to get data - NEED TO INFORM USER
-		        	if (API_key_text.equals("No api key found")) {
+		        	if ("No api key found".equals(API_key_text)) {
 		        		//API_key_saved="/pool/api-ltc?api_key=5ccbdb20d6e50838fdce14aeba0727f9e995f798ee618f1c31b2eb2790ba0cec";
 		        		//return rootView;
 		            }
@@ -1090,7 +1090,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        		//What do we want to change?
 			        		TableRow tr=(TableRow) rootView.findViewById(1000+current);
 			        		TextView Worker_Alive=(TextView) rootView.findViewById(3000+current);
-			        		if(worker_alive[current].equals("1")) {
+			        		if ("1".equals(worker_alive[current])) {
 						        Worker_Alive.setText("Online");
 						        Worker_Alive.setTextColor(green);
 						        //tr.setBackgroundColor(green);
@@ -1127,7 +1127,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				        // Second column
 				        TextView Worker_Alive = new TextView(getActivity());
 				        Worker_Alive.setId(3000+current);
-				        if(worker_alive[current].equals("1")) {
+				        if ("1".equals(worker_alive[current])) {
 				        	Worker_Alive.setText("Online");
 				        	Worker_Alive.setTextColor(green);
 				        	//tr.setBackgroundColor(green);
@@ -1262,7 +1262,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        		//What do we want to change?
 		        		TableRow tr=(TableRow) rootView.findViewById(1000+current);
 		        		TextView Worker_Alive=(TextView) rootView.findViewById(3000+current);
-		        		if(worker_alive[current].equals("1")){
+		        		if("1".equals(worker_alive[current])){
 		        			//tr.setBackgroundColor(Color.GREEN);
 					        Worker_Alive.setText("Online");
 					        Worker_Alive.setTextColor(green);
@@ -1302,7 +1302,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        // Second column
 			        TextView Worker_Alive = new TextView(getActivity());
 			        Worker_Alive.setId(3000+current);
-			        if(worker_alive[current].equals("1")) {
+			        if("1".equals(worker_alive[current])) {
 			        	Worker_Alive.setText("Online");
 			        	Worker_Alive.setTextColor(green);
 			        	//tr.setBackgroundColor(Color.GREEN);

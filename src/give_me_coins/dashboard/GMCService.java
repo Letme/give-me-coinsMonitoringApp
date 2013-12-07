@@ -163,17 +163,17 @@ public class GMCService extends Service{
 								case NAME:
 									if(DEBUG)Log.d(TAG,"Main NAME");
 									String name=jsonAll.nextName();
-									if (name.equals("username")) {
+									if ("username".equals(name)) {
 										MainScreen.username=jsonAll.nextString();
-									} else if(name.equals("confirmed_rewards")) {
+									} else if("confirmed_rewards".equals(name)) {
 										MainScreen.confirmed_rewards=jsonAll.nextString();
-									} else if(name.equals("round_estimate")) {
+									} else if("round_estimate".equals(name)) {
 										MainScreen.round_estimate=jsonAll.nextString();
-									} else if (name.equals("total_hashrate")) {
+									} else if ("total_hashrate".equals(name)) {
 										MainScreen.total_hashrate=jsonAll.nextString();
-									} else if (name.equals("round_shares")) {
+									} else if ("round_shares".equals(name)) {
 										MainScreen.round_shares=jsonAll.nextString();
-									} else if (name.equals("workers")) {
+									} else if ("workers".equals(name)) {
 										//JsonReader workerobj = new JsonReader(reader);
 										ParseWorkers(jsonAll,0);
 									} else {
@@ -275,16 +275,16 @@ public class GMCService extends Service{
 						case NAME:
 							String workers=jsonAll.nextName();
 							if(DEBUG) Log.d(TAG,"JSON Name: " + workers + " next value: " + jsonAll.peek() +" i="+i);
-							if(workers.equals("alive")) {
+							if ("alive".equals(workers)) {
 									MainScreen.worker_alive[i]=jsonAll.nextString();					
-							} else if(workers.equals("hashrate")) {
+							} else if("hashrate".equals(workers)) {
 									MainScreen.worker_hashrate[i]=jsonAll.nextString();
-							} else if (workers.equals("username")) {
+							} else if ("username".equals(workers)) {
 									MainScreen.worker_name[i]=jsonAll.nextString();
 									jsonAll.endObject();
 									if(DEBUG) Log.d(TAG,"JSON endObject");
 									++i;
-							} else if (workers.equals("last_share_timestamp")) {
+							} else if ("last_share_timestamp".equals(workers)) {
 									if(DEBUG) Log.d(TAG,"last_share_timestamp: ");
 									switch(jsonAll.peek()) {
 										case STRING:

@@ -153,13 +153,13 @@ public class GMCPoolService extends Service{
 								case NAME:
 									if(DEBUG) Log.d(TAG,"Main NAME");
 									String name=jsonAll.nextName();
-									if (name.equals("hashrate")) {
+									if ("hashrate".equals(name)) {
 										MainScreen.pool_total_hashrate=jsonAll.nextString();
-									} else if(name.equals("workers")) {
+									} else if("workers".equals(name)) {
 										MainScreen.pool_workers=jsonAll.nextString();
-									} else if(name.equals("shares_this_round")) {
+									} else if("shares_this_round".equals(name)) {
 										MainScreen.pool_round_shares=jsonAll.nextString();
-									} else if (name.equals("last_block")) {
+									} else if ("last_block".equals(name)) {
 										MainScreen.pool_last_block=jsonAll.nextString();
 									} else if (name.equals("last_block_shares")) {
 										MainScreen.pool_last_block_shares=jsonAll.nextString();
@@ -167,7 +167,7 @@ public class GMCPoolService extends Service{
 										MainScreen.pool_last_block_finder=jsonAll.nextString();
 									} else if (name.equals("last_block_reward")) {
 										MainScreen.pool_last_block_reward=jsonAll.nextString();
-									} else if (name.equals("difficulty")) {
+									} else if ("difficulty".equals(name)) {
 										MainScreen.pool_difficulty=jsonAll.nextString();
 									} else {
 										jsonAll.skipValue();
