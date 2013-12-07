@@ -233,7 +233,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
        
 	    // Specify that tabs should be displayed in the action bar.
 	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-	    actionBar.setDisplayShowTitleEnabled(false);
 
         // For each of the sections in the app, add a tab to the action bar.
         // Create a tab with text corresponding to the page title defined by the adapter.
