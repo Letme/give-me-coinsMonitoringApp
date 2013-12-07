@@ -42,12 +42,11 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 	static int mCount = 10;
     private final Context oContext;
     private final int mCurrency;
-    private final int mAppWidgetId;
 
     
     StackRemoteViewsFactory(Context context, Intent intent) {
         oContext = context;
-        mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+        int mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
         mCurrency = intent.getIntExtra(Widget_mainLarge.CURRENCY,0);
     }

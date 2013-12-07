@@ -86,7 +86,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     
 	private static String API_key_saved;
 	private static final String URL = "https://give-me-coins.com";
-	private static boolean change=false;
+
 	/**
 	 * Whether or not the system UI should be auto-hidden after
 	 * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -370,7 +370,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		int currentColor = 0;
 		ScrollView summary = (ScrollView) oAct.findViewById(R.id.summary_layout);
 		ScrollView dashBoard = (ScrollView) oAct.findViewById(R.id.dashboard_layout);
-		
+
+        boolean change=false;
 	    switch (item.getItemId()) {
 	        case R.id.ltc_menu:
     	 		coin_select=1;
@@ -531,7 +532,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         public Fragment getItem(int i) {
             switch (i) {
                 case 0:
-                	barcode= new BarCodeReaderFragment(); 
+                	barcode= new BarCodeReaderFragment();
                     return barcode;
                 case 1:
                 	// Summary Fragment
