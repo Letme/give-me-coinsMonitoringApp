@@ -164,7 +164,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	private AsyncTask asyncService;
 	private AsyncTask asyncPoolService;
 	private static boolean isRunning=true;
-	private static Activity oAct;
+	private Activity oAct;
 
 	static int coin_select=1;
 	
@@ -542,9 +542,10 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                     .setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                           Intent intent = new Intent(getActivity(), BarCodeReaderActivity.class);
+                           Activity activity = getActivity();
+                           Intent intent = new Intent(activity, BarCodeReaderActivity.class);
                            startActivity(intent);
-                           oAct.finish();
+                           activity.finish();
                         }
                     });
             
@@ -903,12 +904,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      */
     @SuppressLint("ValidFragment")
     static class SummaryFragment extends Fragment implements UpdateableFragment{
+        private Activity activity;
         private ActionBar actionBar;
     	private View rootView;
 
     	@Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-	    		 actionBar = getActivity().getActionBar();
+	    		 activity = getActivity();
+	    		 actionBar = activity.getActionBar();
    
 	    		 rootView = inflater.inflate(R.layout.summary, container, false);
 	    		 getNewGMCInfo();
@@ -1038,7 +1041,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        tl.addView(trH,new TableLayout.LayoutParams(
 			                  LayoutParams.MATCH_PARENT,
 			                  LayoutParams.WRAP_CONTENT));  
-			        View line = new View(oAct);
+			        View line = new View(activity);
 			        line.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
 			        line.setBackgroundColor(getResources().getColor(R.color.table_border));
 			        
@@ -1122,7 +1125,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				                  LayoutParams.MATCH_PARENT,
 				                  LayoutParams.WRAP_CONTENT));
 				        tl.setPadding(5, 5, 5, 5);
-				        View line1 = new View(oAct);
+				        View line1 = new View(activity);
 				        line1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
 				        line1.setBackgroundColor(getResources().getColor(R.color.table_border));
 				        tl.addView(line1);
@@ -1297,7 +1300,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        tl.addView(tr,new TableLayout.LayoutParams(
 			                  LayoutParams.MATCH_PARENT,
 			                  LayoutParams.WRAP_CONTENT));
-			        View line1 = new View(oAct);
+			        View line1 = new View(activity);
 			        line1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
 			        line1.setBackgroundColor(getResources().getColor(R.color.table_border));
 		        	tl.addView(line1);
