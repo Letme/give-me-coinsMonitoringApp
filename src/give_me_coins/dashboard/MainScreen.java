@@ -278,10 +278,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
        // mViewPager.setCurrentItem(0);
 		if(API_key_saved != null && API_key_saved != "") {
-    		if ("No api key found".equals(API_key_saved)) {
-    			
-    		}
-    		else {
+    		if (!"No api key found".equals(API_key_saved)) {
     			startService();
     			// change to summary tab if api key is set and everything
     			mViewPager.setCurrentItem(1);
@@ -947,11 +944,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        	String API_key_text=sharedPref.getString(getString(R.string.saved_api_key),"No api key found");
 		        	
 		        	//safeguard to get data - NEED TO INFORM USER
-		        	if ("No api key found".equals(API_key_text)) {
-		        		//API_key_saved="/pool/api-ltc?api_key=5ccbdb20d6e50838fdce14aeba0727f9e995f798ee618f1c31b2eb2790ba0cec";
-		        		//return rootView;
-		            }
-		        	else {
+		        	if (!"No api key found".equals(API_key_text)) {
 		        		API_key_saved=API_key_text;
 		        		//API_key_saved="/pool/api-ltc?api_key=5ccbdb20d6e50838fdce14aeba0727f9e995f798ee618f1c31b2eb2790ba0cec";
 		        	}
