@@ -555,8 +555,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      */
     @SuppressLint("ValidFragment")
     static class BarCodeReaderFragment extends Fragment implements UpdateableFragment {
-    	private EditText apikeyoutput;
     	private View rootView;
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
@@ -574,7 +574,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                     });
             
             //Check if we have something in field
-            apikeyoutput = (EditText) rootView.findViewById(R.id.api_key_value);
+            final EditText apikeyoutput = (EditText) rootView.findViewById(R.id.api_key_value);
             String API_key = sharedPref.getString(getString(R.string.saved_api_key),"No api key found");
             
             // set show stuff
