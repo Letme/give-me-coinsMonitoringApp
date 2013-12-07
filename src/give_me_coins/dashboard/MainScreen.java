@@ -184,10 +184,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 		// trying to get stuff from qrcode reader activity 		
 		Bundle extras = getIntent().getExtras(); 
-		String sApiKey = null;
-
-		if(extras != null) {
-			sApiKey = extras.getString("API_KEY");
+		if (extras != null) {
+            String sApiKey = extras.getString("API_KEY");
 			if(DEBUG)Log.d(TAG,sApiKey);
 			
 			// if got api key from QR activity directly save it
@@ -363,7 +361,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
-		int currentColor = 0;
 		ScrollView summary = (ScrollView) oAct.findViewById(R.id.summary_layout);
 		ScrollView dashBoard = (ScrollView) oAct.findViewById(R.id.dashboard_layout);
 
@@ -383,14 +380,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-ltc";
     	 		mAppSectionsPagerAdapter.notifyDataSetChanged();
-    	 		currentColor = getResources().getColor(R.color.ltc);
+    	 		int ltcColor = getResources().getColor(R.color.ltc);
     	 		if(dashBoard != null)
     	 		{
-    	 			dashBoard.setBackgroundColor(currentColor); 			
+    	 			dashBoard.setBackgroundColor(ltcColor);
     	 		}
     	 		if( summary != null )
     	 		{
-    	 			summary.setBackgroundColor(currentColor);    	 			
+    	 			summary.setBackgroundColor(ltcColor);
     	 		}
 	            return true;
 	        case R.id.btc_menu:
@@ -407,14 +404,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				GMCService.url_fixed=URL+API_key_saved;
 				GMCPoolService.url_fixed=URL+"/pool/api-btc";
             	mAppSectionsPagerAdapter.notifyDataSetChanged();
-    	 		currentColor = getResources().getColor(R.color.btc);
+    	 		int btcColor = getResources().getColor(R.color.btc);
     	 		if(dashBoard != null)
     	 		{
-    	 			dashBoard.setBackgroundColor(currentColor); 			
+    	 			dashBoard.setBackgroundColor(btcColor);
     	 		}
     	 		if( summary != null )
     	 		{
-    	 			summary.setBackgroundColor(currentColor);    	 			
+    	 			summary.setBackgroundColor(btcColor);
     	 		}
 	            return true;
 	        case R.id.ftc_menu:
@@ -431,14 +428,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-ftc";
             	mAppSectionsPagerAdapter.notifyDataSetChanged();
-    	 		currentColor = getResources().getColor(R.color.ftc);
+    	 		int ftcColor = getResources().getColor(R.color.ftc);
     	 		if(dashBoard != null)
     	 		{
-    	 			dashBoard.setBackgroundColor(currentColor); 			
+    	 			dashBoard.setBackgroundColor(ftcColor);
     	 		}
     	 		if( summary != null )
     	 		{
-    	 			summary.setBackgroundColor(currentColor);    	 			
+    	 			summary.setBackgroundColor(ftcColor);
     	 		}
     	 		return true;
 	        default:
@@ -575,8 +572,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             
             //Check if we have something in field
             final EditText apikeyoutput = (EditText) rootView.findViewById(R.id.api_key_value);
-            String API_key = sharedPref.getString(getString(R.string.saved_api_key),"No api key found");
-            
+
             // set show stuff
             CheckBox show_btc = (CheckBox) rootView.findViewById(R.id.show_btc);
             CheckBox show_ltc = (CheckBox) rootView.findViewById(R.id.show_ltc);
@@ -591,7 +587,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             
             
             setViewToTime(rootView.findViewById(R.id.update_times), sharedPref.getInt(getString(R.string.update_interval), 60000));
-            
+
+            String API_key = sharedPref.getString(getString(R.string.saved_api_key),"No api key found");
             if (!"No api key found".equals(API_key)) {
             	apikeyoutput.setText(API_key);
             } else if (apikeyoutput.getText().length() > 0) {
@@ -782,7 +779,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         public void update() {
         	
         	// do whatever you want to update your data
-        	ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSettings);
         	// Define a shape with rounded corners
             ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
         
@@ -802,6 +798,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     		}
     		//actionBar.setTitle("Settings");
     		actionBar.setDisplayShowTitleEnabled(true);
+            ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSettings);
     		displayProgress.setProgress(Progress);
     		displayProgress.invalidate();
     		
@@ -824,7 +821,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    		 /*Intent intent = new Intent(getActivity(), DashBoardActivity.class);
 	             startActivity(intent);*/	            
 	         	
-		        ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarDashBoard);
 		     // Define a shape with rounded corners
                 ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
             
@@ -845,6 +841,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    		}
 	    		// Adds the drawable to your progressBar
 	    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
+	    	    ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarDashBoard);
 	    	    displayProgress.setProgressDrawable(progressDrawable);
 	    	    displayProgress.setProgress(Progress);
 	    	    pgDrawable.getPaint().setColor(currentColor);
@@ -989,8 +986,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        		}
 		        	}*/
 		    		
-		        	
-		        	ScrollView main_layout = (ScrollView) (rootView.findViewById(R.id.summary_layout));
 		        	/*TextView usernameH = new TextView(getActivity());
 					usernameH.setText(username + "with hashrate: " + total_hashrate);
 					usernameH.setTextColor(Color.RED);
@@ -1155,7 +1150,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        }
 			        if(DEBUG) Log.d(TAG,"Table data ended");
 	    		 
-			        ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSummary);
 			        // Define a shape with rounded corners
 
 		    		
@@ -1165,10 +1159,13 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     			//	dashBoard.setBackgroundColor(currentColor);
     				
     				//LinearLayout summary = (LinearLayout) rootView.findViewById(R.id.summary_layout);
+		    		ScrollView main_layout = (ScrollView) (rootView.findViewById(R.id.summary_layout));
 		    		main_layout.setBackgroundColor(currentColor);
     				
 		    		// Adds the drawable to your progressBar
 		    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
+
+		    	    ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSummary);
 		    	    displayProgress.setProgressDrawable(progressDrawable);
 		    	    displayProgress.setProgress(Progress);
 		    	    
@@ -1184,7 +1181,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		@Override
         public void update() {
 			
-		            ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
 		            int currentColor = 0;
 		        	//determine what color it needs to be
 		    		switch(coin_select) {
@@ -1343,6 +1339,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				summary.setBackgroundColor(currentColor);
 	    		
 	    		// Adds the drawable to your progressBar
+	    	    ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners, null, null));
 	    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
 	    	    displayProgress.setProgressDrawable(progressDrawable);
 	    	    displayProgress.setProgress(Progress);
