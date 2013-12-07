@@ -292,7 +292,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		    @Override
 		    protected Void doInBackground(Void... params) {
 		    		if(DEBUG) Log.d("asyncService","Starting oStickyService AsyncTask");
-		    		context.getApplicationContext();
 					context.startService( new Intent(context, GmcStickyService.class) );
 		    		return null;
 		    }
