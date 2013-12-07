@@ -324,7 +324,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		}
 	};
 	private ProgressDialog oLoadingProgress;
-	private static Menu oMenu;
+	private Menu oMenu;
 
 
 	/**
@@ -474,13 +474,13 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			hideOption(R.id.ftc_menu);
 	}
 
-	private static void hideOption(int id)
+	private void hideOption(int id)
 	{
 	    MenuItem item = oMenu.findItem(id);
 	    item.setVisible(false);
 	}
 
-	private static void showOption(int id)
+	private void showOption(int id)
 	{
 	    MenuItem item = oMenu.findItem(id);
 	    item.setVisible(true);
