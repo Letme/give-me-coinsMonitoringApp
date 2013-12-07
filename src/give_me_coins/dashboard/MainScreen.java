@@ -456,37 +456,19 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		return super.onCreateOptionsMenu(menu);
 	}
 	
-	
+
 	private void checkMenuStuff() {
-		if (sharedPref.getBoolean(getString(R.string.show_btc), true))
-			showOption(R.id.btc_menu);
-		else
-			hideOption(R.id.btc_menu);
-
-		if (sharedPref.getBoolean(getString(R.string.show_ltc), true))
-			showOption(R.id.ltc_menu);
-		else
-			hideOption(R.id.ltc_menu);
-
-		if (sharedPref.getBoolean(getString(R.string.show_ftc), true))
-			showOption(R.id.ftc_menu);
-		else
-			hideOption(R.id.ftc_menu);
+        showIfEnabled(R.string.show_btc, R.id.btc_menu);
+        showIfEnabled(R.string.show_ltc, R.id.ltc_menu);
+        showIfEnabled(R.string.show_ftc, R.id.ftc_menu);
 	}
 
-	private void hideOption(int id)
-	{
-	    MenuItem item = oMenu.findItem(id);
-	    item.setVisible(false);
-	}
+    private void showIfEnabled(int key, int itemId) {
+        boolean isEnabled = sharedPref.getBoolean(getString(key), true);
+        MenuItem item = oMenu.findItem(itemId);
+        item.setVisible(isEnabled);
+    }
 
-	private void showOption(int id)
-	{
-	    MenuItem item = oMenu.findItem(id);
-	    item.setVisible(true);
-	}
-	
-	
 	 private void updateNow() {
 		// TODO Auto-generated method stub
      	if( oStickyService != null )
