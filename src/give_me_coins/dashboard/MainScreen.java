@@ -164,7 +164,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	private AsyncTask asyncService;
 	private AsyncTask asyncPoolService;
 	private static boolean isRunning=true;
-	private Activity oAct;
 
 	static int coin_select=1;
 	
@@ -177,9 +176,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		//create file for shared preference
 		sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
-		oAct = this;
-
-		// trying to get stuff from qrcode reader activity 		
+		// trying to get stuff from qrcode reader activity
 		Bundle extras = getIntent().getExtras(); 
 		if (extras != null) {
             String sApiKey = extras.getString("API_KEY");
@@ -357,8 +354,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
-		ScrollView summary = (ScrollView) oAct.findViewById(R.id.summary_layout);
-		ScrollView dashBoard = (ScrollView) oAct.findViewById(R.id.dashboard_layout);
+		ScrollView summary = (ScrollView) findViewById(R.id.summary_layout);
+		ScrollView dashBoard = (ScrollView) findViewById(R.id.dashboard_layout);
 
         boolean change=false;
 	    switch (item.getItemId()) {
