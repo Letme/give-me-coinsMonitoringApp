@@ -37,7 +37,7 @@ import android.util.Log;
 public class GmcStickyService extends Service{
 
 	private static final String TAG = "HandyTrackerService";
-	private boolean DEBUG = true;
+	private static final boolean DEBUG = true;
 
 
 	private static final String URL_STRING = "https://give-me-coins.com";
@@ -56,7 +56,7 @@ public class GmcStickyService extends Service{
 	/**
 	 * Notification string 
 	 */
-    private int NOTIFICATION = R.string.notification;
+    private static final int NOTIFICATION = R.string.notification;
     /**
      * Manager to show the notification for user
      */

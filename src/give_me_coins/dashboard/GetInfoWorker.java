@@ -24,7 +24,7 @@ class GetInfoWorker extends AsyncTask<Void, JSONObject, Void> {
 
     private static final String TAG = "GetInfoWorker";
 	private boolean isRunning = true;
-    private final int iConnectionTimeout = 5000;
+    private static final int iConnectionTimeout = 5000;
     private final ArrayList<GetInfoWorkerCallback> getInfoWorkerCallbacks = new ArrayList<GetInfoWorkerCallback>();
     private final boolean[] showCoin = {true, true, true};
     private final String[] currencySwitcher = {"btc","ltc","ftc"};
