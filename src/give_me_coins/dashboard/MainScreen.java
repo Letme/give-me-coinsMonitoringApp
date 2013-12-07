@@ -278,7 +278,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
        // mViewPager.setCurrentItem(0);
 		if(API_key_saved != null && API_key_saved != "") {
-    		if(API_key_saved.matches("No api key found")) {
+    		if (API_key_saved.equals("No api key found")) {
     			
     		}
     		else {
@@ -595,7 +595,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             
             setViewToTime(rootView.findViewById(R.id.update_times), sharedPref.getInt(getString(R.string.update_interval), 60000));
             
-            if(!API_key.matches("No api key found")) {
+            if (!API_key.equals("No api key found")) {
             	apikeyoutput.setText(API_key);
             }
             else {
@@ -946,7 +946,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        	String API_key_text=sharedPref.getString(getString(R.string.saved_api_key),"No api key found");
 		        	
 		        	//safeguard to get data - NEED TO INFORM USER
-		        	if(API_key_text.matches("No api key found")) {
+		        	if (API_key_text.equals("No api key found")) {
 		        		//API_key_saved="/pool/api-ltc?api_key=5ccbdb20d6e50838fdce14aeba0727f9e995f798ee618f1c31b2eb2790ba0cec";
 		        		//return rootView;
 		            }
