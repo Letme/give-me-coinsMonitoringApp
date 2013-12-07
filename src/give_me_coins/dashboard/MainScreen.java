@@ -271,7 +271,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         actionBar.setBackgroundDrawable(new ColorDrawable(R.color.menu_background));
 
        // mViewPager.setCurrentItem(0);
-		if(API_key_saved != null && API_key_saved != "") {
+		if(API_key_saved != null && !API_key_saved.equals("")) {
     		if (!"No api key found".equals(API_key_saved)) {
     			startService();
     			// change to summary tab if api key is set and everything
