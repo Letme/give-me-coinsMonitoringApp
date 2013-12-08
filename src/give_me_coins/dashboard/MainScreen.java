@@ -86,7 +86,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     
 	private static String API_key_saved;
 	private static final String URL = "https://give-me-coins.com";
-	private static boolean change=false;
+
 	/**
 	 * Whether or not the system UI should be auto-hidden after
 	 * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -158,15 +158,12 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 	private static AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 	private ViewPager mViewPager;
-	private static Context context;
 	private static Fragment barcode;
 	private static Fragment dashboard;
 	private static Fragment summary;
-	private static ActionBar actionBar;
-	private static AsyncTask asyncService;
-	private static AsyncTask asyncPoolService;
+	private AsyncTask asyncService;
+	private AsyncTask asyncPoolService;
 	private static boolean isRunning=true;
-	private static Activity oAct;
 
 	static int coin_select=1;
 	
@@ -177,17 +174,12 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		setContentView(R.layout.main_screen);
 
 		//create file for shared preference
-		context = this;
-		sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+		sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
-		oAct = this;
-
-		// trying to get stuff from qrcode reader activity 		
+		// trying to get stuff from qrcode reader activity
 		Bundle extras = getIntent().getExtras(); 
-		String sApiKey = null;
-
-		if(extras != null) {
-			sApiKey = extras.getString("API_KEY");
+		if (extras != null) {
+            String sApiKey = extras.getString("API_KEY");
 			if(DEBUG)Log.d(TAG,sApiKey);
 			
 			// if got api key from QR activity directly save it
@@ -197,7 +189,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             	editor.putString(getString(R.string.saved_api_key), sApiKey);
             	if(DEBUG) Log.d(TAG,"Saving sApiKey:" + sApiKey);
             	editor.commit();
-            	Toast.makeText(context, "Settings have been saved.",Toast.LENGTH_LONG).show();
+            	Toast.makeText(this, "Settings have been saved.", Toast.LENGTH_LONG).show();
 			}
 		}
 		else
@@ -234,11 +226,10 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         mViewPager = (ViewPager) findViewById(R.id.pager);
 
         // Set up the action bar.
-        actionBar = getActionBar();
+        final ActionBar actionBar = getActionBar();
        
 	    // Specify that tabs should be displayed in the action bar.
 	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-	    actionBar.setDisplayShowTitleEnabled(false);
 
         // For each of the sections in the app, add a tab to the action bar.
         // Create a tab with text corresponding to the page title defined by the adapter.
@@ -277,11 +268,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         actionBar.setBackgroundDrawable(new ColorDrawable(R.color.menu_background));
 
        // mViewPager.setCurrentItem(0);
-		if(API_key_saved != null && API_key_saved != "") {
-    		if(API_key_saved.matches("No api key found")) {
-    			
-    		}
-    		else {
+		if(API_key_saved != null && !API_key_saved.equals("")) {
+    		if (!"No api key found".equals(API_key_saved)) {
     			startService();
     			// change to summary tab if api key is set and everything
     			mViewPager.setCurrentItem(1);
@@ -290,13 +278,12 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         
 	}
 	
-	private static void startService() {
+	private void startService() {
 		asyncService = new AsyncTask<Void, Void, Void>() {
 		    @Override
 		    protected Void doInBackground(Void... params) {
 		    		if(DEBUG) Log.d("asyncService","Starting oStickyService AsyncTask");
-		    		context.getApplicationContext();
-					context.startService( new Intent(context, GmcStickyService.class) );
+					startService(new Intent(MainScreen.this, GmcStickyService.class));
 		    		return null;
 		    }
 		}.execute();
@@ -333,7 +320,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		}
 	};
 	private ProgressDialog oLoadingProgress;
-	private static Menu oMenu;
+	private Menu oMenu;
 
 
 	/**
@@ -367,14 +354,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
-		int currentColor = 0;
-		ScrollView summary = (ScrollView) oAct.findViewById(R.id.summary_layout);
-		ScrollView dashBoard = (ScrollView) oAct.findViewById(R.id.dashboard_layout);
-		
+		ScrollView summary = (ScrollView) findViewById(R.id.summary_layout);
+		ScrollView dashBoard = (ScrollView) findViewById(R.id.dashboard_layout);
+
+        boolean change=false;
 	    switch (item.getItemId()) {
 	        case R.id.ltc_menu:
     	 		coin_select=1;
-    	 		Toast.makeText(context, "Coin changed to LTC",Toast.LENGTH_LONG).show();
+    	 		Toast.makeText(this, "Coin changed to LTC", Toast.LENGTH_LONG).show();
 				if(API_key_saved.contains("api-btc")) {
 					API_key_saved=API_key_saved.replace("api-btc", "api-ltc");
 					change=true;
@@ -386,19 +373,19 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-ltc";
     	 		mAppSectionsPagerAdapter.notifyDataSetChanged();
-    	 		currentColor = getResources().getColor(R.color.ltc);
+    	 		int ltcColor = getResources().getColor(R.color.ltc);
     	 		if(dashBoard != null)
     	 		{
-    	 			dashBoard.setBackgroundColor(currentColor); 			
+    	 			dashBoard.setBackgroundColor(ltcColor);
     	 		}
     	 		if( summary != null )
     	 		{
-    	 			summary.setBackgroundColor(currentColor);    	 			
+    	 			summary.setBackgroundColor(ltcColor);
     	 		}
 	            return true;
 	        case R.id.btc_menu:
 	        	coin_select=2;
-    	 		Toast.makeText(context, "Coin changed to BTC",Toast.LENGTH_LONG).show();
+    	 		Toast.makeText(this, "Coin changed to BTC", Toast.LENGTH_LONG).show();
 				if(API_key_saved.contains("api-ltc")) {
 					API_key_saved=API_key_saved.replace("api-ltc", "api-btc");
 					change=true;
@@ -410,19 +397,19 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				GMCService.url_fixed=URL+API_key_saved;
 				GMCPoolService.url_fixed=URL+"/pool/api-btc";
             	mAppSectionsPagerAdapter.notifyDataSetChanged();
-    	 		currentColor = getResources().getColor(R.color.btc);
+    	 		int btcColor = getResources().getColor(R.color.btc);
     	 		if(dashBoard != null)
     	 		{
-    	 			dashBoard.setBackgroundColor(currentColor); 			
+    	 			dashBoard.setBackgroundColor(btcColor);
     	 		}
     	 		if( summary != null )
     	 		{
-    	 			summary.setBackgroundColor(currentColor);    	 			
+    	 			summary.setBackgroundColor(btcColor);
     	 		}
 	            return true;
 	        case R.id.ftc_menu:
 	        	coin_select=3;
-     			Toast.makeText(context, "Coin changed to FTC",Toast.LENGTH_LONG).show();
+     			Toast.makeText(this, "Coin changed to FTC", Toast.LENGTH_LONG).show();
     			if(API_key_saved.contains("api-ltc")) {
     				API_key_saved=API_key_saved.replace("api-ltc", "api-ftc");
     				change=true;
@@ -434,14 +421,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-ftc";
             	mAppSectionsPagerAdapter.notifyDataSetChanged();
-    	 		currentColor = getResources().getColor(R.color.ftc);
+    	 		int ftcColor = getResources().getColor(R.color.ftc);
     	 		if(dashBoard != null)
     	 		{
-    	 			dashBoard.setBackgroundColor(currentColor); 			
+    	 			dashBoard.setBackgroundColor(ftcColor);
     	 		}
     	 		if( summary != null )
     	 		{
-    	 			summary.setBackgroundColor(currentColor);    	 			
+    	 			summary.setBackgroundColor(ftcColor);
     	 		}
     	 		return true;
 	        default:
@@ -465,37 +452,19 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		return super.onCreateOptionsMenu(menu);
 	}
 	
-	
-	private static void checkMenuStuff() {
-		if( sharedPref.getBoolean(context.getString(R.string.show_btc), true) )
-			showOption(R.id.btc_menu);
-		else
-			hideOption(R.id.btc_menu);
 
-		if( sharedPref.getBoolean(context.getString(R.string.show_ltc), true) )
-			showOption(R.id.ltc_menu);
-		else
-			hideOption(R.id.ltc_menu);
-
-		if( sharedPref.getBoolean(context.getString(R.string.show_ftc), true) )
-			showOption(R.id.ftc_menu);
-		else
-			hideOption(R.id.ftc_menu);
+	private void checkMenuStuff() {
+        showIfEnabled(R.string.show_btc, R.id.btc_menu);
+        showIfEnabled(R.string.show_ltc, R.id.ltc_menu);
+        showIfEnabled(R.string.show_ftc, R.id.ftc_menu);
 	}
 
-	private static void hideOption(int id)
-	{
-	    MenuItem item = oMenu.findItem(id);
-	    item.setVisible(false);
-	}
+    private void showIfEnabled(int key, int itemId) {
+        boolean isEnabled = sharedPref.getBoolean(getString(key), true);
+        MenuItem item = oMenu.findItem(itemId);
+        item.setVisible(isEnabled);
+    }
 
-	private static void showOption(int id)
-	{
-	    MenuItem item = oMenu.findItem(id);
-	    item.setVisible(true);
-	}
-	
-	
 	 private void updateNow() {
 		// TODO Auto-generated method stub
      	if( oStickyService != null )
@@ -531,7 +500,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         public Fragment getItem(int i) {
             switch (i) {
                 case 0:
-                	barcode= new BarCodeReaderFragment(); 
+                	barcode= new BarCodeReaderFragment();
                     return barcode;
                 case 1:
                 	// Summary Fragment
@@ -558,8 +527,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      */
     @SuppressLint("ValidFragment")
     static class BarCodeReaderFragment extends Fragment implements UpdateableFragment {
-    	private EditText apikeyoutput;
     	private View rootView;
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
@@ -570,16 +539,15 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                     .setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                           Intent intent = new Intent(getActivity(), BarCodeReaderActivity.class);
+                           Activity activity = getActivity();
+                           Intent intent = new Intent(activity, BarCodeReaderActivity.class);
                            startActivity(intent);
-                           oAct.finish();
                         }
                     });
             
             //Check if we have something in field
-            apikeyoutput = (EditText) rootView.findViewById(R.id.api_key_value);
-            String API_key = sharedPref.getString(getString(R.string.saved_api_key),"No api key found");
-            
+            final EditText apikeyoutput = (EditText) rootView.findViewById(R.id.api_key_value);
+
             // set show stuff
             CheckBox show_btc = (CheckBox) rootView.findViewById(R.id.show_btc);
             CheckBox show_ltc = (CheckBox) rootView.findViewById(R.id.show_ltc);
@@ -594,18 +562,17 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             
             
             setViewToTime(rootView.findViewById(R.id.update_times), sharedPref.getInt(getString(R.string.update_interval), 60000));
-            
-            if(!API_key.matches("No api key found")) {
+
+            String API_key = sharedPref.getString(getString(R.string.saved_api_key),"No api key found");
+            if (!"No api key found".equals(API_key)) {
             	apikeyoutput.setText(API_key);
+            } else if (apikeyoutput.getText().length() > 0) {
+                apikeyoutput.setText(R.string.add_api_key_text);
+                API_key_saved=apikeyoutput.getText().toString();
             }
-            else {
-            	if(apikeyoutput.getText().length()>0) {
-            		apikeyoutput.setText(R.string.add_api_key_text);
-            		API_key_saved=apikeyoutput.getText().toString();
-            	}
-            }
-            
-            
+
+            final Activity activity = getActivity();
+
             // Save settings for further usage
             rootView.findViewById(R.id.save_settings_button)
                     .setOnClickListener(new View.OnClickListener() {
@@ -631,19 +598,19 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         		if(instring !=1) {
                         			//Toast.makeText(context, "Removing http://",Toast.LENGTH_LONG).show();
                         			if(instring==-1) {
-	                                    Toast.makeText(context, "You need to add /pool/ infront of your API-key",Toast.LENGTH_LONG).show();
+	                                    Toast.makeText(activity, "You need to add /pool/ in front of your API-key", Toast.LENGTH_LONG).show();
 	                                    API_key_saved="No api key found";
 	                                } else if(API_key_saved.length()>0) {
 	                                    API_key_saved=API_key_saved.substring(API_key_saved.indexOf("/pool/"),API_key_saved.length());
 	                                    editor.putString(getString(R.string.saved_api_key), API_key_saved);      
 	                                    if(DEBUG) Log.i(TAG,"Saving API_key_save:" + API_key_saved);
 	                                    editor.commit();
-	                                    Toast.makeText(context, "Settings have been saved.",Toast.LENGTH_LONG).show();
+	                                    Toast.makeText(activity, "Settings have been saved.", Toast.LENGTH_LONG).show();
 	                                }
                         		}
                         		if(show_notification.isChecked()) {
                         			editor.commit();
-		                        	startService();
+                                    ((MainScreen) activity).startService();
 		                        	if(oStickyService != null)
 		                        		oStickyService.forceUpdate();
                         		} else {
@@ -651,8 +618,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         			if(oStickyService != null)
                         				oStickyService.forceUpdate();
                         		}
-                        		
-                        		checkMenuStuff();
+
+	                        	activity.invalidateOptionsMenu();
 	                        	mAppSectionsPagerAdapter.notifyDataSetChanged();
 	                        	
 	                        	//mAppSectionsPagerAdapter.getItemPosition(dashboard);
@@ -669,7 +636,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	                        	if(DEBUG) Log.d(TAG,"Removing API_key_save");
 	                        	apikeyoutput.setText(" ");
 	                        	editor.commit();
-	                        	Toast.makeText(context, "Settings cleared.",Toast.LENGTH_LONG).show();
+	                        	Toast.makeText(activity, "Settings cleared.", Toast.LENGTH_LONG).show();
 	                        	mAppSectionsPagerAdapter.notifyDataSetChanged();
 	                        	//mAppSectionsPagerAdapter.getItemPosition(dashboard);
                         }
@@ -693,7 +660,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
 	    		}
 	    		//actionBar.setTitle("Settings");
-	    		actionBar.setDisplayShowTitleEnabled(true);
+	    		activity.getActionBar().setDisplayShowTitleEnabled(true);
 	    		// Adds the drawable to your progressBar
 	    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
 	    	    displayProgress.setProgressDrawable(progressDrawable);
@@ -788,7 +755,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         public void update() {
         	
         	// do whatever you want to update your data
-        	ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSettings);
         	// Define a shape with rounded corners
             ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
         
@@ -806,8 +772,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     			default:
     				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
     		}
-    		//actionBar.setTitle("Settings");
-    		actionBar.setDisplayShowTitleEnabled(true);
+
+            ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSettings);
     		displayProgress.setProgress(Progress);
     		displayProgress.invalidate();
     		
@@ -830,7 +796,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    		 /*Intent intent = new Intent(getActivity(), DashBoardActivity.class);
 	             startActivity(intent);*/	            
 	         	
-		        ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarDashBoard);
 		     // Define a shape with rounded corners
                 ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
             
@@ -851,6 +816,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    		}
 	    		// Adds the drawable to your progressBar
 	    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
+	    	    ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarDashBoard);
 	    	    displayProgress.setProgressDrawable(progressDrawable);
 	    	    displayProgress.setProgress(Progress);
 	    	    pgDrawable.getPaint().setColor(currentColor);
@@ -933,11 +899,15 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      * Summary fragment function
      */
     @SuppressLint("ValidFragment")
-	static class SummaryFragment extends Fragment implements UpdateableFragment{
+    static class SummaryFragment extends Fragment implements UpdateableFragment{
+        private Activity activity;
+        private ActionBar actionBar;
     	private View rootView;
+
     	@Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	    		 activity = getActivity();
+	    		 actionBar = activity.getActionBar();
    
 	    		 rootView = inflater.inflate(R.layout.summary, container, false);
 	    		 getNewGMCInfo();
@@ -946,17 +916,13 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        	String API_key_text=sharedPref.getString(getString(R.string.saved_api_key),"No api key found");
 		        	
 		        	//safeguard to get data - NEED TO INFORM USER
-		        	if(API_key_text.matches("No api key found")) {
-		        		//API_key_saved="/pool/api-ltc?api_key=5ccbdb20d6e50838fdce14aeba0727f9e995f798ee618f1c31b2eb2790ba0cec";
-		        		//return rootView;
-		            }
-		        	else {
+		        	if (!"No api key found".equals(API_key_text)) {
 		        		API_key_saved=API_key_text;
 		        		//API_key_saved="/pool/api-ltc?api_key=5ccbdb20d6e50838fdce14aeba0727f9e995f798ee618f1c31b2eb2790ba0cec";
 		        	}
 		        	
 	                ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
-		            
+
 	                int currentColor = 0;
 	            	//determine what color it needs to be
 		    		switch(coin_select) {
@@ -999,8 +965,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        		}
 		        	}*/
 		    		
-		        	
-		        	ScrollView main_layout = (ScrollView) (rootView.findViewById(R.id.summary_layout));
 		        	/*TextView usernameH = new TextView(getActivity());
 					usernameH.setText(username + "with hashrate: " + total_hashrate);
 					usernameH.setTextColor(Color.RED);
@@ -1073,7 +1037,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        tl.addView(trH,new TableLayout.LayoutParams(
 			                  LayoutParams.MATCH_PARENT,
 			                  LayoutParams.WRAP_CONTENT));  
-			        View line = new View(oAct);
+			        View line = new View(activity);
 			        line.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
 			        line.setBackgroundColor(getResources().getColor(R.color.table_border));
 			        
@@ -1090,7 +1054,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        		//What do we want to change?
 			        		TableRow tr=(TableRow) rootView.findViewById(1000+current);
 			        		TextView Worker_Alive=(TextView) rootView.findViewById(3000+current);
-			        		if(worker_alive[current].equals("1")) {
+			        		if ("1".equals(worker_alive[current])) {
 						        Worker_Alive.setText("Online");
 						        Worker_Alive.setTextColor(green);
 						        //tr.setBackgroundColor(green);
@@ -1127,7 +1091,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				        // Second column
 				        TextView Worker_Alive = new TextView(getActivity());
 				        Worker_Alive.setId(3000+current);
-				        if(worker_alive[current].equals("1")) {
+				        if ("1".equals(worker_alive[current])) {
 				        	Worker_Alive.setText("Online");
 				        	Worker_Alive.setTextColor(green);
 				        	//tr.setBackgroundColor(green);
@@ -1157,7 +1121,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				                  LayoutParams.MATCH_PARENT,
 				                  LayoutParams.WRAP_CONTENT));
 				        tl.setPadding(5, 5, 5, 5);
-				        View line1 = new View(oAct);
+				        View line1 = new View(activity);
 				        line1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
 				        line1.setBackgroundColor(getResources().getColor(R.color.table_border));
 				        tl.addView(line1);
@@ -1165,7 +1129,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        }
 			        if(DEBUG) Log.d(TAG,"Table data ended");
 	    		 
-			        ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSummary);
 			        // Define a shape with rounded corners
 
 		    		
@@ -1175,10 +1138,13 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     			//	dashBoard.setBackgroundColor(currentColor);
     				
     				//LinearLayout summary = (LinearLayout) rootView.findViewById(R.id.summary_layout);
+		    		ScrollView main_layout = (ScrollView) (rootView.findViewById(R.id.summary_layout));
 		    		main_layout.setBackgroundColor(currentColor);
     				
 		    		// Adds the drawable to your progressBar
 		    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
+
+		    	    ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSummary);
 		    	    displayProgress.setProgressDrawable(progressDrawable);
 		    	    displayProgress.setProgress(Progress);
 		    	    
@@ -1194,7 +1160,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		@Override
         public void update() {
 			
-		            ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
 		            int currentColor = 0;
 		        	//determine what color it needs to be
 		    		switch(coin_select) {
@@ -1262,7 +1227,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        		//What do we want to change?
 		        		TableRow tr=(TableRow) rootView.findViewById(1000+current);
 		        		TextView Worker_Alive=(TextView) rootView.findViewById(3000+current);
-		        		if(worker_alive[current].equals("1")){
+		        		if("1".equals(worker_alive[current])){
 		        			//tr.setBackgroundColor(Color.GREEN);
 					        Worker_Alive.setText("Online");
 					        Worker_Alive.setTextColor(green);
@@ -1302,7 +1267,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        // Second column
 			        TextView Worker_Alive = new TextView(getActivity());
 			        Worker_Alive.setId(3000+current);
-			        if(worker_alive[current].equals("1")) {
+			        if("1".equals(worker_alive[current])) {
 			        	Worker_Alive.setText("Online");
 			        	Worker_Alive.setTextColor(green);
 			        	//tr.setBackgroundColor(Color.GREEN);
@@ -1331,7 +1296,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			        tl.addView(tr,new TableLayout.LayoutParams(
 			                  LayoutParams.MATCH_PARENT,
 			                  LayoutParams.WRAP_CONTENT));
-			        View line1 = new View(oAct);
+			        View line1 = new View(activity);
 			        line1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
 			        line1.setBackgroundColor(getResources().getColor(R.color.table_border));
 		        	tl.addView(line1);
@@ -1353,6 +1318,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				summary.setBackgroundColor(currentColor);
 	    		
 	    		// Adds the drawable to your progressBar
+	    	    ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners, null, null));
 	    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
 	    	    displayProgress.setProgressDrawable(progressDrawable);
 	    	    displayProgress.setProgress(Progress);
@@ -1541,7 +1507,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		
 		if(DEBUG) Log.d(TAG,"onDestroy");
 		isRunning=false;
-		actionBar.removeAllTabs();
+		getActionBar().removeAllTabs();
 		try
 		{
 			if( oStickyService != null)
@@ -1614,7 +1580,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			case KeyEvent.KEYCODE_BACK:
 				if(event.getRepeatCount() == 0) {
 					if(BackKeyExit == 0) {
-						Toast.makeText(context, "Press BACK twice to fully exit",Toast.LENGTH_LONG).show();
+						Toast.makeText(this, "Press BACK twice to fully exit", Toast.LENGTH_LONG).show();
 						BackKeyExit=1;
 					}
 					else {

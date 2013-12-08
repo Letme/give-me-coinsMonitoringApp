@@ -67,10 +67,12 @@ abstract class Widget_mainLarge extends AppWidgetProvider implements GetInfoWork
 				{
 					context.startService( new Intent(context, GmcStickyService.class) );
 				}
-				RemoteViews remoteViews = new RemoteViews( oContext.getPackageName(), R.layout.activity_widget_main );
+
 		        ComponentName watchWidget = getComponentName(oContext);
+
+                RemoteViews remoteViews = new RemoteViews( oContext.getPackageName(), R.layout.activity_widget_main );
 				remoteViews.removeAllViews(R.id.main_view);
-				RemoteViews overview = (RemoteViews) new RemoteViews(oContext.getPackageName(), R.layout.overview_layout);
+				RemoteViews overview = new RemoteViews(oContext.getPackageName(), R.layout.overview_layout);
 				int countOnlineWorkers = 0;
 		       // worker.setProgressBar(R.id.hash_rate_percentage, para_giveMeCoinsInfo.getTotal_hashrate(), currentWorker.getHashrate(), false);
 				overview.setTextViewText(R.id.total_hash_rate, "...");
@@ -135,8 +137,7 @@ abstract class Widget_mainLarge extends AppWidgetProvider implements GetInfoWork
 		
 		for(int app_id : oWidgetIds)
 		{
-			RemoteViews remoteViews = new RemoteViews( oContext.getPackageName(), R.layout.activity_widget_main );
-			
+
 	        ComponentName watchWidget = getComponentName(oContext);
 	        
 			if( para_giveMeCoinsInfo != null)
@@ -149,8 +150,9 @@ abstract class Widget_mainLarge extends AppWidgetProvider implements GetInfoWork
 				ListviewWidgetService.realCount = giveMeCoinWorkers.size();
 				//remoteViews.setEmptyView(R.id.stack_view, R.id.empty_view);
 				//remoteViews.s
+                RemoteViews remoteViews = new RemoteViews( oContext.getPackageName(), R.layout.activity_widget_main );
 				remoteViews.removeAllViews(R.id.main_view);
-				RemoteViews overview = (RemoteViews) new RemoteViews(oContext.getPackageName(), R.layout.overview_layout);
+				RemoteViews overview = new RemoteViews(oContext.getPackageName(), R.layout.overview_layout);
 				
 				int countOnlineWorkers = 0;
 				for(GiveMeCoinsWorkerInfo currentWorker: giveMeCoinWorkers)
