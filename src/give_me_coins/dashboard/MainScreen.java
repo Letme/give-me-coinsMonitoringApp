@@ -542,7 +542,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                            Activity activity = getActivity();
                            Intent intent = new Intent(activity, BarCodeReaderActivity.class);
                            startActivity(intent);
-                           activity.finish();
                         }
                     });
             
