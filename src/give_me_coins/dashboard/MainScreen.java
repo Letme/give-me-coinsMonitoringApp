@@ -164,7 +164,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	private static Fragment summary;
 	private AsyncTask asyncService;
 	private AsyncTask asyncPoolService;
-	private static boolean isRunning=true;
+	private boolean isRunning=true;
 
 	static int coin_select=1;
 	
@@ -1367,8 +1367,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    	    BackKeyExit=0;
     	} 	
     }
-    
-    private static final Handler mHandler = new Handler() {
+
+    private final Handler mHandler = new Handler() {
     	 @Override
          public void handleMessage(Message msg) {
     		 // so it doesnt try to update if not running
