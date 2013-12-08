@@ -161,6 +161,12 @@ public class GMCPoolService extends Service{
 										MainScreen.pool_round_shares=jsonAll.nextString();
 									} else if (name.equals("last_block")) {
 										MainScreen.pool_last_block=jsonAll.nextString();
+									} else if (name.equals("last_block_shares")) {
+										MainScreen.pool_last_block_shares=jsonAll.nextString();
+									} else if (name.equals("last_block_finder")) {
+										MainScreen.pool_last_block_finder=jsonAll.nextString();
+									} else if (name.equals("last_block_reward")) {
+										MainScreen.pool_last_block_reward=jsonAll.nextString();
 									} else if (name.equals("difficulty")) {
 										MainScreen.pool_difficulty=jsonAll.nextString();
 									} else {
@@ -180,6 +186,8 @@ public class GMCPoolService extends Service{
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 							Log.w(TAG,"JSON MAIN IOException: " + e);
+						} catch (NullPointerException e) {	
+							Log.w(TAG,"NullPointerException: " + e);
 						}
 					}
 				} catch (IOException e) {

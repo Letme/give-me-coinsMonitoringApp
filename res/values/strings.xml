@@ -25,11 +25,14 @@
 	<string name="ftc_text">FTC</string>
 	<string name="missing_username">Getting Data ...</string>
 	<string name="saved_coin_select">saved_coin_select</string>
-	<string name="pool_name">Give-me-coins.com Pool Status!</string>
+	<string name="pool_name">Give-me-coins.com Pool Status</string>
 	<string name="pool_hashrate_text">Pool hashrate:</string>
 	<string name="pool_workers_text">Pool active workers:</string>
 	<string name="pool_shares_text">Pool shares this round:</string>
 	<string name="pool_last_block_text">Pool last block id:</string>
+	<string name="pool_last_block_shares_text">Pool last block shares:</string>
+	<string name="pool_last_block_finder_text">Pool last block found by:</string>
+	<string name="pool_last_block_reward_text">Pool last block reward:</string>
 	<string name="pool_difficulty_text">Pool difficulty:</string>
 	<string name="api_key_hint">Your API key with /pool/api-ltc...</string>
 	<string name="help1_text">Remember that this is Beta version. If you find any bugs please report at: https://github.com/Letme/give-me-coinsMonitoringApp</string>

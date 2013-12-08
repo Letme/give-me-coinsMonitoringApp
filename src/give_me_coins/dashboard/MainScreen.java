@@ -21,8 +21,8 @@
 package give_me_coins.dashboard;
 
 import java.text.DecimalFormat;
-
 import give_me_coins.dashboard.util.SystemUiHider;
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -151,6 +151,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     		pool_workers=null,
     		pool_round_shares=null,
     		pool_last_block=null,
+    		pool_last_block_shares=null,
+    		pool_last_block_finder=null,
+    		pool_last_block_reward=null,
     		pool_difficulty=null;
 
 	private static AppSectionsPagerAdapter mAppSectionsPagerAdapter;
@@ -553,6 +556,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     /**
      * A Barcode reader fragment
      */
+    @SuppressLint("ValidFragment")
     static class BarCodeReaderFragment extends Fragment implements UpdateableFragment {
     	private EditText apikeyoutput;
     	private View rootView;
@@ -611,6 +615,19 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         			API_key_saved=apikeyoutput.getText().toString();
                         		//strip the api key of everything you can remember - you need just  /pool/... to remain
                         		int instring=API_key_saved.indexOf("/pool");
+                        		
+                                CheckBox show_btc = (CheckBox) rootView.findViewById(R.id.show_btc);
+                                CheckBox show_ltc = (CheckBox) rootView.findViewById(R.id.show_ltc);
+                                CheckBox show_ftc = (CheckBox) rootView.findViewById(R.id.show_ftc);
+                                CheckBox show_notification = (CheckBox) rootView.findViewById(R.id.show_notification);
+                        		
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putBoolean(getString(R.string.show_btc), show_btc.isChecked());
+                                editor.putBoolean(getString(R.string.show_ftc), show_ftc.isChecked());
+                                editor.putBoolean(getString(R.string.show_ltc), show_ltc.isChecked());
+                                editor.putBoolean(getString(R.string.show_notification), show_notification.isChecked());
+                                editor.putInt(getString(R.string.update_interval), getMillisecondsFromView(rootView.findViewById(R.id.update_times)));
+                                
                         		if(instring !=1) {
                         			//Toast.makeText(context, "Removing http://",Toast.LENGTH_LONG).show();
                         			if(instring==-1) {
@@ -618,30 +635,24 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	                                    API_key_saved="No api key found";
 	                                } else if(API_key_saved.length()>0) {
 	                                    API_key_saved=API_key_saved.substring(API_key_saved.indexOf("/pool/"),API_key_saved.length());
-	                                    SharedPreferences.Editor editor = sharedPref.edit();
-	                                    editor.putString(getString(R.string.saved_api_key), API_key_saved);
-	                                    
-	                                    CheckBox show_btc = (CheckBox) rootView.findViewById(R.id.show_btc);
-	                                    CheckBox show_ltc = (CheckBox) rootView.findViewById(R.id.show_ltc);
-	                                    CheckBox show_ftc = (CheckBox) rootView.findViewById(R.id.show_ftc);
-	                                    CheckBox show_notification = (CheckBox) rootView.findViewById(R.id.show_notification);
-	                                    
-	                                    editor.putBoolean(getString(R.string.show_btc), show_btc.isChecked());
-	                                    editor.putBoolean(getString(R.string.show_ftc), show_ftc.isChecked());
-	                                    editor.putBoolean(getString(R.string.show_ltc), show_ltc.isChecked());
-	                                    editor.putBoolean(getString(R.string.show_notification), show_notification.isChecked());
-	                                    
-	                                    editor.putInt(getString(R.string.update_interval), getMillisecondsFromView(rootView.findViewById(R.id.update_times)));
-	                                    
+	                                    editor.putString(getString(R.string.saved_api_key), API_key_saved);      
 	                                    if(DEBUG) Log.i(TAG,"Saving API_key_save:" + API_key_saved);
 	                                    editor.commit();
-	                                    checkMenuStuff();
 	                                    Toast.makeText(context, "Settings have been saved.",Toast.LENGTH_LONG).show();
 	                                }
                         		}
-	                        	startService();
-	                        	if(oStickyService != null)
-	                        		oStickyService.forceUpdate();
+                        		if(show_notification.isChecked()) {
+                        			editor.commit();
+		                        	startService();
+		                        	if(oStickyService != null)
+		                        		oStickyService.forceUpdate();
+                        		} else {
+                        			editor.commit();
+                        			if(oStickyService != null)
+                        				oStickyService.forceUpdate();
+                        		}
+                        		
+                        		checkMenuStuff();
 	                        	mAppSectionsPagerAdapter.notifyDataSetChanged();
 	                        	
 	                        	//mAppSectionsPagerAdapter.getItemPosition(dashboard);
@@ -656,6 +667,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         		SharedPreferences.Editor editor = sharedPref.edit();
 	                        	editor.remove(getString(R.string.saved_api_key));
 	                        	if(DEBUG) Log.d(TAG,"Removing API_key_save");
+	                        	apikeyoutput.setText(" ");
 	                        	editor.commit();
 	                        	Toast.makeText(context, "Settings cleared.",Toast.LENGTH_LONG).show();
 	                        	mAppSectionsPagerAdapter.notifyDataSetChanged();
@@ -806,6 +818,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     /*
      * Dashboard fragment function
      */
+    @SuppressLint("ValidFragment")
     static class DashBoardFragment extends Fragment implements UpdateableFragment{
     	private View rootView;
     	@Override
@@ -871,6 +884,18 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	            		TextView blockTV = (TextView) rootView.findViewById(R.id.pool_lastblock);
 	            		blockTV.setText(pool_last_block);
 	            	}
+	            	if(pool_last_block_shares!=null) {
+	            		TextView blockTV = (TextView) rootView.findViewById(R.id.pool_lastblock_shares);
+	            		blockTV.setText(pool_last_block_shares);
+	            	}
+	            	if(pool_last_block_finder!=null) {
+	            		TextView blockTV = (TextView) rootView.findViewById(R.id.pool_lastblock_finder);
+	            		blockTV.setText(pool_last_block_finder);
+	            	}
+	            	if(pool_last_block_reward!=null) {
+	            		TextView blockTV = (TextView) rootView.findViewById(R.id.pool_lastblock_reward);
+	            		blockTV.setText(pool_last_block_reward);
+	            	}
 	            	if(pool_difficulty!=null) {
 	            		TextView sifTV = (TextView) rootView.findViewById(R.id.pool_difficulty);
 	            		sifTV.setText(pool_difficulty.split("\\.")[0]);
@@ -907,7 +932,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     /*
      * Summary fragment function
      */
-    static class SummaryFragment extends Fragment implements UpdateableFragment{
+    @SuppressLint("ValidFragment")
+	static class SummaryFragment extends Fragment implements UpdateableFragment{
     	private View rootView;
     	@Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,

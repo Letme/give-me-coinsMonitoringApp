@@ -176,6 +176,98 @@
 		                android:textAppearance="?android:attr/textAppearanceMedium" />
 					
 		        </TableRow>
+		        		         <View android:layout_width="match_parent"
+				      android:layout_height="1dp"
+				      android:background="@color/table_border"/>
+		        
+		         <TableRow
+		            android:id="@+id/PooltableRow6"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:padding="5dp"
+		            >
+						
+		            <TextView
+		                android:id="@+id/PooltextView6"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:text="@string/pool_last_block_shares_text"
+		                android:textAppearance="?android:attr/textAppearanceMedium" 
+		                 android:textColor="#838383"
+		                />
+	      	        
+		            <TextView
+		                android:id="@+id/pool_lastblock_shares"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:text=""
+		                android:gravity="right"
+		                android:paddingRight="10dp"
+		                android:textAppearance="?android:attr/textAppearanceMedium" />
+					
+		        </TableRow>
+		        
+		         <View android:layout_width="match_parent"
+				      android:layout_height="1dp"
+				      android:background="@color/table_border"/>
+		        
+		         <TableRow
+		            android:id="@+id/PooltableRow7"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:padding="5dp"
+		            >
+						
+		            <TextView
+		                android:id="@+id/PooltextView7"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:text="@string/pool_last_block_finder_text"
+		                android:textAppearance="?android:attr/textAppearanceMedium" 
+		                 android:textColor="#838383"
+		                />
+	      	        
+		            <TextView
+		                android:id="@+id/pool_lastblock_finder"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:text=""
+		                android:gravity="right"
+		                android:paddingRight="10dp"
+		                android:textAppearance="?android:attr/textAppearanceMedium" />
+					
+		        </TableRow>
+		        
+		        <View android:layout_width="match_parent"
+				      android:layout_height="1dp"
+				      android:background="@color/table_border"/>
+		        
+		        <TableRow
+		            android:id="@+id/PooltableRow8"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:padding="5dp"
+		            >
+						
+		            <TextView
+		                android:id="@+id/PooltextView8"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:text="@string/pool_last_block_reward_text"
+		                android:textAppearance="?android:attr/textAppearanceMedium" 
+		                 android:textColor="#838383"
+		                />
+	      	        
+		            <TextView
+		                android:id="@+id/pool_lastblock_reward"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:text=""
+		                android:gravity="right"
+		                android:paddingRight="10dp"
+		                android:textAppearance="?android:attr/textAppearanceMedium" />
+					
+		        </TableRow>
 		        
 		        <View android:layout_width="match_parent"
 				      android:layout_height="1dp"
