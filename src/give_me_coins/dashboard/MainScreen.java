@@ -85,6 +85,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     private static final boolean DEBUG=true;
     
 	private static String API_key_saved;
+    private static final int GET_API_KEY = 1;
 	private static final String URL = "https://give-me-coins.com";
 
 	/**
@@ -175,30 +176,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 		//create file for shared preference
 		sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-
-		// trying to get stuff from qrcode reader activity
-		Bundle extras = getIntent().getExtras(); 
-		if (extras != null) {
-            String sApiKey = extras.getString("API_KEY");
-			if(DEBUG)Log.d(TAG,sApiKey);
-			
-			// if got api key from QR activity directly save it
-			if( sApiKey != null )
-			{
-				SharedPreferences.Editor editor = sharedPref.edit();
-            	editor.putString(getString(R.string.saved_api_key), sApiKey);
-            	if(DEBUG) Log.d(TAG,"Saving sApiKey:" + sApiKey);
-            	editor.commit();
-            	Toast.makeText(this, "Settings have been saved.", Toast.LENGTH_LONG).show();
-			}
-		}
-		else
-		{
-			
-			if(DEBUG) Log.d(TAG,"No Extras");
-		}
-
-
 
 		API_key_saved=sharedPref.getString(getString(R.string.saved_api_key),"");
 		if( sharedPref.getBoolean(getString(R.string.show_ltc), true) )
@@ -528,6 +505,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     @SuppressLint("ValidFragment")
     static class BarCodeReaderFragment extends Fragment implements UpdateableFragment {
     	private View rootView;
+        private EditText apikeyoutput;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -541,12 +519,12 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         public void onClick(View view) {
                            Activity activity = getActivity();
                            Intent intent = new Intent(activity, BarCodeReaderActivity.class);
-                           startActivity(intent);
+                           startActivityForResult(intent, GET_API_KEY);
                         }
                     });
             
             //Check if we have something in field
-            final EditText apikeyoutput = (EditText) rootView.findViewById(R.id.api_key_value);
+            apikeyoutput = (EditText) rootView.findViewById(R.id.api_key_value);
 
             // set show stuff
             CheckBox show_btc = (CheckBox) rootView.findViewById(R.id.show_btc);
@@ -668,6 +646,38 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 	    		
             return rootView;
+        }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (requestCode == GET_API_KEY && resultCode == Activity.RESULT_OK) {
+                // trying to get stuff from qrcode reader activity
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    String sApiKey = extras.getString("API_KEY");
+                    if(DEBUG)Log.d(TAG,sApiKey);
+
+                    // if got api key from QR activity directly save it
+                    if( sApiKey != null )
+                    {
+                        apikeyoutput.setText(sApiKey);
+
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString(getString(R.string.saved_api_key), sApiKey);
+                        if(DEBUG) Log.d(TAG,"Saving sApiKey:" + sApiKey);
+                        editor.commit();
+
+                        if (isAdded()) {
+                            Toast.makeText(getActivity(), "Settings have been saved.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+                else
+                {
+
+                    if(DEBUG) Log.d(TAG,"No Extras");
+                }
+            }
         }
         
         

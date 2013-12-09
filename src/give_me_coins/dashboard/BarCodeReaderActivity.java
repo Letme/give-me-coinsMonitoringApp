@@ -66,11 +66,11 @@ public class BarCodeReaderActivity extends Activity{
 			public void validQRcode( String QRText )
 			{
 				if(DEBUG) Log.d(TAG, "Valid QRText found");
-				Intent mainScreen = new	Intent(BarCodeReaderActivity.this, MainScreen.class);
-				mainScreen.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
-				// adding  /pool/api-ftc?api_key= -> in front of key
-				mainScreen.putExtra("API_KEY", "/pool/api-ltc?api_key="+QRText);
-				startActivity(mainScreen);
+
+				Intent mainScreen = getIntent()
+                        .putExtra("API_KEY", "/pool/api-ltc?api_key=" + QRText);
+                setResult(RESULT_OK, mainScreen);
+
 				finish();
 			}
 	  };
