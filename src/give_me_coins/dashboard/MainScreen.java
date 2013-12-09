@@ -433,15 +433,12 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		oMenu = menu;
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_activity_actions, menu);
-		checkMenuStuff();
-		return super.onCreateOptionsMenu(menu);
-	}
-	
 
-	private void checkMenuStuff() {
         showIfEnabled(R.string.show_btc, R.id.btc_menu);
         showIfEnabled(R.string.show_ltc, R.id.ltc_menu);
         showIfEnabled(R.string.show_ftc, R.id.ftc_menu);
+
+		return super.onCreateOptionsMenu(menu);
 	}
 
     private void showIfEnabled(int key, int itemId) {
