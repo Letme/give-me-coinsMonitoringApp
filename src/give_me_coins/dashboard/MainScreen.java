@@ -164,7 +164,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	private boolean isRunning=true;
 
 	private static Currency currency = Currency.LTC;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -177,11 +177,11 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		API_key_saved=sharedPref.getString(getString(R.string.saved_api_key),"");
 
 		if (sharedPref.getBoolean(getString(R.string.show_ltc), true)) {
-            currency = Currency.LTC;
+            onSelected(Currency.LTC);
 		} else if (sharedPref.getBoolean(getString(R.string.show_btc), true)) {
-            currency = Currency.BTC;
+            onSelected(Currency.BTC);
 		} else if (sharedPref.getBoolean(getString(R.string.show_ftc), true)) {
-            currency = Currency.FTC;
+            onSelected(Currency.FTC);
 		}
 
 		// Start service to receive data
@@ -196,7 +196,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
-        actionBar.setTitle(currency.name());
 
 	    // Specify that tabs should be displayed in the action bar.
 	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -339,8 +338,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         ActionBar actionBar = getActionBar();
 	    switch (item.getItemId()) {
 	        case R.id.ltc_menu:
-                currency = Currency.LTC;
-                actionBar.setTitle("LTC");
+                onSelected(Currency.LTC);
     	 		Toast.makeText(this, "Coin changed to LTC", Toast.LENGTH_LONG).show();
 				if(API_key_saved.contains("api-btc")) {
 					API_key_saved=API_key_saved.replace("api-btc", "api-ltc");
@@ -363,8 +361,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	 		}
 	            return true;
 	        case R.id.btc_menu:
-	        	currency = Currency.BTC;
-                actionBar.setTitle("BTC");
+                onSelected(Currency.BTC);
     	 		Toast.makeText(this, "Coin changed to BTC", Toast.LENGTH_LONG).show();
 				if(API_key_saved.contains("api-ltc")) {
 					API_key_saved=API_key_saved.replace("api-ltc", "api-btc");
@@ -387,8 +384,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	 		}
 	            return true;
 	        case R.id.ftc_menu:
-                actionBar.setTitle("FTC");
-	        	currency = Currency.FTC;
+                onSelected(Currency.FTC);
      			Toast.makeText(this, "Coin changed to FTC", Toast.LENGTH_LONG).show();
     			if(API_key_saved.contains("api-ltc")) {
     				API_key_saved=API_key_saved.replace("api-ltc", "api-ftc");
@@ -439,6 +435,11 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         boolean isEnabled = sharedPref.getBoolean(getString(key), true);
         MenuItem item = menu.findItem(itemId);
         item.setVisible(isEnabled);
+    }
+
+    private void onSelected(Currency currency) {
+        this.currency = currency;
+        getActionBar().setTitle(currency.name());
     }
 
 	 private void updateNow() {
