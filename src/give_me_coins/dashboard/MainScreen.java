@@ -119,7 +119,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	/**
 	 * Set stuff for Service handler to communicate with UI
 	 */
-	static GMCService mService = null;
+	private static final GMCService mService = null;
 	private static GmcStickyService oStickyService = null;
 	static GMCPoolService mPoolService = null;
 	private static final int DATA_FAILED=1;
