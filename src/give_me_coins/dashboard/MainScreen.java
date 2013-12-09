@@ -159,9 +159,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 	private static AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 	private ViewPager mViewPager;
-	private static Fragment barcode;
-	private static Fragment dashboard;
-	private static Fragment summary;
 	private AsyncTask asyncService;
 	private AsyncTask asyncPoolService;
 	private boolean isRunning=true;
@@ -471,6 +468,10 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      * sections of the app.
      */
     static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
+        private final Fragment barcode = new BarCodeReaderFragment();
+        private final Fragment dashboard = new DashBoardFragment();
+        private final Fragment summary = new SummaryFragment();
+
         AppSectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -488,18 +489,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         public Fragment getItem(int i) {
             switch (i) {
                 case 0:
-                	barcode= new BarCodeReaderFragment();
                     return barcode;
                 case 1:
                 	// Summary Fragment
-                	summary=new SummaryFragment();
                 	return summary;
                 case 2:
                 	// Dashboard fragment
-                	dashboard= new DashBoardFragment();
                 	return dashboard;
                 default:
-                	summary=new SummaryFragment();
                 	return summary;
             }
         }
