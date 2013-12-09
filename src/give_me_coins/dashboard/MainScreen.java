@@ -323,7 +323,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		ScrollView dashBoard = (ScrollView) findViewById(R.id.dashboard_layout);
 
         boolean change=false;
-        ActionBar actionBar = getActionBar();
 	    switch (item.getItemId()) {
 	        case R.id.ltc_menu:
                 onSelected(Currency.LTC);
