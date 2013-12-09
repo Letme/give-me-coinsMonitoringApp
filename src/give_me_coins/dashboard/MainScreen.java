@@ -163,8 +163,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	private AsyncTask asyncPoolService;
 	private boolean isRunning=true;
 
-	private static Currency currency = Currency.LTC;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -190,7 +188,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
-        mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager(), currency);
+        mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
 
@@ -317,16 +315,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		// TODO Auto-generated method stub
 		
 	}
-	private void clearPoolServiceVars(){
-		pool_total_hashrate=null;
-		pool_workers=null;
-		pool_round_shares=null;
-		pool_last_block=null;
-		pool_last_block_shares=null;
-		pool_last_block_finder=null;
-		pool_last_block_reward=null;
-		pool_difficulty=null;
-	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -347,8 +335,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 					API_key_saved=API_key_saved.replace("api-ftc", "api-ltc");
 					change=true;
 				}
+    			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-ltc";
-    			clearPoolServiceVars();
     	 		mAppSectionsPagerAdapter.notifyDataSetChanged();
     	 		int ltcColor = getResources().getColor(R.color.ltc);
     	 		if(dashBoard != null)
@@ -370,8 +358,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 					API_key_saved=API_key_saved.replace("api-ftc", "api-btc");
 					change=true;
 				}
+				GMCService.url_fixed=URL+API_key_saved;
 				GMCPoolService.url_fixed=URL+"/pool/api-btc";
-				clearPoolServiceVars();
             	mAppSectionsPagerAdapter.notifyDataSetChanged();
     	 		int btcColor = getResources().getColor(R.color.btc);
     	 		if(dashBoard != null)
@@ -393,8 +381,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     				API_key_saved=API_key_saved.replace("api-btc", "api-ftc");
     				change=true;
     			}
+    			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-ftc";
-    			clearPoolServiceVars();
             	mAppSectionsPagerAdapter.notifyDataSetChanged();
     	 		int ftcColor = getResources().getColor(R.color.ftc);
     	 		if(dashBoard != null)
@@ -407,7 +395,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	 		}
     	 		return true;
 	        default:
-            	mAppSectionsPagerAdapter.notifyDataSetChanged();
 	            return super.onOptionsItemSelected(item);
 	    }
 		/*
@@ -438,8 +425,16 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     }
 
     private void onSelected(Currency currency) {
-        this.currency = currency;
+        application().set(currency);
         getActionBar().setTitle(currency.name());
+    }
+
+    private static Currency currency() {
+        return application().selectedCurrency();
+    }
+
+    private static GiveMeCoinsDashboard application() {
+        return GiveMeCoinsDashboard.instance();
     }
 
 	 private void updateNow() {
@@ -464,11 +459,11 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         private final Fragment dashboard;
         private final Fragment summary;
 
-        AppSectionsPagerAdapter(FragmentManager fm, Currency currency) {
+        AppSectionsPagerAdapter(FragmentManager fm) {
             super(fm);
-            barcode = new BarCodeReaderFragment(currency);
-            dashboard = new DashBoardFragment(currency);
-            summary = new SummaryFragment(currency);
+            barcode = new BarCodeReaderFragment();
+            dashboard = new DashBoardFragment();
+            summary = new SummaryFragment();
         }
 
         @Override
@@ -505,15 +500,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     /**
      * A Barcode reader fragment
      */
-    @SuppressLint("ValidFragment")
     public static class BarCodeReaderFragment extends Fragment implements UpdateableFragment {
-        private final Currency currency;
     	private View rootView;
         private EditText apikeyoutput;
-
-        BarCodeReaderFragment(Currency currency) {
-            this.currency = currency;
-        }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -630,7 +619,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             	ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSettings);
             	// Define a shape with rounded corners
                 ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
-	    		pgDrawable.getPaint().setColor(currency.color(getResources()));
+	    		pgDrawable.getPaint().setColor(currency().color(getResources()));
 	    		//actionBar.setTitle("Settings");
 
 	    		// Adds the drawable to your progressBar
@@ -753,7 +742,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         	// do whatever you want to update your data
         	// Define a shape with rounded corners
             ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
-            pgDrawable.getPaint().setColor(currency.color(getResources()));
+            pgDrawable.getPaint().setColor(currency().color(getResources()));
 
             ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSettings);
     		displayProgress.setProgress(Progress);
@@ -767,13 +756,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      * Dashboard fragment function
      */
     public static class DashBoardFragment extends Fragment implements UpdateableFragment{
-        private final Currency currency;
     	private View rootView;
-
-        DashBoardFragment(Currency currency) {
-            this.currency = currency;
-        }
-
+        
     	@Override
 		public void onResume() {
 			// TODO Auto-generated method stub
@@ -799,7 +783,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    	    displayProgress.setProgressDrawable(progressDrawable);
 	    	    displayProgress.setProgress(Progress);
 
-	    	    int color = currency.color(getResources());
+	    	    int color = currency().color(getResources());
 	    	    pgDrawable.getPaint().setColor(color);
 				ScrollView dashBoard = (ScrollView) rootView.findViewById(R.id.dashboard_layout);
 				dashBoard.setBackgroundColor(color);
@@ -866,7 +850,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarDashBoard);
 		     // Define a shape with rounded corners
                 ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
-                pgDrawable.getPaint().setColor(currency.color(getResources()));
+                pgDrawable.getPaint().setColor(currency().color(getResources()));
 	    		// Adds the drawable to your progressBar
 	    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
 	    	    displayProgress.setProgressDrawable(progressDrawable);
@@ -877,383 +861,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	} 	
     }
     
-    /*
-     * Summary fragment function
-     */
-    public static class SummaryFragment extends Fragment implements UpdateableFragment{
-        private final Currency currency;
-        private Activity activity;
-    	private View rootView;
-
-        SummaryFragment(Currency currency) {
-            this.currency = currency;
-        }
-
-    	@Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-	    		 activity = getActivity();
-
-	    		 rootView = inflater.inflate(R.layout.summary, container, false);
-	    		 getNewGMCInfo();
-
-		        	SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-		        	String API_key_text=sharedPref.getString(getString(R.string.saved_api_key),"No api key found");
-		        	
-		        	//safeguard to get data - NEED TO INFORM USER
-		        	if (!"No api key found".equals(API_key_text)) {
-		        		API_key_saved=API_key_text;
-		        		//API_key_saved="/pool/api-ltc?api_key=5ccbdb20d6e50838fdce14aeba0727f9e995f798ee618f1c31b2eb2790ba0cec";
-		        	}
-		        	
-	                ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
-
-		        	/*if(API_key_saved != null) {
-		        		if(API_key_saved.matches("No api key found")) {
-		        			
-		        		}
-		        		else {
-		        			mService.start(URL+API_key_saved);
-		        		}
-		        	}*/
-		    		
-		        	/*TextView usernameH = new TextView(getActivity());
-					usernameH.setText(username + "with hashrate: " + total_hashrate);
-					usernameH.setTextColor(Color.RED);
-					main_layout.addView(usernameH);
-					*/
-		        	
-		        	if(username!=null) {
-	            		TextView usernameTV = (TextView) rootView.findViewById(R.id.summary_username);
-	            		usernameTV.setText(username);
-	            	}
-	            	if(confirmed_rewards!=null) {
-	            		TextView confrewardsTV = (TextView) rootView.findViewById(R.id.summary_confirmedrewards);
-	            		confrewardsTV.setText(confirmed_rewards);
-	            	}
-	            	if(total_hashrate!=null) {
-	            		TextView hashrateTV = (TextView) rootView.findViewById(R.id.summary_totalhash);
-	            		hashrateTV.setText(readableHashSize(Long.valueOf(total_hashrate.split("\\.")[0])));
-	            	}
-	            	if(round_estimate!=null) {
-	            		TextView estimateTV = (TextView) rootView.findViewById(R.id.summary_roundestimate);
-	            		estimateTV.setText(round_estimate);
-	            	}
-	            	if(round_shares!=null) {
-	            		TextView sharesTV = (TextView) rootView.findViewById(R.id.summary_roundshares);
-	            		sharesTV.setText(round_shares);
-	            	}
-		        	
-					TableLayout tl = (TableLayout)rootView.findViewById(R.id.myTableLayout);
-					//----------------- Dodaj header-----------------
-					TableRow trH = new TableRow(getActivity());
-					trH.setBackgroundResource(R.drawable.shape);
-					//trH.setBackgroundColor(Color.LTGRAY);
-					trH.setPadding(5, 5, 5, 5);
-			        trH.setLayoutParams(new TableLayout.LayoutParams(
-			        		LayoutParams.MATCH_PARENT,
-			                LayoutParams.WRAP_CONTENT));
-			        // Create first column
-			        TextView Worker_NameH = new TextView(getActivity());
-			        Worker_NameH.setText("Worker Name"); //+1 tukaj ker gledamo 2 polje
-			        Worker_NameH.setTextColor(Color.BLACK);
-			       // Worker_NameH.setBackgroundColor(Color.LTGRAY);
-			        Worker_NameH.setPadding(5,2,40,2);
-			        Worker_NameH.setGravity(Gravity.LEFT);
-			        Worker_NameH.setLayoutParams(new TableRow.LayoutParams(
-			        		LayoutParams.WRAP_CONTENT));
-			        trH.addView(Worker_NameH);
-			        
-			        // Create second column
-			        TextView Worker_AliveH = new TextView(getActivity());
-			        Worker_AliveH.setText("Worker status"); //+1 tukaj ker gledamo 2 polje
-			        Worker_AliveH.setTextColor(Color.BLACK);
-			       // Worker_AliveH.setBackgroundColor(Color.LTGRAY);
-			        Worker_AliveH.setGravity(Gravity.CENTER);
-			        Worker_AliveH.setPadding(0,2,40,2);
-			        Worker_AliveH.setLayoutParams(new TableRow.LayoutParams(
-			        		LayoutParams.WRAP_CONTENT));
-			        trH.addView(Worker_AliveH);
-			        
-			        // Create third column
-			        TextView Worker_HashRateH = new TextView(getActivity());
-			        Worker_HashRateH.setText("HashRate"); //+1 tukaj ker gledamo 2 polje
-			        Worker_HashRateH.setTextColor(Color.BLACK);
-			        //Worker_HashRateH.setBackgroundColor(Color.LTGRAY);
-			        Worker_HashRateH.setGravity(Gravity.RIGHT);
-			        Worker_HashRateH.setLayoutParams(new TableRow.LayoutParams(
-			        		LayoutParams.WRAP_CONTENT));
-			       // Worker_HashRateH.setPadding(10,2,0,2);
-			        trH.addView(Worker_HashRateH);
-			        /* Add row to TableLayout. */
-			        tl.addView(trH,new TableLayout.LayoutParams(
-			                  LayoutParams.MATCH_PARENT,
-			                  LayoutParams.WRAP_CONTENT));  
-			        View line = new View(activity);
-			        line.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
-			        line.setBackgroundColor(getResources().getColor(R.color.table_border));
-			        
-			        tl.addView( line );
-			        if(DEBUG) Log.d(TAG,"Table header ended");
-			        int green = getResources().getColor(R.color.light_green);
-			        int red = getResources().getColor(R.color.light_red);
-			        //TODO: we really need to pack this in a function ... 
-			        //------------- KONEC TABLE HEADERJA ---------------------
-			        for(int current=0;worker_alive[current]!=null;current++)
-			        {
-			        	// Check if we have already the line on screen
-			        	if(rootView.findViewById(1000+current) != null) {
-			        		//What do we want to change?
-			        		TableRow tr=(TableRow) rootView.findViewById(1000+current);
-			        		TextView Worker_Alive=(TextView) rootView.findViewById(3000+current);
-			        		if ("1".equals(worker_alive[current])) {
-						        Worker_Alive.setText("Online");
-						        Worker_Alive.setTextColor(green);
-						        //tr.setBackgroundColor(green);
-			        		}
-						    else {
-						        Worker_Alive.setText("Offline");
-						        Worker_Alive.setTextColor(red);
-						       // tr.setBackgroundColor(red);
-						    }
-			        		TextView Worker_HashRate =(TextView) rootView.findViewById(4000+current);
-			        		Worker_HashRate.setText(worker_hashrate[current]);
-			        		TextView Worker_Name =(TextView) rootView.findViewById(2000+current);
-			        		Worker_Name.setText(worker_name[current]);
-			        	}
-			        	else {
-			        		/* Create a new row to be added. */
-				        TableRow tr = new TableRow(getActivity());
-				        tr.setBackgroundResource(R.drawable.shape);
-				        tr.setId(1000+current);
-				        tr.setLayoutParams(new TableLayout.LayoutParams(
-				        		LayoutParams.MATCH_PARENT,
-				                LayoutParams.WRAP_CONTENT));
-				        
-				        // First column
-				        TextView Worker_Name = new TextView(getActivity());
-				        Worker_Name.setId(2000+current);
-				        Worker_Name.setGravity(Gravity.LEFT);
-				        Worker_Name.setText(worker_name[current]);
-				        Worker_Name.setTextColor(Color.BLACK);
-				        Worker_Name.setLayoutParams(new TableRow.LayoutParams(
-				        		LayoutParams.WRAP_CONTENT));
-				        tr.addView(Worker_Name);
-				        
-				        // Second column
-				        TextView Worker_Alive = new TextView(getActivity());
-				        Worker_Alive.setId(3000+current);
-				        if ("1".equals(worker_alive[current])) {
-				        	Worker_Alive.setText("Online");
-				        	Worker_Alive.setTextColor(green);
-				        	//tr.setBackgroundColor(green);
-				        }
-				        else {
-				        	Worker_Alive.setText("Offline");
-				        	Worker_Alive.setTextColor(red);
-				        	//tr.setBackgroundColor(red);
-				        }
-				        Worker_Alive.setTextColor(Color.BLACK);
-				        Worker_Alive.setGravity(Gravity.CENTER);
-				        Worker_Alive.setLayoutParams(new TableRow.LayoutParams(
-				        		LayoutParams.WRAP_CONTENT));
-				        tr.addView(Worker_Alive);
-				        
-				        // Third column
-				        TextView Worker_HashRate = new TextView(getActivity());
-				        Worker_HashRate.setId(4000+current);
-				        Worker_HashRate.setText(worker_hashrate[current]);
-				        Worker_HashRate.setGravity(Gravity.RIGHT);
-				        Worker_HashRate.setTextColor(Color.BLACK);
-				        Worker_HashRate.setLayoutParams(new TableRow.LayoutParams(
-				        		LayoutParams.WRAP_CONTENT));
-				        tr.addView(Worker_HashRate);
-				        /* Add row to TableLayout. */
-				        tl.addView(tr,new TableLayout.LayoutParams(
-				                  LayoutParams.MATCH_PARENT,
-				                  LayoutParams.WRAP_CONTENT));
-				        tl.setPadding(5, 5, 5, 5);
-				        View line1 = new View(activity);
-				        line1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
-				        line1.setBackgroundColor(getResources().getColor(R.color.table_border));
-				        tl.addView(line1);
-			        	}
-			        }
-			        if(DEBUG) Log.d(TAG,"Table data ended");
-	    		 
-			        // Define a shape with rounded corners
-
-		    		
-    				//pgDrawable.getPaint().setColor(currentColor);
-    				
-    			//	LinearLayout dashBoard = (LinearLayout) oAct.findViewById(R.id.dashboard_layout);
-    			//	dashBoard.setBackgroundColor(currentColor);
-    				
-    				//LinearLayout summary = (LinearLayout) rootView.findViewById(R.id.summary_layout);
-		    		ScrollView main_layout = (ScrollView) (rootView.findViewById(R.id.summary_layout));
-		    		main_layout.setBackgroundColor(currency.color(getResources()));
-    				
-		    		// Adds the drawable to your progressBar
-		    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
-
-		    	    ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSummary);
-		    	    displayProgress.setProgressDrawable(progressDrawable);
-		    	    displayProgress.setProgress(Progress);
-		    	    
-	        	return rootView;
-    	}
-    	
-        @Override
-		public void onDestroy() {
-			// TODO Auto-generated method stub
-			super.onDestroy();
-		}
-
-		@Override
-        public void update() {
-            	getNewGMCInfo();
-
-            	if(username!=null) {
-            		TextView usernameTV = (TextView) rootView.findViewById(R.id.summary_username);
-            		usernameTV.setText(username);
-            	}
-            	if(confirmed_rewards!=null) {
-            		TextView confrewardsTV = (TextView) rootView.findViewById(R.id.summary_confirmedrewards);
-            		confrewardsTV.setText(confirmed_rewards);
-            	}
-            	if(total_hashrate!=null) {
-            		TextView hashrateTV = (TextView) rootView.findViewById(R.id.summary_totalhash);
-            		hashrateTV.setText(readableHashSize(Long.valueOf(total_hashrate.split("\\.")[0])));
-            	}
-            	if(round_estimate!=null) {
-            		TextView estimateTV = (TextView) rootView.findViewById(R.id.summary_roundestimate);
-            		estimateTV.setText(round_estimate);
-            	}
-            	if(round_shares!=null) {
-            		TextView sharesTV = (TextView) rootView.findViewById(R.id.summary_roundshares);
-            		sharesTV.setText(round_shares);
-            	}
-            	
-            	 // do whatever you want to update your data
-	        	ScrollView main_layout = (ScrollView) (rootView.findViewById(R.id.summary_layout));
-	        	TableLayout tl = (TableLayout)rootView.findViewById(R.id.myTableLayout);
-	        	
-		       // View line = new View(oAct);
-		        // line.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
-		       // line.setBackgroundColor(Color.GRAY);
-		        
-	        	
-	        	
-		       // tl.addView( line );
-		        int green = getResources().getColor(R.color.light_green);
-		        int red = getResources().getColor(R.color.light_red);
-		        for(int current=0;worker_alive[current]!=null;current++)
-		        {
-		        	// Check if we have already the line on screen
-		        	if(rootView.findViewById(1000+current) != null) {
-		        		//What do we want to change?
-		        		TableRow tr=(TableRow) rootView.findViewById(1000+current);
-		        		TextView Worker_Alive=(TextView) rootView.findViewById(3000+current);
-		        		if("1".equals(worker_alive[current])){
-		        			//tr.setBackgroundColor(Color.GREEN);
-					        Worker_Alive.setText("Online");
-					        Worker_Alive.setTextColor(green);
-		        		}
-					    else {
-					    	Worker_Alive.setText("Offline");
-					    	Worker_Alive.setTextColor(red);
-					    	//tr.setBackgroundColor(Color.RED);
-					    }
-					        	
-		        		TextView Worker_HashRate =(TextView) rootView.findViewById(4000+current);
-		        		Worker_HashRate.setText(worker_hashrate[current]);
-		        		TextView Worker_Name = (TextView) rootView.findViewById(2000+current);
-		        		Worker_Name.setText(worker_name[current]);
-		        	}
-		        	else {
-		        		/* Create a new row to be added. */
-			        TableRow tr = new TableRow(getActivity());
-			        tr.setBackgroundResource(R.drawable.shape);
-			        tr.setId(1000+current);
-			        tr.setPadding(5, 5, 5, 5);
-			        tr.setLayoutParams(new TableLayout.LayoutParams(
-			        		LayoutParams.MATCH_PARENT,
-			                LayoutParams.WRAP_CONTENT));
-			        
-			        
-			        // First column
-			        TextView Worker_Name = new TextView(getActivity());
-			        Worker_Name.setId(2000+current);
-			        Worker_Name.setText(worker_name[current]);
-			        Worker_Name.setGravity(Gravity.LEFT);
-			        Worker_Name.setTextColor(Color.BLACK);
-			        Worker_Name.setLayoutParams(new TableRow.LayoutParams(
-			        		LayoutParams.WRAP_CONTENT));
-			        tr.addView(Worker_Name);
-			        
-			        // Second column
-			        TextView Worker_Alive = new TextView(getActivity());
-			        Worker_Alive.setId(3000+current);
-			        if("1".equals(worker_alive[current])) {
-			        	Worker_Alive.setText("Online");
-			        	Worker_Alive.setTextColor(green);
-			        	//tr.setBackgroundColor(Color.GREEN);
-			        }
-			        else {
-			        	Worker_Alive.setText("Offline");
-			        	Worker_Alive.setTextColor(red);
-			        	//tr.setBackgroundColor(Color.RED);
-			        }
-			        Worker_Alive.setTextColor(Color.BLACK);
-			        Worker_Alive.setGravity(Gravity.CENTER);
-			        Worker_Alive.setLayoutParams(new TableRow.LayoutParams(
-			        		LayoutParams.WRAP_CONTENT));
-			        tr.addView(Worker_Alive);
-			        
-			        // Third column
-			        TextView Worker_HashRate = new TextView(getActivity());
-			        Worker_HashRate.setId(4000+current);
-			        Worker_HashRate.setText(worker_hashrate[current]);
-			        Worker_HashRate.setGravity(Gravity.RIGHT);
-			        Worker_HashRate.setTextColor(Color.BLACK);
-			        Worker_HashRate.setLayoutParams(new TableRow.LayoutParams(
-			        		LayoutParams.WRAP_CONTENT));
-			        tr.addView(Worker_HashRate);
-			        /* Add row to TableLayout. */
-			        tl.addView(tr,new TableLayout.LayoutParams(
-			                  LayoutParams.MATCH_PARENT,
-			                  LayoutParams.WRAP_CONTENT));
-			        View line1 = new View(activity);
-			        line1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
-			        line1.setBackgroundColor(getResources().getColor(R.color.table_border));
-		        	tl.addView(line1);
-		        	}
-
-		        }            
-		        if(DEBUG) Log.d(TAG,"Summary updated");
-		        
-		        ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSummary);
-		        // Define a shape with rounded corners
-
-	    		
-				//pgDrawable.getPaint().setColor(currentColor);
-				/*
-				LinearLayout dashBoard = (LinearLayout) oAct.findViewById(R.id.dashboard_layout);
-				dashBoard.setBackgroundColor(currentColor);
-				*/
-				ScrollView summary = main_layout;
-				summary.setBackgroundColor(currency.color(getResources()));
-	    		
-	    		// Adds the drawable to your progressBar
-	    	    ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners, null, null));
-	    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
-	    	    displayProgress.setProgressDrawable(progressDrawable);
-	    	    displayProgress.setProgress(Progress);
-	    	    displayProgress.invalidate();
-	    	    
-	    	    BackKeyExit=0;
-    	} 	
-    }
-
     private final Handler mHandler = new Handler() {
     	 @Override
          public void handleMessage(Message msg) {
@@ -1281,11 +888,387 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	 }
     };
 
+    /*
+     * Summary fragment function
+     */
+    public static class SummaryFragment extends Fragment implements UpdateableFragment{
+        private Activity activity;
+        private View rootView;
+
+        SummaryFragment(Currency currency) {
+            this.currency = currency;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            activity = getActivity();
+
+            rootView = inflater.inflate(R.layout.summary, container, false);
+            getNewGMCInfo();
+
+            SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+            String API_key_text=sharedPref.getString(getString(R.string.saved_api_key),"No api key found");
+
+            //safeguard to get data - NEED TO INFORM USER
+            if (!"No api key found".equals(API_key_text)) {
+                API_key_saved=API_key_text;
+                //API_key_saved="/pool/api-ltc?api_key=5ccbdb20d6e50838fdce14aeba0727f9e995f798ee618f1c31b2eb2790ba0cec";
+            }
+
+            ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
+
+		        	/*if(API_key_saved != null) {
+		        		if(API_key_saved.matches("No api key found")) {
+		        			
+		        		}
+		        		else {
+		        			mService.start(URL+API_key_saved);
+		        		}
+		        	}*/
+		    		
+		        	/*TextView usernameH = new TextView(getActivity());
+					usernameH.setText(username + "with hashrate: " + total_hashrate);
+					usernameH.setTextColor(Color.RED);
+					main_layout.addView(usernameH);
+					*/
+
+            if(username!=null) {
+                TextView usernameTV = (TextView) rootView.findViewById(R.id.summary_username);
+                usernameTV.setText(username);
+            }
+            if(confirmed_rewards!=null) {
+                TextView confrewardsTV = (TextView) rootView.findViewById(R.id.summary_confirmedrewards);
+                confrewardsTV.setText(confirmed_rewards);
+            }
+            if(total_hashrate!=null) {
+                TextView hashrateTV = (TextView) rootView.findViewById(R.id.summary_totalhash);
+                hashrateTV.setText(readableHashSize(Long.valueOf(total_hashrate.split("\\.")[0])));
+            }
+            if(round_estimate!=null) {
+                TextView estimateTV = (TextView) rootView.findViewById(R.id.summary_roundestimate);
+                estimateTV.setText(round_estimate);
+            }
+            if(round_shares!=null) {
+                TextView sharesTV = (TextView) rootView.findViewById(R.id.summary_roundshares);
+                sharesTV.setText(round_shares);
+            }
+
+            TableLayout tl = (TableLayout)rootView.findViewById(R.id.myTableLayout);
+            //----------------- Dodaj header-----------------
+            TableRow trH = new TableRow(getActivity());
+            trH.setBackgroundResource(R.drawable.shape);
+            //trH.setBackgroundColor(Color.LTGRAY);
+            trH.setPadding(5, 5, 5, 5);
+            trH.setLayoutParams(new TableLayout.LayoutParams(
+                    LayoutParams.MATCH_PARENT,
+                    LayoutParams.WRAP_CONTENT));
+            // Create first column
+            TextView Worker_NameH = new TextView(getActivity());
+            Worker_NameH.setText("Worker Name"); //+1 tukaj ker gledamo 2 polje
+            Worker_NameH.setTextColor(Color.BLACK);
+            // Worker_NameH.setBackgroundColor(Color.LTGRAY);
+            Worker_NameH.setPadding(5,2,40,2);
+            Worker_NameH.setGravity(Gravity.LEFT);
+            Worker_NameH.setLayoutParams(new TableRow.LayoutParams(
+                    LayoutParams.WRAP_CONTENT));
+            trH.addView(Worker_NameH);
+
+            // Create second column
+            TextView Worker_AliveH = new TextView(getActivity());
+            Worker_AliveH.setText("Worker status"); //+1 tukaj ker gledamo 2 polje
+            Worker_AliveH.setTextColor(Color.BLACK);
+            // Worker_AliveH.setBackgroundColor(Color.LTGRAY);
+            Worker_AliveH.setGravity(Gravity.CENTER);
+            Worker_AliveH.setPadding(0,2,40,2);
+            Worker_AliveH.setLayoutParams(new TableRow.LayoutParams(
+                    LayoutParams.WRAP_CONTENT));
+            trH.addView(Worker_AliveH);
+
+            // Create third column
+            TextView Worker_HashRateH = new TextView(getActivity());
+            Worker_HashRateH.setText("HashRate"); //+1 tukaj ker gledamo 2 polje
+            Worker_HashRateH.setTextColor(Color.BLACK);
+            //Worker_HashRateH.setBackgroundColor(Color.LTGRAY);
+            Worker_HashRateH.setGravity(Gravity.RIGHT);
+            Worker_HashRateH.setLayoutParams(new TableRow.LayoutParams(
+                    LayoutParams.WRAP_CONTENT));
+            // Worker_HashRateH.setPadding(10,2,0,2);
+            trH.addView(Worker_HashRateH);
+			        /* Add row to TableLayout. */
+            tl.addView(trH,new TableLayout.LayoutParams(
+                    LayoutParams.MATCH_PARENT,
+                    LayoutParams.WRAP_CONTENT));
+            View line = new View(activity);
+            line.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
+            line.setBackgroundColor(getResources().getColor(R.color.table_border));
+
+            tl.addView( line );
+            if(DEBUG) Log.d(TAG,"Table header ended");
+            int green = getResources().getColor(R.color.light_green);
+            int red = getResources().getColor(R.color.light_red);
+            //TODO: we really need to pack this in a function ... 
+            //------------- KONEC TABLE HEADERJA ---------------------
+            for(int current=0;worker_alive[current]!=null;current++)
+            {
+                // Check if we have already the line on screen
+                if(rootView.findViewById(1000+current) != null) {
+                    //What do we want to change?
+                    TableRow tr=(TableRow) rootView.findViewById(1000+current);
+                    TextView Worker_Alive=(TextView) rootView.findViewById(3000+current);
+                    if ("1".equals(worker_alive[current])) {
+                        Worker_Alive.setText("Online");
+                        Worker_Alive.setTextColor(green);
+                        //tr.setBackgroundColor(green);
+                    }
+                    else {
+                        Worker_Alive.setText("Offline");
+                        Worker_Alive.setTextColor(red);
+                        // tr.setBackgroundColor(red);
+                    }
+                    TextView Worker_HashRate =(TextView) rootView.findViewById(4000+current);
+                    Worker_HashRate.setText(worker_hashrate[current]);
+                    TextView Worker_Name =(TextView) rootView.findViewById(2000+current);
+                    Worker_Name.setText(worker_name[current]);
+                }
+                else {
+			        		/* Create a new row to be added. */
+                    TableRow tr = new TableRow(getActivity());
+                    tr.setBackgroundResource(R.drawable.shape);
+                    tr.setId(1000+current);
+                    tr.setLayoutParams(new TableLayout.LayoutParams(
+                            LayoutParams.MATCH_PARENT,
+                            LayoutParams.WRAP_CONTENT));
+
+                    // First column
+                    TextView Worker_Name = new TextView(getActivity());
+                    Worker_Name.setId(2000+current);
+                    Worker_Name.setGravity(Gravity.LEFT);
+                    Worker_Name.setText(worker_name[current]);
+                    Worker_Name.setTextColor(Color.BLACK);
+                    Worker_Name.setLayoutParams(new TableRow.LayoutParams(
+                            LayoutParams.WRAP_CONTENT));
+                    tr.addView(Worker_Name);
+
+                    // Second column
+                    TextView Worker_Alive = new TextView(getActivity());
+                    Worker_Alive.setId(3000+current);
+                    if ("1".equals(worker_alive[current])) {
+                        Worker_Alive.setText("Online");
+                        Worker_Alive.setTextColor(green);
+                        //tr.setBackgroundColor(green);
+                    }
+                    else {
+                        Worker_Alive.setText("Offline");
+                        Worker_Alive.setTextColor(red);
+                        //tr.setBackgroundColor(red);
+                    }
+                    Worker_Alive.setTextColor(Color.BLACK);
+                    Worker_Alive.setGravity(Gravity.CENTER);
+                    Worker_Alive.setLayoutParams(new TableRow.LayoutParams(
+                            LayoutParams.WRAP_CONTENT));
+                    tr.addView(Worker_Alive);
+
+                    // Third column
+                    TextView Worker_HashRate = new TextView(getActivity());
+                    Worker_HashRate.setId(4000+current);
+                    Worker_HashRate.setText(worker_hashrate[current]);
+                    Worker_HashRate.setGravity(Gravity.RIGHT);
+                    Worker_HashRate.setTextColor(Color.BLACK);
+                    Worker_HashRate.setLayoutParams(new TableRow.LayoutParams(
+                            LayoutParams.WRAP_CONTENT));
+                    tr.addView(Worker_HashRate);
+				        /* Add row to TableLayout. */
+                    tl.addView(tr,new TableLayout.LayoutParams(
+                            LayoutParams.MATCH_PARENT,
+                            LayoutParams.WRAP_CONTENT));
+                    tl.setPadding(5, 5, 5, 5);
+                    View line1 = new View(activity);
+                    line1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
+                    line1.setBackgroundColor(getResources().getColor(R.color.table_border));
+                    tl.addView(line1);
+                }
+            }
+            if(DEBUG) Log.d(TAG,"Table data ended");
+
+            // Define a shape with rounded corners
+
+
+            //pgDrawable.getPaint().setColor(currentColor);
+
+            //	LinearLayout dashBoard = (LinearLayout) oAct.findViewById(R.id.dashboard_layout);
+            //	dashBoard.setBackgroundColor(currentColor);
+
+            //LinearLayout summary = (LinearLayout) rootView.findViewById(R.id.summary_layout);
+            ScrollView main_layout = (ScrollView) (rootView.findViewById(R.id.summary_layout));
+            main_layout.setBackgroundColor(currency.color(getResources()));
+
+            // Adds the drawable to your progressBar
+            ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
+
+            ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSummary);
+            displayProgress.setProgressDrawable(progressDrawable);
+            displayProgress.setProgress(Progress);
+
+            return rootView;
+        }
+
+        @Override
+        public void onDestroy() {
+            // TODO Auto-generated method stub
+            super.onDestroy();
+        }
+
+        @Override
+        public void update() {
+            getNewGMCInfo();
+
+            if(username!=null) {
+                TextView usernameTV = (TextView) rootView.findViewById(R.id.summary_username);
+                usernameTV.setText(username);
+            }
+            if(confirmed_rewards!=null) {
+                TextView confrewardsTV = (TextView) rootView.findViewById(R.id.summary_confirmedrewards);
+                confrewardsTV.setText(confirmed_rewards);
+            }
+            if(total_hashrate!=null) {
+                TextView hashrateTV = (TextView) rootView.findViewById(R.id.summary_totalhash);
+                hashrateTV.setText(readableHashSize(Long.valueOf(total_hashrate.split("\\.")[0])));
+            }
+            if(round_estimate!=null) {
+                TextView estimateTV = (TextView) rootView.findViewById(R.id.summary_roundestimate);
+                estimateTV.setText(round_estimate);
+            }
+            if(round_shares!=null) {
+                TextView sharesTV = (TextView) rootView.findViewById(R.id.summary_roundshares);
+                sharesTV.setText(round_shares);
+            }
+
+            // do whatever you want to update your data
+            ScrollView main_layout = (ScrollView) (rootView.findViewById(R.id.summary_layout));
+            TableLayout tl = (TableLayout)rootView.findViewById(R.id.myTableLayout);
+
+            // View line = new View(oAct);
+            // line.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
+            // line.setBackgroundColor(Color.GRAY);
+
+
+
+            // tl.addView( line );
+            int green = getResources().getColor(R.color.light_green);
+            int red = getResources().getColor(R.color.light_red);
+            for(int current=0;worker_alive[current]!=null;current++)
+            {
+                // Check if we have already the line on screen
+                if(rootView.findViewById(1000+current) != null) {
+                    //What do we want to change?
+                    TableRow tr=(TableRow) rootView.findViewById(1000+current);
+                    TextView Worker_Alive=(TextView) rootView.findViewById(3000+current);
+                    if("1".equals(worker_alive[current])){
+                        //tr.setBackgroundColor(Color.GREEN);
+                        Worker_Alive.setText("Online");
+                        Worker_Alive.setTextColor(green);
+                    }
+                    else {
+                        Worker_Alive.setText("Offline");
+                        Worker_Alive.setTextColor(red);
+                        //tr.setBackgroundColor(Color.RED);
+                    }
+
+                    TextView Worker_HashRate =(TextView) rootView.findViewById(4000+current);
+                    Worker_HashRate.setText(worker_hashrate[current]);
+                    TextView Worker_Name = (TextView) rootView.findViewById(2000+current);
+                    Worker_Name.setText(worker_name[current]);
+                }
+                else {
+		        		/* Create a new row to be added. */
+                    TableRow tr = new TableRow(getActivity());
+                    tr.setBackgroundResource(R.drawable.shape);
+                    tr.setId(1000+current);
+                    tr.setPadding(5, 5, 5, 5);
+                    tr.setLayoutParams(new TableLayout.LayoutParams(
+                            LayoutParams.MATCH_PARENT,
+                            LayoutParams.WRAP_CONTENT));
+
+
+                    // First column
+                    TextView Worker_Name = new TextView(getActivity());
+                    Worker_Name.setId(2000+current);
+                    Worker_Name.setText(worker_name[current]);
+                    Worker_Name.setGravity(Gravity.LEFT);
+                    Worker_Name.setTextColor(Color.BLACK);
+                    Worker_Name.setLayoutParams(new TableRow.LayoutParams(
+                            LayoutParams.WRAP_CONTENT));
+                    tr.addView(Worker_Name);
+
+                    // Second column
+                    TextView Worker_Alive = new TextView(getActivity());
+                    Worker_Alive.setId(3000+current);
+                    if("1".equals(worker_alive[current])) {
+                        Worker_Alive.setText("Online");
+                        Worker_Alive.setTextColor(green);
+                        //tr.setBackgroundColor(Color.GREEN);
+                    }
+                    else {
+                        Worker_Alive.setText("Offline");
+                        Worker_Alive.setTextColor(red);
+                        //tr.setBackgroundColor(Color.RED);
+                    }
+                    Worker_Alive.setTextColor(Color.BLACK);
+                    Worker_Alive.setGravity(Gravity.CENTER);
+                    Worker_Alive.setLayoutParams(new TableRow.LayoutParams(
+                            LayoutParams.WRAP_CONTENT));
+                    tr.addView(Worker_Alive);
+
+                    // Third column
+                    TextView Worker_HashRate = new TextView(getActivity());
+                    Worker_HashRate.setId(4000+current);
+                    Worker_HashRate.setText(worker_hashrate[current]);
+                    Worker_HashRate.setGravity(Gravity.RIGHT);
+                    Worker_HashRate.setTextColor(Color.BLACK);
+                    Worker_HashRate.setLayoutParams(new TableRow.LayoutParams(
+                            LayoutParams.WRAP_CONTENT));
+                    tr.addView(Worker_HashRate);
+			        /* Add row to TableLayout. */
+                    tl.addView(tr,new TableLayout.LayoutParams(
+                            LayoutParams.MATCH_PARENT,
+                            LayoutParams.WRAP_CONTENT));
+                    View line1 = new View(activity);
+                    line1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,2));
+                    line1.setBackgroundColor(getResources().getColor(R.color.table_border));
+                    tl.addView(line1);
+                }
+
+            }
+            if(DEBUG) Log.d(TAG,"Summary updated");
+
+            ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSummary);
+            // Define a shape with rounded corners
+
+
+            //pgDrawable.getPaint().setColor(currentColor);
+				/*
+				LinearLayout dashBoard = (LinearLayout) oAct.findViewById(R.id.dashboard_layout);
+				dashBoard.setBackgroundColor(currentColor);
+				*/
+            ScrollView summary = main_layout;
+            summary.setBackgroundColor(currency().color(getResources()));
+
+            // Adds the drawable to your progressBar
+            ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners, null, null));
+            ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
+            displayProgress.setProgressDrawable(progressDrawable);
+            displayProgress.setProgress(Progress);
+            displayProgress.invalidate();
+
+            BackKeyExit=0;
+        }
+    }
+
 	private static void getNewGMCInfo() {
 		// new info ...
 		 if( oStickyService != null)
 		 {
-			 switch (currency) {
+			 switch (currency()) {
 			 	case LTC:
 			 		if( oStickyService.getLTCInfo() != null)
 			 			setToLocalGMCInfo(oStickyService.getLTCInfo());
@@ -1336,7 +1319,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			if( oStickyService == null)
 				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
 
-			if (currency == Currency.BTC) {
+			if (currency() == Currency.BTC) {
 				setToLocalGMCInfo(para_giveMeCoinsInfo);
 				mAppSectionsPagerAdapter.notifyDataSetChanged();
 				if(oLoadingProgress != null)oLoadingProgress.dismiss();
@@ -1352,7 +1335,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			if( oStickyService == null)
 				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
 
-			if (currency == Currency.LTC) {
+			if (currency() == Currency.LTC) {
 				setToLocalGMCInfo(para_giveMeCoinsInfo);
 				mAppSectionsPagerAdapter.notifyDataSetChanged();
 				if(oLoadingProgress != null)oLoadingProgress.dismiss();
@@ -1368,7 +1351,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			if( oStickyService == null)
 				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
 
-			if (currency == Currency.FTC) {
+			if (currency() == Currency.FTC) {
 				setToLocalGMCInfo(para_giveMeCoinsInfo);
 				mAppSectionsPagerAdapter.notifyDataSetChanged();
 				if(oLoadingProgress != null)oLoadingProgress.dismiss();
@@ -1457,7 +1440,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		else
 		{
 			oStickyService.forceUpdate();
-			switch (currency) {
+			switch (currency()) {
 				case LTC:
 					setToLocalGMCInfo(oStickyService.getLTCInfo());
 					break;
