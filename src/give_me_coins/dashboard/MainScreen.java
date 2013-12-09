@@ -163,7 +163,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	private AsyncTask asyncPoolService;
 	private boolean isRunning=true;
 
-	private static int coin_select = 1;
+	private static Currency currency = Currency.LTC;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -176,15 +176,11 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 		API_key_saved=sharedPref.getString(getString(R.string.saved_api_key),"");
 
-        Currency currency = Currency.LTC;
 		if (sharedPref.getBoolean(getString(R.string.show_ltc), true)) {
-			coin_select = 1;
             currency = Currency.LTC;
 		} else if (sharedPref.getBoolean(getString(R.string.show_btc), true)) {
-			coin_select = 2;
             currency = Currency.BTC;
 		} else if (sharedPref.getBoolean(getString(R.string.show_ftc), true)) {
-			coin_select = 3;
             currency = Currency.FTC;
 		}
 
@@ -343,7 +339,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         ActionBar actionBar = getActionBar();
 	    switch (item.getItemId()) {
 	        case R.id.ltc_menu:
-                coin_select=1;
+                currency = Currency.LTC;
                 actionBar.setTitle("LTC");
     	 		Toast.makeText(this, "Coin changed to LTC", Toast.LENGTH_LONG).show();
 				if(API_key_saved.contains("api-btc")) {
@@ -367,7 +363,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	 		}
 	            return true;
 	        case R.id.btc_menu:
-	        	coin_select=2;
+	        	currency = Currency.BTC;
                 actionBar.setTitle("BTC");
     	 		Toast.makeText(this, "Coin changed to BTC", Toast.LENGTH_LONG).show();
 				if(API_key_saved.contains("api-ltc")) {
@@ -392,7 +388,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	            return true;
 	        case R.id.ftc_menu:
                 actionBar.setTitle("FTC");
-	        	coin_select=3;
+	        	currency = Currency.FTC;
      			Toast.makeText(this, "Coin changed to FTC", Toast.LENGTH_LONG).show();
     			if(API_key_saved.contains("api-ltc")) {
     				API_key_saved=API_key_saved.replace("api-ltc", "api-ftc");
@@ -756,23 +752,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         	// do whatever you want to update your data
         	// Define a shape with rounded corners
             ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
-        
-        	//determine what color it needs to be
-            int color;
-    		switch(coin_select) {
-    			case 1:
-    				color = getResources().getColor(R.color.ltc);
-    				break;
-    			case 2:
-    				color = getResources().getColor(R.color.btc);
-					break;
-    			case 3:
-    				 color = getResources().getColor(R.color.ftc);
-					break;
-    			default:
-    				 color = getResources().getColor(R.color.ltc);
-    		}
-            pgDrawable.getPaint().setColor(color);
+            pgDrawable.getPaint().setColor(currency.color(getResources()));
 
             ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSettings);
     		displayProgress.setProgress(Progress);
@@ -885,23 +865,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarDashBoard);
 		     // Define a shape with rounded corners
                 ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
-            
-            	//determine what color it needs to be
-                int color;
-	    		switch(coin_select) {
-	    			case 1:
-	    				color = getResources().getColor(R.color.ltc);
-	    				break;
-	    			case 2:
-	    				color = getResources().getColor(R.color.btc);
-						break;
-	    			case 3:
-	    				 color = getResources().getColor(R.color.ftc);
-						break;
-	    			default:
-	    				 color = getResources().getColor(R.color.ltc);
-	    		}
-                pgDrawable.getPaint().setColor(color);
+                pgDrawable.getPaint().setColor(currency.color(getResources()));
 	    		// Adds the drawable to your progressBar
 	    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
 	    	    displayProgress.setProgressDrawable(progressDrawable);
@@ -1145,23 +1109,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 		@Override
         public void update() {
-			
-		            int currentColor = 0;
-		        	//determine what color it needs to be
-		    		switch(coin_select) {
-		    		case 1:
-		    			currentColor = getResources().getColor(R.color.ltc);
-						break;
-					case 2:
-						currentColor = getResources().getColor(R.color.btc);
-						break;
-					case 3:
-						currentColor =  getResources().getColor(R.color.ftc);
-						break;
-					default:
-						currentColor =  getResources().getColor(R.color.ltc);
-						 break;
-		    		}
             	getNewGMCInfo();
 
             	if(username!=null) {
@@ -1293,7 +1240,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				dashBoard.setBackgroundColor(currentColor);
 				*/
 				ScrollView summary = main_layout;
-				summary.setBackgroundColor(currentColor);
+				summary.setBackgroundColor(currency.color(getResources()));
 	    		
 	    		// Adds the drawable to your progressBar
 	    	    ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners, null, null));
@@ -1337,16 +1284,16 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		// new info ...
 		 if( oStickyService != null)
 		 {
-			 switch( coin_select){
-			 	case 1:
+			 switch (currency) {
+			 	case LTC:
 			 		if( oStickyService.getLTCInfo() != null)
 			 			setToLocalGMCInfo(oStickyService.getLTCInfo());
 			 		break;
-			 	case 2:
+			 	case BTC:
 			 		if( oStickyService.getBTCInfo() != null)
 			 			setToLocalGMCInfo(oStickyService.getBTCInfo());
 			 		break;
-			 	case 3:
+			 	case FTC:
 			 		if( oStickyService.getFTCInfo() != null)
 			 			setToLocalGMCInfo(oStickyService.getFTCInfo());
 			 		break;
@@ -1356,13 +1303,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			 		break;
 			 }
 		 }
-		 else 
-		 {
-			 // It can happen that we do not have the service running
-			 //startService();
-			 //if(DEBUG) Log.e(TAG,"oStickyService==null");
-		 } 
-		
 	}
 
 	@Override
@@ -1389,19 +1329,18 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	}
 	
 	private final GetInfoWorkerCallback btc_callback = new GetInfoWorkerCallback() {
-		
+
 		@Override
 		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
 			if( oStickyService == null)
 				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
-			//TODO: need some defines for coin select stuff
-			if( coin_select == 2 )
-			{
+
+			if (currency == Currency.BTC) {
 				setToLocalGMCInfo(para_giveMeCoinsInfo);
 				mAppSectionsPagerAdapter.notifyDataSetChanged();
 				if(oLoadingProgress != null)oLoadingProgress.dismiss();
 			}
-			
+
 		}
 	};
 	
@@ -1411,9 +1350,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
 			if( oStickyService == null)
 				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
-			//TODO: need some defines for coin select stuff
-			if( coin_select == 1 )
-			{
+
+			if (currency == Currency.LTC) {
 				setToLocalGMCInfo(para_giveMeCoinsInfo);
 				mAppSectionsPagerAdapter.notifyDataSetChanged();
 				if(oLoadingProgress != null)oLoadingProgress.dismiss();
@@ -1428,9 +1366,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
 			if( oStickyService == null)
 				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
-			//TODO: need some defines for coin select stuff
-			if( coin_select == 3 )
-			{
+
+			if (currency == Currency.FTC) {
 				setToLocalGMCInfo(para_giveMeCoinsInfo);
 				mAppSectionsPagerAdapter.notifyDataSetChanged();
 				if(oLoadingProgress != null)oLoadingProgress.dismiss();
@@ -1519,15 +1456,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		else
 		{
 			oStickyService.forceUpdate();
-			switch(coin_select)
-			{
-				case(1):
+			switch (currency) {
+				case LTC:
 					setToLocalGMCInfo(oStickyService.getLTCInfo());
 					break;
-				case(2):
+				case BTC:
 					setToLocalGMCInfo(oStickyService.getBTCInfo());
 					break;
-				case(3):
+				case FTC:
 					setToLocalGMCInfo(oStickyService.getFTCInfo());
 					break;
 				default:
