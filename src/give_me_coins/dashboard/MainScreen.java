@@ -956,27 +956,15 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		    		switch(coin_select) {
 		    			case 1:
 		    				actionBar.setTitle("LTC");
-		    				actionBar.setDisplayShowTitleEnabled(true);
-		    				//getNewGMCInfo();
-		    				//mAppSectionsPagerAdapter.notifyDataSetChanged();
 		    				break;
 		    			case 2:
 		    				actionBar.setTitle("BTC");
-		    				actionBar.setDisplayShowTitleEnabled(true);
-		    				//getNewGMCInfo();
-		    				//mAppSectionsPagerAdapter.notifyDataSetChanged();
 							break;
 		    			case 3:
 		    				actionBar.setTitle("FTC");
-		    				actionBar.setDisplayShowTitleEnabled(true);
-		    				//getNewGMCInfo();
-		    				//mAppSectionsPagerAdapter.notifyDataSetChanged();
 							break;
 		    			default:
 		    				 actionBar.setTitle("LTC");
-		    				 actionBar.setDisplayShowTitleEnabled(true);
-		    				 //getNewGMCInfo();
-		    				// mAppSectionsPagerAdapter.notifyDataSetChanged();
 		    				 break;
 		    		}
 		        	
