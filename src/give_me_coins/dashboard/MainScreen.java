@@ -143,19 +143,19 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	static final String[] worker_hashrate = new String[MAX_WORKER_NUMBER];
 	static final String[] worker_name = new String[MAX_WORKER_NUMBER];
 	static final String[] worker_timestamp= new String[MAX_WORKER_NUMBER];
-    static String username = null,
-    		round_estimate= null,
-    		total_hashrate= null,
-    		round_shares= null,
-    		confirmed_rewards= null,
-    		pool_total_hashrate= null,
-    		pool_workers=null,
-    		pool_round_shares=null,
-    		pool_last_block=null,
-    		pool_last_block_shares=null,
-    		pool_last_block_finder=null,
-    		pool_last_block_reward=null,
-    		pool_difficulty=null;
+    static String username = null;
+    static String round_estimate= null;
+    static String total_hashrate= null;
+    static String round_shares= null;
+    static String confirmed_rewards= null;
+    static String pool_total_hashrate= null;
+    static String pool_workers=null;
+    static String pool_round_shares=null;
+    static String pool_last_block=null;
+    static String pool_last_block_shares=null;
+    static String pool_last_block_finder=null;
+    static String pool_last_block_reward=null;
+    static String pool_difficulty=null;
 
 	private static AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 	private ViewPager mViewPager;
