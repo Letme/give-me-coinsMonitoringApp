@@ -639,7 +639,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
 	    		}
 	    		//actionBar.setTitle("Settings");
-	    		activity.getActionBar().setDisplayShowTitleEnabled(true);
+
 	    		// Adds the drawable to your progressBar
 	    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
 	    	    displayProgress.setProgressDrawable(progressDrawable);
