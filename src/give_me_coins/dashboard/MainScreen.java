@@ -1150,23 +1150,19 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		    		switch(coin_select) {
 		    		case 1:
 		    			currentColor = getResources().getColor(R.color.ltc);
-						getNewGMCInfo();
 						break;
 					case 2:
 						currentColor = getResources().getColor(R.color.btc);
-						getNewGMCInfo();
 						break;
 					case 3:
 						currentColor =  getResources().getColor(R.color.ftc);
-						getNewGMCInfo();
 						break;
 					default:
 						currentColor =  getResources().getColor(R.color.ltc);
-						 getNewGMCInfo();
 						 break;
 		    		}
-			
-        	
+            	getNewGMCInfo();
+
             	if(username!=null) {
             		TextView usernameTV = (TextView) rootView.findViewById(R.id.summary_username);
             		usernameTV.setText(username);
