@@ -163,7 +163,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	private AsyncTask asyncPoolService;
 	private boolean isRunning=true;
 
-	static int coin_select=1;
+	private static int coin_select = 1;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -622,19 +622,21 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                 ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
             
             	//determine what color it needs to be
+	    		int color;
 	    		switch(coin_select) {
 	    			case 1:
-	    				pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
+	    				color = getResources().getColor(R.color.ltc);
 	    				break;
 	    			case 2:
-	    				pgDrawable.getPaint().setColor(getResources().getColor(R.color.btc));
+	    				color = getResources().getColor(R.color.btc);
 						break;
 	    			case 3:
-	    				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ftc));
+	    				 color = getResources().getColor(R.color.ftc);
 						break;
 	    			default:
-	    				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
+	    				 color = getResources().getColor(R.color.ltc);
 	    		}
+	    		pgDrawable.getPaint().setColor(color);
 	    		//actionBar.setTitle("Settings");
 
 	    		// Adds the drawable to your progressBar
@@ -759,19 +761,21 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
         
         	//determine what color it needs to be
+            int color;
     		switch(coin_select) {
     			case 1:
-    				pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
+    				color = getResources().getColor(R.color.ltc);
     				break;
     			case 2:
-    				pgDrawable.getPaint().setColor(getResources().getColor(R.color.btc));
+    				color = getResources().getColor(R.color.btc);
 					break;
     			case 3:
-    				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ftc));
+    				 color = getResources().getColor(R.color.ftc);
 					break;
     			default:
-    				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
+    				 color = getResources().getColor(R.color.ltc);
     		}
+            pgDrawable.getPaint().setColor(color);
 
             ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSettings);
     		displayProgress.setProgress(Progress);
@@ -893,19 +897,21 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                 ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
             
             	//determine what color it needs to be
+                int color;
 	    		switch(coin_select) {
 	    			case 1:
-	    				pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
+	    				color = getResources().getColor(R.color.ltc);
 	    				break;
 	    			case 2:
-	    				pgDrawable.getPaint().setColor(getResources().getColor(R.color.btc));
+	    				color = getResources().getColor(R.color.btc);
 						break;
 	    			case 3:
-	    				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ftc));
+	    				 color = getResources().getColor(R.color.ftc);
 						break;
 	    			default:
-	    				 pgDrawable.getPaint().setColor(getResources().getColor(R.color.ltc));
+	    				 color = getResources().getColor(R.color.ltc);
 	    		}
+                pgDrawable.getPaint().setColor(color);
 	    		// Adds the drawable to your progressBar
 	    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
 	    	    displayProgress.setProgressDrawable(progressDrawable);
