@@ -347,8 +347,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				if(API_key_saved.contains("api-btc")) {
 					API_key_saved=API_key_saved.replace("api-btc", "api-ltc");
 					change=true;
-				}
-				if(API_key_saved.contains("api-ftc")) {
+				} else if (API_key_saved.contains("api-ftc")) {
 					API_key_saved=API_key_saved.replace("api-ftc", "api-ltc");
 					change=true;
 				}
@@ -371,8 +370,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				if(API_key_saved.contains("api-ltc")) {
 					API_key_saved=API_key_saved.replace("api-ltc", "api-btc");
 					change=true;
-				}
-				if(API_key_saved.contains("api-ftc")) {
+				} else if (API_key_saved.contains("api-ftc")) {
 					API_key_saved=API_key_saved.replace("api-ftc", "api-btc");
 					change=true;
 				}
@@ -395,8 +393,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     			if(API_key_saved.contains("api-ltc")) {
     				API_key_saved=API_key_saved.replace("api-ltc", "api-ftc");
     				change=true;
-    			}
-    			if(API_key_saved.contains("api-btc")) {
+    			} else if (API_key_saved.contains("api-btc")) {
     				API_key_saved=API_key_saved.replace("api-btc", "api-ftc");
     				change=true;
     			}
