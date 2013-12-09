@@ -200,7 +200,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
-       
+        actionBar.setTitle(currency.name());
+
 	    // Specify that tabs should be displayed in the action bar.
 	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
