@@ -193,9 +193,24 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		//if(mService==null) mService= new GMCService(this,mHandler);
 		if(mPoolService==null) mPoolService = new GMCPoolService(mHandler);
 		
-		  // Create the adapter that will return a fragment for each of the three primary sections
+		// Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
-        mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
+        int color;
+        switch(coin_select) {
+            case 1:
+                color = getResources().getColor(R.color.ltc);
+                break;
+            case 2:
+                color = getResources().getColor(R.color.btc);
+                break;
+            case 3:
+                color = getResources().getColor(R.color.ftc);
+                break;
+            default:
+                color = getResources().getColor(R.color.ltc);
+        }
+
+        mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager(), color);
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
 
@@ -459,12 +474,15 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      * sections of the app.
      */
     static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
-        private final Fragment barcode = new BarCodeReaderFragment();
-        private final Fragment dashboard = new DashBoardFragment();
-        private final Fragment summary = new SummaryFragment();
+        private final Fragment barcode;
+        private final Fragment dashboard;
+        private final Fragment summary;
 
-        AppSectionsPagerAdapter(FragmentManager fm) {
+        AppSectionsPagerAdapter(FragmentManager fm, int currencyColor) {
             super(fm);
+            barcode = new BarCodeReaderFragment(currencyColor);
+            dashboard = new DashBoardFragment(currencyColor);
+            summary = new SummaryFragment(currencyColor);
         }
 
         @Override
@@ -502,8 +520,13 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      * A Barcode reader fragment
      */
     public static class BarCodeReaderFragment extends Fragment implements UpdateableFragment {
+        private final int currencyColor;
     	private View rootView;
         private EditText apikeyoutput;
+
+        BarCodeReaderFragment(int currencyColor) {
+            this.currencyColor = currencyColor;
+        }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -620,23 +643,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             	ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSettings);
             	// Define a shape with rounded corners
                 ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
-            
-            	//determine what color it needs to be
-	    		int color;
-	    		switch(coin_select) {
-	    			case 1:
-	    				color = getResources().getColor(R.color.ltc);
-	    				break;
-	    			case 2:
-	    				color = getResources().getColor(R.color.btc);
-						break;
-	    			case 3:
-	    				 color = getResources().getColor(R.color.ftc);
-						break;
-	    			default:
-	    				 color = getResources().getColor(R.color.ltc);
-	    		}
-	    		pgDrawable.getPaint().setColor(color);
+	    		pgDrawable.getPaint().setColor(currencyColor);
 	    		//actionBar.setTitle("Settings");
 
 	    		// Adds the drawable to your progressBar
@@ -789,7 +796,13 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      * Dashboard fragment function
      */
     public static class DashBoardFragment extends Fragment implements UpdateableFragment{
+        private final int currencyColor;
     	private View rootView;
+
+        DashBoardFragment(int currencyColor) {
+            this.currencyColor = currencyColor;
+        }
+
     	@Override
 		public void onResume() {
 			// TODO Auto-generated method stub
@@ -808,30 +821,15 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	         	
 		     // Define a shape with rounded corners
                 ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
-            
-                int currentColor = 0;
-            	//determine what color it needs to be
-	    		switch(coin_select) {
-	    			case 1:
-	    				currentColor = getResources().getColor(R.color.ltc);
-	    				break;
-	    			case 2:
-	    				currentColor = getResources().getColor(R.color.btc);
-						break;
-	    			case 3:
-	    				currentColor = getResources().getColor(R.color.ftc);
-						break;
-	    			default:
-	    				currentColor = getResources().getColor(R.color.ltc);
-	    		}
+
 	    		// Adds the drawable to your progressBar
 	    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
 	    	    ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarDashBoard);
 	    	    displayProgress.setProgressDrawable(progressDrawable);
 	    	    displayProgress.setProgress(Progress);
-	    	    pgDrawable.getPaint().setColor(currentColor);
+	    	    pgDrawable.getPaint().setColor(currencyColor);
 				ScrollView dashBoard = (ScrollView) rootView.findViewById(R.id.dashboard_layout);
-				dashBoard.setBackgroundColor(currentColor);
+				dashBoard.setBackgroundColor(currencyColor);
 				
 				// make hints so when they are null they get what -> could be done in layoutXML
         		TextView hashrateTV = (TextView) rootView.findViewById(R.id.pool_hashrate);
@@ -926,9 +924,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      * Summary fragment function
      */
     public static class SummaryFragment extends Fragment implements UpdateableFragment{
+        private final int currencyColor;
         private Activity activity;
         private ActionBar actionBar;
     	private View rootView;
+
+        SummaryFragment(int currencyColor) {
+            this.currencyColor = currencyColor;
+        }
 
     	@Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -949,32 +952,27 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        	
 	                ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
 
-	                int currentColor = 0;
 	            	//determine what color it needs to be
 		    		switch(coin_select) {
 		    			case 1:
-		    				currentColor = getResources().getColor(R.color.ltc);
 		    				actionBar.setTitle("LTC");
 		    				actionBar.setDisplayShowTitleEnabled(true);
 		    				//getNewGMCInfo();
 		    				//mAppSectionsPagerAdapter.notifyDataSetChanged();
 		    				break;
 		    			case 2:
-		    				currentColor = getResources().getColor(R.color.btc);
 		    				actionBar.setTitle("BTC");
 		    				actionBar.setDisplayShowTitleEnabled(true);
 		    				//getNewGMCInfo();
 		    				//mAppSectionsPagerAdapter.notifyDataSetChanged();
 							break;
 		    			case 3:
-		    				currentColor =  getResources().getColor(R.color.ftc);
 		    				actionBar.setTitle("FTC");
 		    				actionBar.setDisplayShowTitleEnabled(true);
 		    				//getNewGMCInfo();
 		    				//mAppSectionsPagerAdapter.notifyDataSetChanged();
 							break;
 		    			default:
-		    				currentColor = getResources().getColor(R.color.ltc);
 		    				 actionBar.setTitle("LTC");
 		    				 actionBar.setDisplayShowTitleEnabled(true);
 		    				 //getNewGMCInfo();
@@ -1165,7 +1163,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     				
     				//LinearLayout summary = (LinearLayout) rootView.findViewById(R.id.summary_layout);
 		    		ScrollView main_layout = (ScrollView) (rootView.findViewById(R.id.summary_layout));
-		    		main_layout.setBackgroundColor(currentColor);
+		    		main_layout.setBackgroundColor(currencyColor);
     				
 		    		// Adds the drawable to your progressBar
 		    	    ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
