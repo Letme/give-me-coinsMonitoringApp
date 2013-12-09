@@ -294,8 +294,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		}
 	};
 	private ProgressDialog oLoadingProgress;
-	private Menu oMenu;
-
 
 	/**
 	 * Schedules a call to hide() in [delay] milliseconds, canceling any
@@ -430,20 +428,19 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    // Inflate the menu items for use in the action bar
-		oMenu = menu;
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_activity_actions, menu);
 
-        showIfEnabled(R.string.show_btc, R.id.btc_menu);
-        showIfEnabled(R.string.show_ltc, R.id.ltc_menu);
-        showIfEnabled(R.string.show_ftc, R.id.ftc_menu);
+        showIfEnabled(R.string.show_btc, R.id.btc_menu, menu);
+        showIfEnabled(R.string.show_ltc, R.id.ltc_menu, menu);
+        showIfEnabled(R.string.show_ftc, R.id.ftc_menu, menu);
 
 		return super.onCreateOptionsMenu(menu);
 	}
 
-    private void showIfEnabled(int key, int itemId) {
+    private void showIfEnabled(int key, int itemId, Menu menu) {
         boolean isEnabled = sharedPref.getBoolean(getString(key), true);
-        MenuItem item = oMenu.findItem(itemId);
+        MenuItem item = menu.findItem(itemId);
         item.setVisible(isEnabled);
     }
 
