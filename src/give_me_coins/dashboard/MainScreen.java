@@ -355,9 +355,11 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		ScrollView dashBoard = (ScrollView) findViewById(R.id.dashboard_layout);
 
         boolean change=false;
+        ActionBar actionBar = getActionBar();
 	    switch (item.getItemId()) {
 	        case R.id.ltc_menu:
-    	 		coin_select=1;
+                coin_select=1;
+                actionBar.setTitle("LTC");
     	 		Toast.makeText(this, "Coin changed to LTC", Toast.LENGTH_LONG).show();
 				if(API_key_saved.contains("api-btc")) {
 					API_key_saved=API_key_saved.replace("api-btc", "api-ltc");
@@ -381,6 +383,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	            return true;
 	        case R.id.btc_menu:
 	        	coin_select=2;
+                actionBar.setTitle("BTC");
     	 		Toast.makeText(this, "Coin changed to BTC", Toast.LENGTH_LONG).show();
 				if(API_key_saved.contains("api-ltc")) {
 					API_key_saved=API_key_saved.replace("api-ltc", "api-btc");
@@ -403,6 +406,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	 		}
 	            return true;
 	        case R.id.ftc_menu:
+                actionBar.setTitle("FTC");
 	        	coin_select=3;
      			Toast.makeText(this, "Coin changed to FTC", Toast.LENGTH_LONG).show();
     			if(API_key_saved.contains("api-ltc")) {
@@ -926,7 +930,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     public static class SummaryFragment extends Fragment implements UpdateableFragment{
         private final int currencyColor;
         private Activity activity;
-        private ActionBar actionBar;
     	private View rootView;
 
         SummaryFragment(int currencyColor) {
@@ -936,8 +939,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	@Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	    		 activity = getActivity();
-	    		 actionBar = activity.getActionBar();
-   
+
 	    		 rootView = inflater.inflate(R.layout.summary, container, false);
 	    		 getNewGMCInfo();
 
@@ -952,22 +954,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        	
 	                ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
 
-	            	//determine what color it needs to be
-		    		switch(coin_select) {
-		    			case 1:
-		    				actionBar.setTitle("LTC");
-		    				break;
-		    			case 2:
-		    				actionBar.setTitle("BTC");
-							break;
-		    			case 3:
-		    				actionBar.setTitle("FTC");
-							break;
-		    			default:
-		    				 actionBar.setTitle("LTC");
-		    				 break;
-		    		}
-		        	
 		        	/*if(API_key_saved != null) {
 		        		if(API_key_saved.matches("No api key found")) {
 		        			
@@ -1177,22 +1163,18 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		    		switch(coin_select) {
 		    		case 1:
 		    			currentColor = getResources().getColor(R.color.ltc);
-						actionBar.setTitle("LTC");
 						getNewGMCInfo();
 						break;
 					case 2:
 						currentColor = getResources().getColor(R.color.btc);
-						actionBar.setTitle("BTC");
 						getNewGMCInfo();
 						break;
 					case 3:
 						currentColor =  getResources().getColor(R.color.ftc);
-						actionBar.setTitle("FTC");
 						getNewGMCInfo();
 						break;
 					default:
 						currentColor =  getResources().getColor(R.color.ltc);
-						 actionBar.setTitle("LTC");
 						 getNewGMCInfo();
 						 break;
 		    		}
