@@ -680,14 +680,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                 }
             }
         }
-        
-        
-        @Override
-		public void onDestroy() {
-			// TODO Auto-generated method stub
-			super.onDestroy();
-		}
-
 
 		private int getMillisecondsFromView(View para_spinner) {
 			if( para_spinner != null )
