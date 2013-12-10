@@ -327,6 +327,16 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		// TODO Auto-generated method stub
 		
 	}
+	private void clearPoolServiceVars(){
+		pool_total_hashrate=null;
+		pool_workers=null;
+		pool_round_shares=null;
+		pool_last_block=null;
+		pool_last_block_shares=null;
+		pool_last_block_finder=null;
+		pool_last_block_reward=null;
+		pool_difficulty=null;
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -347,8 +357,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 					API_key_saved=API_key_saved.replace("api-ftc", "api-ltc");
 					change=true;
 				}
-    			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-ltc";
+    			clearPoolServiceVars();
     	 		mAppSectionsPagerAdapter.notifyDataSetChanged();
     	 		int ltcColor = getResources().getColor(R.color.ltc);
     	 		if(dashBoard != null)
@@ -371,8 +381,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 					API_key_saved=API_key_saved.replace("api-ftc", "api-btc");
 					change=true;
 				}
-				GMCService.url_fixed=URL+API_key_saved;
 				GMCPoolService.url_fixed=URL+"/pool/api-btc";
+				clearPoolServiceVars();
             	mAppSectionsPagerAdapter.notifyDataSetChanged();
     	 		int btcColor = getResources().getColor(R.color.btc);
     	 		if(dashBoard != null)
@@ -395,8 +405,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     				API_key_saved=API_key_saved.replace("api-btc", "api-ftc");
     				change=true;
     			}
-    			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-ftc";
+    			clearPoolServiceVars();
             	mAppSectionsPagerAdapter.notifyDataSetChanged();
     	 		int ftcColor = getResources().getColor(R.color.ftc);
     	 		if(dashBoard != null)
@@ -409,6 +419,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	 		}
     	 		return true;
 	        default:
+            	mAppSectionsPagerAdapter.notifyDataSetChanged();
 	            return super.onOptionsItemSelected(item);
 	    }
 		/*
@@ -502,8 +513,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     /**
      * A Barcode reader fragment
      */
-    @SuppressLint("ValidFragment")
-    static class BarCodeReaderFragment extends Fragment implements UpdateableFragment {
+    public static class BarCodeReaderFragment extends Fragment implements UpdateableFragment {
     	private View rootView;
         private EditText apikeyoutput;
 
@@ -612,7 +622,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         		SharedPreferences.Editor editor = sharedPref.edit();
 	                        	editor.remove(getString(R.string.saved_api_key));
 	                        	if(DEBUG) Log.d(TAG,"Removing API_key_save");
-	                        	apikeyoutput.setText(" ");
+	                        	apikeyoutput.setText("");
+	                        	apikeyoutput.setHint(R.string.api_key_hint);
 	                        	editor.commit();
 	                        	Toast.makeText(activity, "Settings cleared.", Toast.LENGTH_LONG).show();
 	                        	mAppSectionsPagerAdapter.notifyDataSetChanged();
@@ -794,10 +805,16 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     /*
      * Dashboard fragment function
      */
-    @SuppressLint("ValidFragment")
-    static class DashBoardFragment extends Fragment implements UpdateableFragment{
+    public static class DashBoardFragment extends Fragment implements UpdateableFragment{
     	private View rootView;
     	@Override
+		public void onResume() {
+			// TODO Auto-generated method stub
+			super.onResume();
+			update();
+		}
+
+		@Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
     			
@@ -844,37 +861,57 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		}
             @Override
             public void update() {
-	    		 if(pool_total_hashrate!=null) {
-	            		TextView hashrateTV = (TextView) rootView.findViewById(R.id.pool_hashrate);
+            	
+            		// Define Views
+            		TextView hashrateTV = (TextView) rootView.findViewById(R.id.pool_hashrate);
+            		TextView workersTV = (TextView) rootView.findViewById(R.id.pool_workers);
+            		TextView sharesTV = (TextView) rootView.findViewById(R.id.pool_shares);
+            		TextView blockTV = (TextView) rootView.findViewById(R.id.pool_lastblock);
+            		TextView sblockTV = (TextView) rootView.findViewById(R.id.pool_lastblock_shares);
+            		TextView fblockTV = (TextView) rootView.findViewById(R.id.pool_lastblock_finder);
+            		TextView rblockTV = (TextView) rootView.findViewById(R.id.pool_lastblock_reward);
+            		TextView sifTV = (TextView) rootView.findViewById(R.id.pool_difficulty);
+            		
+            		// Write data to views
+	    		 	if(pool_total_hashrate!=null) {
 	            		hashrateTV.setText(readableHashSize(Long.valueOf(pool_total_hashrate.split("\\.")[0])));
+	            	} else {
+	            		hashrateTV.setText("...");
 	            	}
 	            	if(pool_workers!=null) {
-	            		TextView workersTV = (TextView) rootView.findViewById(R.id.pool_workers);
 	            		workersTV.setText(pool_workers);
+	            	} else {
+	            		workersTV.setText("...");
 	            	}
 	            	if(pool_round_shares!=null) {
-	            		TextView sharesTV = (TextView) rootView.findViewById(R.id.pool_shares);
 	            		sharesTV.setText(pool_round_shares);
+	            	} else {
+	            		sharesTV.setText("...");
 	            	}
 	            	if(pool_last_block!=null) {
-	            		TextView blockTV = (TextView) rootView.findViewById(R.id.pool_lastblock);
 	            		blockTV.setText(pool_last_block);
+	            	} else {
+	            		blockTV.setText("...");
 	            	}
 	            	if(pool_last_block_shares!=null) {
-	            		TextView blockTV = (TextView) rootView.findViewById(R.id.pool_lastblock_shares);
-	            		blockTV.setText(pool_last_block_shares);
+	            		sblockTV.setText(pool_last_block_shares);
+	            	} else {
+	            		sblockTV.setText("...");
 	            	}
 	            	if(pool_last_block_finder!=null) {
-	            		TextView blockTV = (TextView) rootView.findViewById(R.id.pool_lastblock_finder);
-	            		blockTV.setText(pool_last_block_finder);
+	            		fblockTV.setText(pool_last_block_finder);
+	            	} else {
+	            		fblockTV.setText("...");
 	            	}
 	            	if(pool_last_block_reward!=null) {
-	            		TextView blockTV = (TextView) rootView.findViewById(R.id.pool_lastblock_reward);
-	            		blockTV.setText(pool_last_block_reward);
+	            		rblockTV.setText(pool_last_block_reward);
+	            	} else {
+	            		rblockTV.setText("...");
 	            	}
 	            	if(pool_difficulty!=null) {
-	            		TextView sifTV = (TextView) rootView.findViewById(R.id.pool_difficulty);
 	            		sifTV.setText(pool_difficulty.split("\\.")[0]);
+	            	} else {
+	            		sifTV.setText("...");
 	            	}
 		        
 		        ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarDashBoard);
@@ -908,8 +945,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     /*
      * Summary fragment function
      */
-    @SuppressLint("ValidFragment")
-    static class SummaryFragment extends Fragment implements UpdateableFragment{
+    public static class SummaryFragment extends Fragment implements UpdateableFragment{
         private Activity activity;
         private ActionBar actionBar;
     	private View rootView;

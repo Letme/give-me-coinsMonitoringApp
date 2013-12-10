@@ -44,7 +44,7 @@ public class GMCPoolService extends Service{
 	private final Handler mHandler;
 	private static final String TAG = "GMCPoolService";
 	private PoolReceiveDataThread mReceiveData;
-	static String url_fixed;
+	public static String url_fixed;
 	Timer timer;
 	
 	public GMCPoolService(Handler handler) {
@@ -182,12 +182,15 @@ public class GMCPoolService extends Service{
 
 						} catch (IllegalStateException e) {	
 							Log.w(TAG,"IllegalStateException: " + e);
+							break;
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 							Log.w(TAG,"JSON MAIN IOException: " + e);
+							break;
 						} catch (NullPointerException e) {	
 							Log.w(TAG,"NullPointerException: " + e);
+							break;
 						}
 					}
 				} catch (IOException e) {
