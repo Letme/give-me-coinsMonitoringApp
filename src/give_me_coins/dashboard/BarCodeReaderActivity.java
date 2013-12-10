@@ -38,7 +38,6 @@ public class BarCodeReaderActivity extends Activity{
 	    private static final String TAG = "BarCodeReaderActivity";
 	    private static final boolean DEBUG=true;
 	    
-	  private Activity oAct = null;
 	  private TerrorCam oTerrorCam = null;
 	  
 	  @Override
@@ -59,8 +58,6 @@ public class BarCodeReaderActivity extends Activity{
 //	    previewHolder = preview.getHolder();
 //	    previewHolder.addCallback(surfaceCallback);
 //	    previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-	    oAct = this;
-	    
 	  }
 
 	  private final QRCodeReturnListener oQRCodeListener = new QRCodeReturnListener()
@@ -69,12 +66,12 @@ public class BarCodeReaderActivity extends Activity{
 			public void validQRcode( String QRText )
 			{
 				if(DEBUG) Log.d(TAG, "Valid QRText found");
-				Intent mainScreen = new	Intent(oAct, MainScreen.class);
-				mainScreen.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
-				// adding  /pool/api-ftc?api_key= -> in front of key
-				mainScreen.putExtra("API_KEY", "/pool/api-ltc?api_key="+QRText);
-				oAct.startActivity(mainScreen);
-				oAct.finish();
+
+				Intent mainScreen = getIntent()
+                        .putExtra("API_KEY", "/pool/api-ltc?api_key=" + QRText);
+                setResult(RESULT_OK, mainScreen);
+
+				finish();
 			}
 	  };
 	  
