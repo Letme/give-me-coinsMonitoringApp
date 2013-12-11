@@ -1282,29 +1282,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		 }
 	}
 
-	@Override
-	protected void onPause() {
-		if(DEBUG) Log.d(TAG,"onPause");
-		isRunning=false;
-		try
-		{
-			if( oStickyService != null )
-			{
-				oStickyService.detachListener(btc_callback, ltc_callback, ftc_callback);
-			}
-			asyncService.cancel(true);
-			asyncPoolService.cancel(true);
-			mPoolService.timer.cancel();
-			mPoolService.stop();
-		}
-		catch(Exception e)
-		{
-			Log.e(TAG,"error while trying to pause "+e.toString());
-		}
-		super.onPause();
 
-	}
-	
 	private final GetInfoWorkerCallback btc_callback = new GetInfoWorkerCallback() {
 
 		@Override
@@ -1394,32 +1372,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	}
 	
 	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		
-		if(DEBUG) Log.d(TAG,"onDestroy");
-		isRunning=false;
-		getActionBar().removeAllTabs();
-		try
-		{
-			if( oStickyService != null)
-			{
-				oStickyService.detachListener(btc_callback, ltc_callback, ftc_callback);
-				oStickyService.stop();
-				oStickyService = null;
-			}
-			asyncService.cancel(true);
-			asyncPoolService.cancel(true);
-			mPoolService.timer.cancel();
-			mPoolService.stop();
-		}
-		catch(Exception e)
-		{
-			Log.e(TAG,"error while trying to stop "+e.toString());
-		}
-	}
-
-	@Override
 	protected void onResume() {
 		super.onResume();
 		if(DEBUG) Log.e(TAG,"onResume");
@@ -1451,6 +1403,55 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		}
 		if( mPoolService==null) startService();
 	}
+
+    @Override
+    protected void onPause() {
+        if(DEBUG) Log.d(TAG,"onPause");
+        isRunning=false;
+        try
+        {
+            if( oStickyService != null )
+            {
+                oStickyService.detachListener(btc_callback, ltc_callback, ftc_callback);
+            }
+            asyncService.cancel(true);
+            asyncPoolService.cancel(true);
+            mPoolService.timer.cancel();
+            mPoolService.stop();
+        }
+        catch(Exception e)
+        {
+            Log.e(TAG,"error while trying to pause "+e.toString());
+        }
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if(DEBUG) Log.d(TAG,"onDestroy");
+        isRunning=false;
+        getActionBar().removeAllTabs();
+        try
+        {
+            if( oStickyService != null)
+            {
+                oStickyService.detachListener(btc_callback, ltc_callback, ftc_callback);
+                oStickyService.stop();
+                oStickyService = null;
+            }
+            asyncService.cancel(true);
+            asyncPoolService.cancel(true);
+            mPoolService.timer.cancel();
+            mPoolService.stop();
+        }
+        catch(Exception e)
+        {
+            Log.e(TAG,"error while trying to stop "+e.toString());
+        }
+    }
 	
 	static String readableHashSize(long size) {
 	    if(size <= 0) return String.valueOf(size);
