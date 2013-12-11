@@ -834,12 +834,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	        	//Read data from settings and write them here
 	        	return rootView;
     		}
-    	
-        @Override
-		public void onDestroy() {
-			// TODO Auto-generated method stub
-			super.onDestroy();
-		}
+
             @Override
             public void update() {
             	
@@ -1103,12 +1098,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             displayProgress.setProgress(Progress);
 
             return rootView;
-        }
-
-        @Override
-        public void onDestroy() {
-            // TODO Auto-generated method stub
-            super.onDestroy();
         }
 
         @Override
