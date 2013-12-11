@@ -22,7 +22,6 @@ package give_me_coins.dashboard;
 
 import java.text.DecimalFormat;
 import give_me_coins.dashboard.util.SystemUiHider;
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -894,10 +893,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         private Activity activity;
         private View rootView;
 
-        SummaryFragment(Currency currency) {
-            this.currency = currency;
-        }
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             activity = getActivity();
@@ -1099,7 +1094,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
             //LinearLayout summary = (LinearLayout) rootView.findViewById(R.id.summary_layout);
             ScrollView main_layout = (ScrollView) (rootView.findViewById(R.id.summary_layout));
-            main_layout.setBackgroundColor(currency.color(getResources()));
+            main_layout.setBackgroundColor(currency().color(getResources()));
 
             // Adds the drawable to your progressBar
             ClipDrawable progressDrawable = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
