@@ -21,6 +21,8 @@
 package give_me_coins.dashboard;
 
 import java.text.DecimalFormat;
+
+import android.support.v4.view.PagerAdapter;
 import give_me_coins.dashboard.util.SystemUiHider;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -156,7 +158,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     static String pool_last_block_reward=null;
     static String pool_difficulty=null;
 
-	private static AppSectionsPagerAdapter mAppSectionsPagerAdapter;
+	private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 	private ViewPager mViewPager;
 	private AsyncTask asyncService;
 	private AsyncTask asyncPoolService;
@@ -545,6 +547,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             }
 
             final Activity activity = getActivity();
+            ViewPager pager = (ViewPager) activity.findViewById(R.id.pager);
+            final PagerAdapter pagerAdapter = pager.getAdapter();
 
             // Save settings for further usage
             rootView.findViewById(R.id.save_settings_button)
@@ -593,9 +597,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         		}
 
 	                        	activity.invalidateOptionsMenu();
-	                        	mAppSectionsPagerAdapter.notifyDataSetChanged();
-	                        	
-	                        	//mAppSectionsPagerAdapter.getItemPosition(dashboard);
+	                        	pagerAdapter.notifyDataSetChanged();
                         }
 
                     });
@@ -610,8 +612,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	                        	apikeyoutput.setText("");
 	                        	editor.commit();
 	                        	Toast.makeText(activity, "Settings cleared.", Toast.LENGTH_LONG).show();
-	                        	mAppSectionsPagerAdapter.notifyDataSetChanged();
-	                        	//mAppSectionsPagerAdapter.getItemPosition(dashboard);
+	                        	pagerAdapter.notifyDataSetChanged();
                         }
                     });
             	ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarSettings);
