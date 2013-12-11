@@ -116,6 +116,31 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	 * The instance of the {@link SystemUiHider} for this activity.
 	 */
 	private final SystemUiHider mSystemUiHider = null;
+
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            // so it doesn't try to update if not running
+            if (isRunning) {
+                switch(msg.what) {
+                    case DATA_FAILED:
+                        mAppSectionsPagerAdapter.notifyDataSetChanged();
+                        break;
+                    case DATA_READY:
+                        mAppSectionsPagerAdapter.notifyDataSetChanged();
+                        break;
+                    case DATA_PROGRESS:
+                        //Progress=msg.getData().getInt(PROGRESS);
+                        mAppSectionsPagerAdapter.notifyDataSetChanged();
+                        break;
+                    case POOL_DATA_READY:
+                        //Progress=msg.getData().getInt(PROGRESS);
+                        mAppSectionsPagerAdapter.notifyDataSetChanged();
+                        break;
+                }
+            }
+        }
+    };
 	
 	/**
 	 * Set stuff for Service handler to communicate with UI
@@ -859,33 +884,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    		BackKeyExit=0;
     	} 	
     }
-    
-    private final Handler mHandler = new Handler() {
-    	 @Override
-         public void handleMessage(Message msg) {
-    		 // so it doesnt try to update if not running
-    		 if( isRunning )
-    		 {
-	    		 switch(msg.what) {
-	    		 	case DATA_FAILED:
-	    		 		mAppSectionsPagerAdapter.notifyDataSetChanged();
-	    		 		break;
-	    		 	case DATA_READY:
-	    		 		mAppSectionsPagerAdapter.notifyDataSetChanged();
-	    		 		break;
-	    		 	case DATA_PROGRESS:
-	    		 		//Progress=msg.getData().getInt(PROGRESS);
-	    		 		mAppSectionsPagerAdapter.notifyDataSetChanged();
-	    		 		break;
-	    		 	case POOL_DATA_READY:
-	    		 		//Progress=msg.getData().getInt(PROGRESS);
-	    		 		mAppSectionsPagerAdapter.notifyDataSetChanged();
-	    		 		break;
-	    		 
-	    		 }
-    		 }
-    	 }
-    };
 
     /*
      * Summary fragment function
