@@ -623,7 +623,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	                        	editor.remove(getString(R.string.saved_api_key));
 	                        	if(DEBUG) Log.d(TAG,"Removing API_key_save");
 	                        	apikeyoutput.setText("");
-	                        	apikeyoutput.setHint(R.string.api_key_hint);
 	                        	editor.commit();
 	                        	Toast.makeText(activity, "Settings cleared.", Toast.LENGTH_LONG).show();
 	                        	mAppSectionsPagerAdapter.notifyDataSetChanged();
@@ -850,6 +849,25 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				ScrollView dashBoard = (ScrollView) rootView.findViewById(R.id.dashboard_layout);
 				dashBoard.setBackgroundColor(currentColor);
 				
+				// make hints so when they are null they get what -> could be done in layoutXML
+        		TextView hashrateTV = (TextView) rootView.findViewById(R.id.pool_hashrate);
+        		hashrateTV.setHint("...");
+        		TextView workersTV = (TextView) rootView.findViewById(R.id.pool_workers);
+        		workersTV.setHint("...");
+        		TextView sharesTV = (TextView) rootView.findViewById(R.id.pool_shares);
+        		sharesTV.setHint("...");
+        		TextView blockTV = (TextView) rootView.findViewById(R.id.pool_lastblock);
+        		blockTV.setHint("...");
+        		TextView sblockTV = (TextView) rootView.findViewById(R.id.pool_lastblock_shares);
+        		sblockTV.setHint("...");
+        		TextView fblockTV = (TextView) rootView.findViewById(R.id.pool_lastblock_finder);
+        		fblockTV.setHint("...");
+        		TextView rblockTV = (TextView) rootView.findViewById(R.id.pool_lastblock_reward);
+        		rblockTV.setHint("...");
+        		TextView sifTV = (TextView) rootView.findViewById(R.id.pool_difficulty);
+        		sifTV.setHint("...");
+				
+				
 	        	//Read data from settings and write them here
 	        	return rootView;
     		}
@@ -876,42 +894,18 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    		 	if(pool_total_hashrate!=null) {
 	            		hashrateTV.setText(readableHashSize(Long.valueOf(pool_total_hashrate.split("\\.")[0])));
 	            	} else {
-	            		hashrateTV.setText("...");
+	            		hashrateTV.setText("");
 	            	}
-	            	if(pool_workers!=null) {
 	            		workersTV.setText(pool_workers);
-	            	} else {
-	            		workersTV.setText("...");
-	            	}
-	            	if(pool_round_shares!=null) {
 	            		sharesTV.setText(pool_round_shares);
-	            	} else {
-	            		sharesTV.setText("...");
-	            	}
-	            	if(pool_last_block!=null) {
 	            		blockTV.setText(pool_last_block);
-	            	} else {
-	            		blockTV.setText("...");
-	            	}
-	            	if(pool_last_block_shares!=null) {
 	            		sblockTV.setText(pool_last_block_shares);
-	            	} else {
-	            		sblockTV.setText("...");
-	            	}
-	            	if(pool_last_block_finder!=null) {
 	            		fblockTV.setText(pool_last_block_finder);
-	            	} else {
-	            		fblockTV.setText("...");
-	            	}
-	            	if(pool_last_block_reward!=null) {
 	            		rblockTV.setText(pool_last_block_reward);
-	            	} else {
-	            		rblockTV.setText("...");
-	            	}
 	            	if(pool_difficulty!=null) {
 	            		sifTV.setText(pool_difficulty.split("\\.")[0]);
 	            	} else {
-	            		sifTV.setText("...");
+	            		sifTV.setText("");
 	            	}
 		        
 		        ProgressBar displayProgress=(ProgressBar) rootView.findViewById(R.id.progressBarDashBoard);
