@@ -137,18 +137,11 @@ public class GMCPoolService extends Service{
 			}
 			//now lets parse the output form give-me-coins
 			if(DEBUG) Log.d(TAG,"Parsing json");
-			//we need a way to figure out if it is CloudFlare 521 site (which is not json).
-			try {
-				if(jsonAll.peek()==null){
-					cancel();
-					return;
-				}
+			//we need a way to figure out if it is CloudFlare 521 site (which is not json
+			if(jsonAll==null){
+				cancel();
+				return;
 			}
-			catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					Log.w(TAG,"Page is not JSON!");
-			}	
 		   		try {
 					while (jsonAll.hasNext()) {
 						try {
