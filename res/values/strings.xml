@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">give-me-coins.com Dashboard</string>
+    <string name="app_name">GMC Dashboard</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="demo_collection">Demo collection</string>
@@ -44,10 +44,10 @@
     <string name="totalhash_widget_text">Total Hashrate</string>
     <string name="workers_online">Workers</string>
     <string name="confirmed_rewards">Confirmed Rewards</string>
-    <string name="app_name_ltc">give-me-coins.com LTC</string>
-    <string name="app_name_ftc">give-me-coins.com FTC</string>
-    <string name="app_name_btc">give-me-coins.com BTC</string>
-    <string name="notification">give-me-coins.com</string>
+    <string name="app_name_ltc">GMC LTC</string>
+    <string name="app_name_ftc">GMC FTC</string>
+    <string name="app_name_btc">GMC BTC</string>
+    <string name="notification">GMC</string>
     <string name="refresh_text">Refresh</string>
     <string name="show_btc">Show BTC</string>
     <string name="show_ltc">Show LTC</string>
