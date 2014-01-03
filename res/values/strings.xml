@@ -18,14 +18,16 @@
     <string name="username_text">Username:</string>
     <string name="totalhash_text">Your hashrate:</string>
     <string name="roundestimate_text">Round estimate:</string>
+    <string name="usdroundestimate_text"></string>
 	<string name="roundshares_text">Round shares:</string>
 	<string name="confirmedrewards_text">Confirmed rewards:</string>
+	<string name="usdconfirmedrewards_text"></string>
 	<string name="ltc_text">LTC</string>
 	<string name="btc_text">BTC</string>
 	<string name="ftc_text">FTC</string>
 	<string name="missing_username">Getting Data ...</string>
 	<string name="saved_coin_select">saved_coin_select</string>
-	<string name="pool_name">Give-me-coins.com Pool Status</string>
+	<string name="pool_name">GMC Pool Status</string>
 	<string name="pool_hashrate_text">Pool hashrate:</string>
 	<string name="pool_workers_text">Pool active workers:</string>
 	<string name="pool_shares_text">Pool shares this round:</string>

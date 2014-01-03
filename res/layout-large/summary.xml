@@ -121,6 +121,33 @@
 	                />
 	
 	        </TableRow>
+	        <TableRow
+	            android:id="@+id/tableRow31"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" 
+	           	android:padding="5dp"
+	            >
+	
+	            <TextView
+	                android:id="@+id/textView51"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/usdconfirmedrewards_text"
+	                android:textAppearance="?android:attr/textAppearanceMedium" 
+	                android:textColor="#838383"
+	                />
+	
+	            <TextView
+	                android:id="@+id/summary_usdconfirmedrewards"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text=""
+	                android:gravity="right"
+	                android:textAppearance="?android:attr/textAppearanceMedium" 
+	                android:paddingRight="10dp"
+	                />
+	
+	        </TableRow>
 			<View android:layout_width="match_parent"
 				      android:layout_height="1dp"
 				      android:background="@color/table_border"/>
@@ -151,6 +178,34 @@
 	                />
 	
 	        </TableRow>
+	        <TableRow
+	            android:id="@+id/tableRow41"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" 
+	            android:padding="5dp"
+	            >
+	
+	            <TextView
+	                android:id="@+id/textView31"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/usdroundestimate_text"
+	                android:textAppearance="?android:attr/textAppearanceMedium" 
+	                android:textColor="#838383"
+	                />
+	
+	            <TextView
+	                android:id="@+id/usdsummary_roundestimate"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text=""
+	                android:gravity="right"
+	                android:textAppearance="?android:attr/textAppearanceMedium" 
+	                android:paddingRight="10dp"
+	                />
+	
+	        </TableRow>
+	        
 	        <View android:layout_width="match_parent"
 				      android:layout_height="1dp"
 				      android:background="#DDDDDD"/>
