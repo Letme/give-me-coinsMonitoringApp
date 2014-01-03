@@ -126,6 +126,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	static final int DATA_READY=2;
 	static final int DATA_PROGRESS=3;
 	static final int POOL_DATA_READY=4;
+	static final int BTCe_DATA_READY=5;
 	
 	/**
 	 * ProgressBar stuff
@@ -155,7 +156,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     		pool_last_block_shares=null,
     		pool_last_block_finder=null,
     		pool_last_block_reward=null,
-    		pool_difficulty=null;
+    		pool_difficulty=null,
+    		btc_exchange_rate=null,
+    		ltc_exchange_rate=null;
 
 	private static AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 	private ViewPager mViewPager;
@@ -958,7 +961,6 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		        	//safeguard to get data - NEED TO INFORM USER
 		        	if (!"No api key found".equals(API_key_text)) {
 		        		API_key_saved=API_key_text;
-		        		//API_key_saved="/pool/api-ltc?api_key=5ccbdb20d6e50838fdce14aeba0727f9e995f798ee618f1c31b2eb2790ba0cec";
 		        	}
 		        	
 	                ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
@@ -1199,28 +1201,37 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
 		@Override
         public void update() {
-			
+					String exchange_rate=null;
 		            int currentColor = 0;
 		        	//determine what color it needs to be
 		    		switch(coin_select) {
 		    		case 1:
 		    			currentColor = getResources().getColor(R.color.ltc);
 						actionBar.setTitle("LTC");
+						exchange_rate=ltc_exchange_rate;
 						getNewGMCInfo();
 						break;
 					case 2:
 						currentColor = getResources().getColor(R.color.btc);
 						actionBar.setTitle("BTC");
+						exchange_rate=btc_exchange_rate;
 						getNewGMCInfo();
 						break;
 					case 3:
 						currentColor =  getResources().getColor(R.color.ftc);
 						actionBar.setTitle("FTC");
+						// clear the exchange text!
+						exchange_rate=null;
+						TextView ClearETV = (TextView) rootView.findViewById(R.id.summary_usdroundestimate);
+						ClearETV.setText("");
+						TextView ClearCTV = (TextView) rootView.findViewById(R.id.summary_usdconfirmedrewards);
+						ClearCTV.setText("");
 						getNewGMCInfo();
 						break;
 					default:
 						currentColor =  getResources().getColor(R.color.ltc);
 						 actionBar.setTitle("LTC");
+						 exchange_rate=ltc_exchange_rate;
 						 getNewGMCInfo();
 						 break;
 		    		}
@@ -1233,6 +1244,10 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             	if(confirmed_rewards!=null) {
             		TextView confrewardsTV = (TextView) rootView.findViewById(R.id.summary_confirmedrewards);
             		confrewardsTV.setText(confirmed_rewards);
+            		if(exchange_rate!=null) {
+                		TextView USDconfirmedTV = (TextView) rootView.findViewById(R.id.summary_usdconfirmedrewards);
+                		USDconfirmedTV.setText(String.format("%.5f USD",Double.valueOf(confirmed_rewards)*Double.valueOf(exchange_rate)));
+            		}
             	}
             	if(total_hashrate!=null) {
             		TextView hashrateTV = (TextView) rootView.findViewById(R.id.summary_totalhash);
@@ -1241,6 +1256,10 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             	if(round_estimate!=null) {
             		TextView estimateTV = (TextView) rootView.findViewById(R.id.summary_roundestimate);
             		estimateTV.setText(round_estimate);
+            		if(exchange_rate!=null) {
+                		TextView USDestimateTV = (TextView) rootView.findViewById(R.id.summary_usdroundestimate);
+                		USDestimateTV.setText(String.format("%.5f USD",Double.valueOf(round_estimate)*Double.valueOf(exchange_rate)));
+            		}
             	}
             	if(round_shares!=null) {
             		TextView sharesTV = (TextView) rootView.findViewById(R.id.summary_roundshares);
@@ -1389,7 +1408,10 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	    		 		//Progress=msg.getData().getInt(PROGRESS);
 	    		 		mAppSectionsPagerAdapter.notifyDataSetChanged();
 	    		 		break;
-	    		 
+	    		 	case BTCe_DATA_READY:
+	    		 		//Progress=msg.getData().getInt(PROGRESS);
+	    		 		mAppSectionsPagerAdapter.notifyDataSetChanged();
+	    		 		break;
 	    		 }
     		 }
     	 }
@@ -1570,12 +1592,12 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(DEBUG) Log.e(TAG,"onResume");
+		if(DEBUG) Log.d(TAG,"onResume");
 		isRunning=true;
 		oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
 		if( oStickyService == null)
 		{
-			if(DEBUG)Log.e(TAG,"oStickyService == null onResume");
+			if(DEBUG)Log.w(TAG,"oStickyService == null onResume");
 			startService();
 		}
 		else
