@@ -137,6 +137,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         //Progress=msg.getData().getInt(PROGRESS);
                         mAppSectionsPagerAdapter.notifyDataSetChanged();
                         break;
+                    case BTCe_DATA_READY:
+	    		 		mAppSectionsPagerAdapter.notifyDataSetChanged();
+	    		 		break;
                 }
             }
         }
@@ -152,6 +155,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	static final int DATA_READY=2;
 	static final int DATA_PROGRESS=3;
 	static final int POOL_DATA_READY=4;
+	static final int BTCe_DATA_READY=5;
 	
 	/**
 	 * ProgressBar stuff
@@ -169,19 +173,22 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	static final String[] worker_hashrate = new String[MAX_WORKER_NUMBER];
 	static final String[] worker_name = new String[MAX_WORKER_NUMBER];
 	static final String[] worker_timestamp= new String[MAX_WORKER_NUMBER];
-    static String username = null;
-    static String round_estimate= null;
-    static String total_hashrate= null;
-    static String round_shares= null;
-    static String confirmed_rewards= null;
-    static String pool_total_hashrate= null;
-    static String pool_workers=null;
-    static String pool_round_shares=null;
-    static String pool_last_block=null;
-    static String pool_last_block_shares=null;
-    static String pool_last_block_finder=null;
-    static String pool_last_block_reward=null;
-    static String pool_difficulty=null;
+
+    static String username = null,
+    		round_estimate= null,
+    		total_hashrate= null,
+    		round_shares= null,
+    		confirmed_rewards= null,
+    		pool_total_hashrate= null,
+    		pool_workers=null,
+    		pool_round_shares=null,
+    		pool_last_block=null,
+    		pool_last_block_shares=null,
+    		pool_last_block_finder=null,
+    		pool_last_block_reward=null,
+    		pool_difficulty=null,
+    		btc_exchange_rate=null,
+    		ltc_exchange_rate=null;
 
 	private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 	private ViewPager mViewPager;
@@ -341,6 +348,16 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		// TODO Auto-generated method stub
 		
 	}
+    private void clearPoolServiceVars(){
+        pool_total_hashrate=null;
+        pool_workers=null;
+        pool_round_shares=null;
+        pool_last_block=null;
+        pool_last_block_shares=null;
+        pool_last_block_finder=null;
+        pool_last_block_reward=null;
+        pool_difficulty=null;
+    }
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -348,17 +365,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		ScrollView summary = (ScrollView) findViewById(R.id.summary_layout);
 		ScrollView dashBoard = (ScrollView) findViewById(R.id.dashboard_layout);
 
-        boolean change=false;
 	    switch (item.getItemId()) {
 	        case R.id.ltc_menu:
                 onCurrencySelected(Currency.LTC);
     	 		Toast.makeText(this, "Coin changed to LTC", Toast.LENGTH_LONG).show();
 				if(API_key_saved.contains("api-btc")) {
 					API_key_saved=API_key_saved.replace("api-btc", "api-ltc");
-					change=true;
 				} else if (API_key_saved.contains("api-ftc")) {
 					API_key_saved=API_key_saved.replace("api-ftc", "api-ltc");
-					change=true;
 				}
     			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-ltc";
@@ -378,10 +392,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	 		Toast.makeText(this, "Coin changed to BTC", Toast.LENGTH_LONG).show();
 				if(API_key_saved.contains("api-ltc")) {
 					API_key_saved=API_key_saved.replace("api-ltc", "api-btc");
-					change=true;
 				} else if (API_key_saved.contains("api-ftc")) {
 					API_key_saved=API_key_saved.replace("api-ftc", "api-btc");
-					change=true;
 				}
 				GMCService.url_fixed=URL+API_key_saved;
 				GMCPoolService.url_fixed=URL+"/pool/api-btc";
@@ -401,10 +413,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
      			Toast.makeText(this, "Coin changed to FTC", Toast.LENGTH_LONG).show();
     			if(API_key_saved.contains("api-ltc")) {
     				API_key_saved=API_key_saved.replace("api-ltc", "api-ftc");
-    				change=true;
     			} else if (API_key_saved.contains("api-btc")) {
     				API_key_saved=API_key_saved.replace("api-btc", "api-ftc");
-    				change=true;
     			}
     			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-ftc";
@@ -452,6 +462,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     private void onCurrencySelected(Currency currency) {
         application().set(currency);
         getActionBar().setTitle(currency.name());
+        clearPoolServiceVars();
     }
 
     private static Currency currency() {
@@ -900,11 +911,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             //safeguard to get data - NEED TO INFORM USER
             if (!"No api key found".equals(API_key_text)) {
                 API_key_saved=API_key_text;
-                //API_key_saved="/pool/api-ltc?api_key=5ccbdb20d6e50838fdce14aeba0727f9e995f798ee618f1c31b2eb2790ba0cec";
             }
 
             ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners,     null, null));
-
 		        	/*if(API_key_saved != null) {
 		        		if(API_key_saved.matches("No api key found")) {
 		        			
@@ -1102,24 +1111,48 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 
         @Override
         public void update() {
-            getNewGMCInfo();
+			getNewGMCInfo();
+			
+			String exchange_rate=null;
+            if (currency() == Currency.LTC) {
+				exchange_rate=ltc_exchange_rate;
+			}
+            if (currency() == Currency.BTC) {
+				exchange_rate=btc_exchange_rate;
+			}
+            if (currency() == Currency.FTC) {
+				exchange_rate=null;
+				// clear UI
+				TextView ClearETV = (TextView) rootView.findViewById(R.id.summary_usdroundestimate);
+				ClearETV.setText("");
+				TextView ClearCTV = (TextView) rootView.findViewById(R.id.summary_usdconfirmedrewards);
+				ClearCTV.setText("");
+			}
 
             if(username!=null) {
                 TextView usernameTV = (TextView) rootView.findViewById(R.id.summary_username);
                 usernameTV.setText(username);
             }
-            if(confirmed_rewards!=null) {
-                TextView confrewardsTV = (TextView) rootView.findViewById(R.id.summary_confirmedrewards);
-                confrewardsTV.setText(confirmed_rewards);
-            }
+			if(confirmed_rewards!=null) {
+				TextView confrewardsTV = (TextView) rootView.findViewById(R.id.summary_confirmedrewards);
+				confrewardsTV.setText(confirmed_rewards);
+				if(exchange_rate!=null) {
+					TextView USDconfirmedTV = (TextView) rootView.findViewById(R.id.summary_usdconfirmedrewards);
+					USDconfirmedTV.setText(String.format("%.5f USD",Double.valueOf(confirmed_rewards)*Double.valueOf(exchange_rate)));
+				}
+			}
             if(total_hashrate!=null) {
                 TextView hashrateTV = (TextView) rootView.findViewById(R.id.summary_totalhash);
                 hashrateTV.setText(readableHashSize(Long.valueOf(total_hashrate.split("\\.")[0])));
             }
-            if(round_estimate!=null) {
-                TextView estimateTV = (TextView) rootView.findViewById(R.id.summary_roundestimate);
-                estimateTV.setText(round_estimate);
-            }
+			if(round_estimate!=null) {
+				TextView estimateTV = (TextView) rootView.findViewById(R.id.summary_roundestimate);
+				estimateTV.setText(round_estimate);
+				if(exchange_rate!=null) {
+					TextView USDestimateTV = (TextView) rootView.findViewById(R.id.summary_usdroundestimate);
+					USDestimateTV.setText(String.format("%.5f USD",Double.valueOf(round_estimate)*Double.valueOf(exchange_rate)));
+				}
+			}
             if(round_shares!=null) {
                 TextView sharesTV = (TextView) rootView.findViewById(R.id.summary_roundshares);
                 sharesTV.setText(round_shares);
@@ -1363,12 +1396,12 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(DEBUG) Log.e(TAG,"onResume");
+		if(DEBUG) Log.d(TAG,"onResume");
 		isRunning=true;
 		oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
 		if( oStickyService == null)
 		{
-			if(DEBUG)Log.e(TAG,"oStickyService == null onResume");
+			if(DEBUG)Log.w(TAG,"oStickyService == null onResume");
 			startService();
 		}
 		else

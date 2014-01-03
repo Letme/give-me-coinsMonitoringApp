@@ -44,6 +44,8 @@ public class GMCPoolService extends Service{
 	private final Handler mHandler;
 	private static final String TAG = "GMCPoolService";
 	private PoolReceiveDataThread mReceiveData;
+	private BTCeReceiveDataThread mBTCeReceiveData;
+	private BTCeReceiveDataThread mLTCeReceiveData;
 	public static String url_fixed;
 	Timer timer;
 	
@@ -71,6 +73,34 @@ public class GMCPoolService extends Service{
 			}; 
 			timer.schedule(ReLoadThread,1,10000);
 		}
+		
+		
+		// get BTC exchange rate from btc-e
+			if(mBTCeReceiveData==null) {
+				timer = new Timer();
+				TimerTask ReBTCeLoadThread = new TimerTask() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						mBTCeReceiveData= new BTCeReceiveDataThread("https://btc-e.com/api/2/btc_usd/ticker",true);
+						mBTCeReceiveData.start();
+					}			
+				}; 
+				timer.schedule(ReBTCeLoadThread,1,20000);
+			}
+			// get LTC exchange rate from btc-e
+			if(mLTCeReceiveData==null) {
+				timer = new Timer();
+				TimerTask ReLTCeLoadThread = new TimerTask() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						mLTCeReceiveData= new BTCeReceiveDataThread("https://btc-e.com/api/2/ltc_usd/ticker",false);
+						mLTCeReceiveData.start();
+					}			
+				}; 
+				timer.schedule(ReLTCeLoadThread,1,20000);
+			}
 	}
 	
 	synchronized void stop() {
@@ -80,6 +110,16 @@ public class GMCPoolService extends Service{
 			mReceiveData.cancel();
 			if(DEBUG) Log.d(TAG,"PoolReceiveThread cancelled");
 			mReceiveData=null;
+		}
+		if(mBTCeReceiveData!=null) {
+			mBTCeReceiveData.cancel();
+			if(DEBUG) Log.d(TAG,"BTCeReceiveThread cancelled");
+			mBTCeReceiveData=null;
+		}
+		if(mLTCeReceiveData!=null) {
+			mLTCeReceiveData.cancel();
+			if(DEBUG) Log.d(TAG,"LTCeReceiveThread cancelled");
+			mLTCeReceiveData=null;
 		}
 	}
 	
@@ -202,13 +242,13 @@ public class GMCPoolService extends Service{
 					e.printStackTrace();
 					Log.w(TAG,"JSON MAIN hasNext failed!");
 				}	
-		   			if(DEBUG) Log.d(TAG,"Total hashrate: " + MainScreen.pool_total_hashrate + " |Workers: " + MainScreen.pool_workers +
+		   		if(DEBUG) Log.d(TAG,"Total hashrate: " + MainScreen.pool_total_hashrate + " |Workers: " + MainScreen.pool_workers +
 								" |Last round shares: " + MainScreen.pool_round_shares + " |last block: " + MainScreen.pool_last_block +
 								" |Difficulty" + MainScreen.pool_difficulty);
-					//Pack the data for other activity to use/get
-					Message msg = mHandler.obtainMessage(MainScreen.POOL_DATA_READY);
-					mHandler.sendMessage(msg);
-					cancel();
+				//Pack the data for other activity to use/get
+				Message msg = mHandler.obtainMessage(MainScreen.POOL_DATA_READY);
+				mHandler.sendMessage(msg);
+				cancel();
 		}
 
 		private void cancel() {
@@ -236,6 +276,155 @@ public class GMCPoolService extends Service{
 			}
 		}
     }
+	
+	private class BTCeReceiveDataThread extends Thread {
+		URL url=null;
+		InputStream inputStream=null;
+		BufferedReader reader = null;
+		JsonReader jsonAll=null;
+		private String url_string;
+		private boolean btc_choosen;
+		private static final String TAG = "BTCeReceiveDataThread";
+		
+		public BTCeReceiveDataThread (String urls,boolean btc){
+			if(DEBUG) Log.d(TAG,"public: " + urls);
+			url_string=urls;
+			btc_choosen=btc;
+		}
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+						
+						if(DEBUG) Log.d(TAG,"Connecting to website: " + url_string);
+						try {
+							url = new URL(url_string);
+						} catch (MalformedURLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+							Log.e(TAG,"MalformedURLException");
+						}
+							try {
+								inputStream = url.openStream();
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+								Log.e(TAG,"InputStream IOException");
+								cancel();
+							}
+						if(DEBUG) Log.d(TAG,"Connection should be open by now");
+				    	try {
+				    	    // json is UTF-8 by default
+				    	    reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
+				    	    if(DEBUG) Log.d(TAG,"Connected and reading JSON");
+				    	} catch (Exception e) { 
+				    	    // Oops
+				    		Log.e(TAG,"Connecting failed!");
+				    		cancel();
+				    	}
+			if(jsonAll==null) {
+				try {
+					jsonAll = new JsonReader(reader);
+				}
+				catch(NullPointerException e) {
+					Log.e(TAG,"JsonReader NullPointerException");
+					cancel();
+				}
+			}
+			//now lets parse the output form give-me-coins
+			if(DEBUG) Log.d(TAG,"Parsing json");
+			//we need a way to figure out if it is CloudFlare 521 site (which is not json
+			if(jsonAll==null){
+				cancel();
+				return;
+			}
+		   		try {
+					while (jsonAll.hasNext()) {
+						try {
+							switch(jsonAll.peek()) {
+								case BEGIN_OBJECT:
+									jsonAll.beginObject();
+									if(DEBUG) Log.d(TAG,"JSON beginObject");
+									break;
+								case END_OBJECT:
+									jsonAll.endObject();
+									if(DEBUG) Log.d(TAG,"JSON endObject");
+									break;
+								case NAME:
+									if(DEBUG) Log.d(TAG,"Main NAME");
+									String name=jsonAll.nextName();
+									if ("ticker".equals(name)) {
+										jsonAll.beginObject();
+										if(DEBUG) Log.d(TAG,"JSON beginObject Ticker");
+									} else if ("last".equals(name)) {
+										// now lets see if we are reading LTC or BTC
+										if(btc_choosen) {
+											MainScreen.btc_exchange_rate=jsonAll.nextString();
+										} else {
+											MainScreen.ltc_exchange_rate=jsonAll.nextString();
+										} 											
+										if(DEBUG) Log.d(TAG,"JSON Last found!");
+									} else {
+										jsonAll.skipValue();
+									}
+									break;
+								case NULL:
+									jsonAll.skipValue();
+								default:
+									jsonAll.skipValue();
+									if(DEBUG) Log.d(TAG,"peek value main not valid as it is " +jsonAll.peek());
+							}
+
+						} catch (IllegalStateException e) {	
+							Log.w(TAG,"IllegalStateException: " + e);
+							break;
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							Log.w(TAG,"JSON MAIN IOException: " + e);
+							break;
+						} catch (NullPointerException e) {	
+							Log.w(TAG,"NullPointerException: " + e);
+							break;
+						}
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					Log.w(TAG,"JSON MAIN hasNext failed!");
+				}	
+				//Pack the data for other activity to use/get
+				Message msg = mHandler.obtainMessage(MainScreen.BTCe_DATA_READY);
+				mHandler.sendMessage(msg);
+				cancel();
+		}
+
+		private void cancel() {
+	   		//Perform CLEANUP !!!!
+			try {
+				if(jsonAll != null) jsonAll.close();
+				if(DEBUG) Log.d(TAG,"MAIN JSON closed");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    try {
+		    	if(reader != null)reader.close();
+				if(DEBUG) Log.d(TAG,"BufferedReader closed");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	   		try {
+	   			if(inputStream != null) inputStream.close();
+				if(DEBUG) Log.d(TAG,"InputStream closed");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+    }
+	
 	@Override
 	public IBinder onBind(Intent arg0) {
 		// TODO Auto-generated method stub
