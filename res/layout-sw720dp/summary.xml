@@ -179,6 +179,34 @@
 	                />
 	
 	        </TableRow>
+	        <TableRow
+	            android:id="@+id/tableRow41"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" 
+	            android:padding="5dp"
+	            >
+	
+	            <TextView
+	                android:id="@+id/textView31"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/roundestimate_text"
+	                android:textAppearance="?android:attr/textAppearanceMedium" 
+	                android:textColor="#838383"
+	                />
+	
+	            <TextView
+	                android:id="@+id/summary_usdroundestimate"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text=""
+	                android:gravity="right"
+	                android:textAppearance="?android:attr/textAppearanceMedium" 
+	                android:paddingRight="10dp"
+	                />
+	
+	        </TableRow>
+	        
 	        <View android:layout_width="match_parent"
 				      android:layout_height="1dp"
 				      android:background="#DDDDDD"/>
