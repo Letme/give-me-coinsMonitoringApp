@@ -1138,7 +1138,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				confrewardsTV.setText(confirmed_rewards);
 				if(exchange_rate!=null) {
 					TextView USDconfirmedTV = (TextView) rootView.findViewById(R.id.summary_usdconfirmedrewards);
-					USDconfirmedTV.setText(String.format("%.5f USD",Double.valueOf(confirmed_rewards)*Double.valueOf(exchange_rate)));
+					USDconfirmedTV.setText(String.format("%.5f USD",Double.valueOf(confirmed_rewards.replaceAll(",",""))*Double.valueOf(exchange_rate)));
 				}
 			}
             if(total_hashrate!=null) {
@@ -1150,7 +1150,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				estimateTV.setText(round_estimate);
 				if(exchange_rate!=null) {
 					TextView USDestimateTV = (TextView) rootView.findViewById(R.id.summary_usdroundestimate);
-					USDestimateTV.setText(String.format("%.5f USD",Double.valueOf(round_estimate)*Double.valueOf(exchange_rate)));
+					USDestimateTV.setText(String.format("%.5f USD",Double.valueOf(round_estimate.replaceAll(",",""))*Double.valueOf(exchange_rate)));
 				}
 			}
             if(round_shares!=null) {
