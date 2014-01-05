@@ -23,6 +23,8 @@ package give_me_coins.dashboard;
 
 
 import java.util.ArrayList;
+
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -58,10 +60,17 @@ abstract class Widget_mainLarge extends AppWidgetProvider implements GetInfoWork
 		oContext = context;
 		oWidgetIds = appWidgetIds;
 		iCurrency = getCurrency();
+		
+        // The PendingIntent to launch our activity if the user selects this notification
+        PendingIntent contentIntent = PendingIntent.getActivity(oContext, 0,
+                new Intent(oContext, MainScreen.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        
+        
 		for(int app_id :appWidgetIds)
 		{
 			try
 			{	
+		        
 				oGmcService = openServiceInstance(this);
 				if( oGmcService == null )
 				{
@@ -110,12 +119,19 @@ abstract class Widget_mainLarge extends AppWidgetProvider implements GetInfoWork
 		        }
 				
 				remoteViews.addView(R.id.main_view, overview);
-		        oAppWidgetManager.updateAppWidget(app_id, remoteViews);
+		       
+		        
+		        remoteViews.setOnClickPendingIntent(R.id.main_view, contentIntent);
+
+		         oAppWidgetManager.updateAppWidget(app_id, remoteViews);
 			}
 			catch(Exception e)
 			{
 				RemoteViews remoteViews = new RemoteViews( oContext.getPackageName(), R.layout.activity_widget_main );
 				remoteViews.setTextViewText(R.id.total_hash_rate, "Please choose API Key in App");
+				
+				remoteViews.setOnClickPendingIntent(R.id.main_view, contentIntent);
+				
 				//ComponentName watchWidget = getComponentName(oContext);
 				oAppWidgetManager.updateAppWidget(app_id, remoteViews);
 				Log.e(TAG, "died on update " + e.toString());
@@ -134,6 +150,11 @@ abstract class Widget_mainLarge extends AppWidgetProvider implements GetInfoWork
 	public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
 		if( oGmcService == null )
 			oGmcService = openServiceInstance(this);
+		
+        // The PendingIntent to launch our activity if the user selects this notification
+        PendingIntent contentIntent = PendingIntent.getActivity(oContext, 0,
+                new Intent(oContext, MainScreen.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        
 		
 		for(int app_id : oWidgetIds)
 		{
@@ -180,7 +201,8 @@ abstract class Widget_mainLarge extends AppWidgetProvider implements GetInfoWork
 	            
 				//RemoteViews rv = new RemoteViews(oContext.getPackageName(), R.layout.activity_widget_main);
 				remoteViews.setRemoteAdapter( R.id.list_view, intent);
- 						      
+				
+				remoteViews.setOnClickPendingIntent(R.id.main_view, contentIntent);
 		        
 		        oAppWidgetManager.updateAppWidget(app_id, remoteViews);
 		        // now listview updates ... woho

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">give-me-coins.com Dashboard</string>
+    <string name="app_name">GMC Dashboard</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="demo_collection">Demo collection</string>
@@ -18,14 +18,16 @@
     <string name="username_text">Username:</string>
     <string name="totalhash_text">Your hashrate:</string>
     <string name="roundestimate_text">Round estimate:</string>
+    <string name="usdroundestimate_text"></string>
 	<string name="roundshares_text">Round shares:</string>
 	<string name="confirmedrewards_text">Confirmed rewards:</string>
+	<string name="usdconfirmedrewards_text"></string>
 	<string name="ltc_text">LTC</string>
 	<string name="btc_text">BTC</string>
 	<string name="ftc_text">FTC</string>
 	<string name="missing_username">Getting Data ...</string>
 	<string name="saved_coin_select">saved_coin_select</string>
-	<string name="pool_name">Give-me-coins.com Pool Status</string>
+	<string name="pool_name">GMC Pool Status</string>
 	<string name="pool_hashrate_text">Pool hashrate:</string>
 	<string name="pool_workers_text">Pool active workers:</string>
 	<string name="pool_shares_text">Pool shares this round:</string>
@@ -44,10 +46,10 @@
     <string name="totalhash_widget_text">Total Hashrate</string>
     <string name="workers_online">Workers</string>
     <string name="confirmed_rewards">Confirmed Rewards</string>
-    <string name="app_name_ltc">give-me-coins.com LTC</string>
-    <string name="app_name_ftc">give-me-coins.com FTC</string>
-    <string name="app_name_btc">give-me-coins.com BTC</string>
-    <string name="notification">give-me-coins.com</string>
+    <string name="app_name_ltc">GMC LTC</string>
+    <string name="app_name_ftc">GMC FTC</string>
+    <string name="app_name_btc">GMC BTC</string>
+    <string name="notification">GMC</string>
     <string name="refresh_text">Refresh</string>
     <string name="show_btc">Show BTC</string>
     <string name="show_ltc">Show LTC</string>

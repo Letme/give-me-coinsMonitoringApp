@@ -55,7 +55,6 @@ public class GMCService extends Service{
 	private synchronized void start(String... urls) {
 		if(urls.length==0) {
 			Log.e(TAG,"Bad URL handed to service");
-			MainScreen.mService=null;
 			return;
 		}
 		if(DEBUG) Log.d(TAG,"Service started");
