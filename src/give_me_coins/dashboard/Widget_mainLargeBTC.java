@@ -32,7 +32,7 @@ public class Widget_mainLargeBTC extends Widget_mainLarge{
 		@Override
 		GmcStickyService openServiceInstance(GetInfoWorkerCallback callback)
 		{
-			return GmcStickyService.getInstance(callback, null, null);
+			return GmcStickyService.getInstance(callback, null, null,null);
 		}
 		
 		@Override

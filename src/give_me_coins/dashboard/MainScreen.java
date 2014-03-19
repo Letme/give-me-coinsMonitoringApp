@@ -213,8 +213,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             onCurrencySelected(Currency.BTC);
 		} else if (sharedPref.getBoolean(getString(R.string.show_ftc), true)) {
             onCurrencySelected(Currency.FTC);
+		} else if (sharedPref.getBoolean(getString(R.string.show_vtc), true)) {
+            onCurrencySelected(Currency.VTC);
 		}
-
 		// Start service to receive data
 		//if(mService==null) mService= new GMCService(this,mHandler);
 		if(mPoolService==null) mPoolService = new GMCPoolService(mHandler);
@@ -373,7 +374,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 					API_key_saved=API_key_saved.replace("api-btc", "api-ltc");
 				} else if (API_key_saved.contains("api-ftc")) {
 					API_key_saved=API_key_saved.replace("api-ftc", "api-ltc");
-				}
+				} else if (API_key_saved.contains("api-vtc")) {
+    				API_key_saved=API_key_saved.replace("api-vtc", "api-ltc");
+    			}
     			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-ltc";
     	 		mAppSectionsPagerAdapter.notifyDataSetChanged();
@@ -394,7 +397,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 					API_key_saved=API_key_saved.replace("api-ltc", "api-btc");
 				} else if (API_key_saved.contains("api-ftc")) {
 					API_key_saved=API_key_saved.replace("api-ftc", "api-btc");
-				}
+				} else if (API_key_saved.contains("api-vtc")) {
+    				API_key_saved=API_key_saved.replace("api-vtc", "api-btc");
+    			}
 				GMCService.url_fixed=URL+API_key_saved;
 				GMCPoolService.url_fixed=URL+"/pool/api-btc";
             	mAppSectionsPagerAdapter.notifyDataSetChanged();
@@ -415,6 +420,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     				API_key_saved=API_key_saved.replace("api-ltc", "api-ftc");
     			} else if (API_key_saved.contains("api-btc")) {
     				API_key_saved=API_key_saved.replace("api-btc", "api-ftc");
+    			} else if (API_key_saved.contains("api-vtc")) {
+    				API_key_saved=API_key_saved.replace("api-vtc", "api-ftc");
     			}
     			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-ftc";
@@ -427,6 +434,29 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	 		if( summary != null )
     	 		{
     	 			summary.setBackgroundColor(ftcColor);
+    	 		}
+    	 		return true;
+	        case R.id.vtc_menu:
+                onCurrencySelected(Currency.VTC);
+     			Toast.makeText(this, "Coin changed to VTC", Toast.LENGTH_LONG).show();
+    			if(API_key_saved.contains("api-ltc")) {
+    				API_key_saved=API_key_saved.replace("api-ltc", "api-vtc");
+    			} else if (API_key_saved.contains("api-btc")) {
+    				API_key_saved=API_key_saved.replace("api-btc", "api-vtc");
+    			} else if (API_key_saved.contains("api-ftc")) {
+    				API_key_saved=API_key_saved.replace("api-ftc", "api-vtc");
+    			}
+    			GMCService.url_fixed=URL+API_key_saved;
+    			GMCPoolService.url_fixed=URL+"/pool/api-vtc";
+            	mAppSectionsPagerAdapter.notifyDataSetChanged();
+    	 		int vtcColor = getResources().getColor(R.color.vtc);
+    	 		if(dashBoard != null)
+    	 		{
+    	 			dashBoard.setBackgroundColor(vtcColor);
+    	 		}
+    	 		if( summary != null )
+    	 		{
+    	 			summary.setBackgroundColor(vtcColor);
     	 		}
     	 		return true;
 	        default:
@@ -449,6 +479,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         showIfEnabled(R.string.show_btc, R.id.btc_menu, menu);
         showIfEnabled(R.string.show_ltc, R.id.ltc_menu, menu);
         showIfEnabled(R.string.show_ftc, R.id.ftc_menu, menu);
+        showIfEnabled(R.string.show_vtc, R.id.vtc_menu, menu);
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -563,11 +594,13 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             CheckBox show_btc = (CheckBox) rootView.findViewById(R.id.show_btc);
             CheckBox show_ltc = (CheckBox) rootView.findViewById(R.id.show_ltc);
             CheckBox show_ftc = (CheckBox) rootView.findViewById(R.id.show_ftc);
+            CheckBox show_vtc = (CheckBox) rootView.findViewById(R.id.show_vtc);
             CheckBox show_notification = (CheckBox) rootView.findViewById(R.id.show_notification);
             
             show_btc.setChecked(sharedPref.getBoolean(getString(R.string.show_btc), true ) );
             show_ltc.setChecked(sharedPref.getBoolean(getString(R.string.show_ltc), true ) );
             show_ftc.setChecked(sharedPref.getBoolean(getString(R.string.show_ftc), true ) );
+            show_vtc.setChecked(sharedPref.getBoolean(getString(R.string.show_vtc), true ) );
             show_notification.setChecked(sharedPref.getBoolean(getString(R.string.show_notification), true ) );
             
             
@@ -599,12 +632,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                                 CheckBox show_btc = (CheckBox) rootView.findViewById(R.id.show_btc);
                                 CheckBox show_ltc = (CheckBox) rootView.findViewById(R.id.show_ltc);
                                 CheckBox show_ftc = (CheckBox) rootView.findViewById(R.id.show_ftc);
+                                CheckBox show_vtc = (CheckBox) rootView.findViewById(R.id.show_vtc);
                                 CheckBox show_notification = (CheckBox) rootView.findViewById(R.id.show_notification);
                         		
                                 SharedPreferences.Editor editor = sharedPref.edit();
                                 editor.putBoolean(getString(R.string.show_btc), show_btc.isChecked());
                                 editor.putBoolean(getString(R.string.show_ftc), show_ftc.isChecked());
                                 editor.putBoolean(getString(R.string.show_ltc), show_ltc.isChecked());
+                                editor.putBoolean(getString(R.string.show_vtc), show_vtc.isChecked());
                                 editor.putBoolean(getString(R.string.show_notification), show_notification.isChecked());
                                 editor.putInt(getString(R.string.update_interval), getMillisecondsFromView(rootView.findViewById(R.id.update_times)));
                                 
@@ -1128,6 +1163,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				TextView ClearCTV = (TextView) rootView.findViewById(R.id.summary_usdconfirmedrewards);
 				ClearCTV.setText("");
 			}
+            if (currency() == Currency.VTC) {
+				exchange_rate=null;
+				// clear UI
+				TextView ClearETV = (TextView) rootView.findViewById(R.id.summary_usdroundestimate);
+				ClearETV.setText("");
+				TextView ClearCTV = (TextView) rootView.findViewById(R.id.summary_usdconfirmedrewards);
+				ClearCTV.setText("");
+			}
 
             if(username!=null) {
                 TextView usernameTV = (TextView) rootView.findViewById(R.id.summary_username);
@@ -1296,6 +1339,10 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			 		if( oStickyService.getFTCInfo() != null)
 			 			setToLocalGMCInfo(oStickyService.getFTCInfo());
 			 		break;
+			 	case VTC:
+			 		if( oStickyService.getVTCInfo() != null)
+			 			setToLocalGMCInfo(oStickyService.getVTCInfo());
+			 		break;
 			 	default:
 			 		if( oStickyService.getLTCInfo() != null)
 			 			setToLocalGMCInfo(oStickyService.getLTCInfo());
@@ -1310,7 +1357,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		@Override
 		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
 			if( oStickyService == null)
-				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
+				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback, vtc_callback);
 
 			if (currency() == Currency.BTC) {
 				setToLocalGMCInfo(para_giveMeCoinsInfo);
@@ -1326,7 +1373,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		@Override
 		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
 			if( oStickyService == null)
-				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
+				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback,vtc_callback);
 
 			if (currency() == Currency.LTC) {
 				setToLocalGMCInfo(para_giveMeCoinsInfo);
@@ -1342,9 +1389,26 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		@Override
 		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
 			if( oStickyService == null)
-				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
+				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback,vtc_callback);
 
 			if (currency() == Currency.FTC) {
+				setToLocalGMCInfo(para_giveMeCoinsInfo);
+				mAppSectionsPagerAdapter.notifyDataSetChanged();
+				if(oLoadingProgress != null)oLoadingProgress.dismiss();
+			}
+			
+			
+		}
+	};
+	
+	private final GetInfoWorkerCallback vtc_callback = new GetInfoWorkerCallback() {
+		
+		@Override
+		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
+			if( oStickyService == null)
+				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback,vtc_callback);
+
+			if (currency() == Currency.VTC) {
 				setToLocalGMCInfo(para_giveMeCoinsInfo);
 				mAppSectionsPagerAdapter.notifyDataSetChanged();
 				if(oLoadingProgress != null)oLoadingProgress.dismiss();
@@ -1398,7 +1462,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		super.onResume();
 		if(DEBUG) Log.d(TAG,"onResume");
 		isRunning=true;
-		oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback);
+		oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback, vtc_callback);
 		if( oStickyService == null)
 		{
 			if(DEBUG)Log.w(TAG,"oStickyService == null onResume");
@@ -1417,6 +1481,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				case FTC:
 					setToLocalGMCInfo(oStickyService.getFTCInfo());
 					break;
+				case VTC:
+					setToLocalGMCInfo(oStickyService.getVTCInfo());
+					break;
 				default:
 					setToLocalGMCInfo(oStickyService.getLTCInfo());
 					break;
@@ -1434,7 +1501,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         {
             if( oStickyService != null )
             {
-                oStickyService.detachListener(btc_callback, ltc_callback, ftc_callback);
+                oStickyService.detachListener(btc_callback, ltc_callback, ftc_callback, vtc_callback);
             }
             asyncService.cancel(true);
             asyncPoolService.cancel(true);
@@ -1460,7 +1527,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         {
             if( oStickyService != null)
             {
-                oStickyService.detachListener(btc_callback, ltc_callback, ftc_callback);
+                oStickyService.detachListener(btc_callback, ltc_callback, ftc_callback, vtc_callback);
                 oStickyService.stop();
                 oStickyService = null;
             }

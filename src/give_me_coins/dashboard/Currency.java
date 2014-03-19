@@ -5,7 +5,8 @@ import android.content.res.Resources;
 enum Currency {
     LTC(R.color.ltc),
     BTC(R.color.btc),
-    FTC(R.color.ftc);
+    FTC(R.color.ftc),
+    VTC(R.color.vtc);
 
     private final int color;
 

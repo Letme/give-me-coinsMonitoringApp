@@ -108,12 +108,18 @@
 					         android:layout_width="wrap_content"
 					         android:layout_height="wrap_content"
 					         android:text="@string/show_ltc" />
-			
+
+			   		     <CheckBox
+			   		         android:id="@+id/show_ftc"
+			   		         android:layout_width="wrap_content"
+			   		         android:layout_height="wrap_content"
+			   		         android:text="@string/show_ftc" />
+					     
 					     <CheckBox
-					         android:id="@+id/show_ftc"
+					         android:id="@+id/show_vtc"
 					         android:layout_width="wrap_content"
 					         android:layout_height="wrap_content"
-					         android:text="@string/show_ftc" />
+					         android:text="@string/show_vtc" />
 					</LinearLayout>
 		
 					<TextView
