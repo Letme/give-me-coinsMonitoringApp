@@ -38,8 +38,8 @@
 	<string name="pool_last_block_reward_text">Pool last block reward:</string>
 	<string name="pool_difficulty_text">Pool difficulty:</string>
 	<string name="api_key_hint">Your API key with /pool/api-ltc...</string>
-	<string name="help1_text">Remember that this is Beta version. If you find any bugs please report at: https://github.com/Letme/give-me-coinsMonitoringApp</string>
-	<string name="help2_text">Once you enter your API key, please hit save settings. At this moment the data on Summary should start updating (blue,line on top of each tab). In case you do not receive any data in 30 seconds please close app and reopen it. This is known issue and it is being worked on, but it only happens if you do not have saved settings. Pool tab should be OK. In case of any other problems please contact crt on #give-me-coins . I would love to hear any additional feedback and ideas to improve this app before final release.</string>
+	<string name="help1_text">If you find any bugs or have a feature request please report it at: https://github.com/Letme/give-me-coinsMonitoringApp</string>
+	<string name="help2_text">Once you enter your API key, please hit save settings.</string>
     <string name="title_activity_widget_main">Widget_main</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>

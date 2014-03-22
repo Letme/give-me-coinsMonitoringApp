@@ -1,7 +1,7 @@
 GMC.com Android monitoring app
 ================================
 
-Give-me-coins.com monitoring app is useful for monitoring your BTC, LTC or FTC workers. It implements QR Code reader and save settings as well as whole pool monitoring tab.
+Give-me-coins.com monitoring app is useful for monitoring your BTC, LTC or FTC workers. We also added support for VTC. It implements QR Code reader and save settings as well as whole pool monitoring tab.
 
 
 DEVELOPERS
@@ -14,7 +14,7 @@ Developer: Justin Muller (justinmuller), BTC: , LTC:
 
 TODO:
 -------------------------
-Priorities should change over time,but please keep them in reasonable order. Mark the already done one and write your username beside it. Also write your name or whatever you wish under the developers title here.
+Priorities should change over time,but please keep them in reasonable order. Mark the already done one and write your username beside it. If you contributed write your name or whatever you wish under the developers title here.
 High priority:
  - [ ] adjust GUI to get widgets out
  - [ ] Layout for tablets
