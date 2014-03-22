@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="give_me_coins.dashboard"
-    android:versionCode="21"
-    android:versionName="Beta2.8" 
+    android:versionCode="25"
+    android:versionName="1.0" 
     android:installLocation="auto"
     >
 
@@ -15,18 +15,18 @@
         android:normalScreens="true"
         android:anyDensity="true"/>
     
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.INTERNET" />
     
-    <uses-feature android:name="android.hardware.camera" />
-	<uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+	<uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" 
-        android:allowClearUserData="true">
+    <application android:name="GiveMeCoinsDashboard"
+                 android:label="@string/app_name"
+                 android:icon="@drawable/ic_launcher"
+                 android:theme="@style/AppTheme"
+                 android:allowBackup="true"
+                 android:allowClearUserData="true">
         
         <receiver android:name=".Widget_mainLargeLTC" android:label="@string/app_name_ltc">
             <intent-filter>
@@ -48,6 +48,15 @@
         
                
        <receiver android:name=".Widget_mainLargeFTC" android:label="@string/app_name_ftc">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/givemecoins_widget_provider_large" />
+        </receiver>
+        
+        <receiver android:name=".Widget_mainLargeVTC" android:label="@string/app_name_vtc">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

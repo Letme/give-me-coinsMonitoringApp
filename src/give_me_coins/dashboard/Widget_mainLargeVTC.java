@@ -26,35 +26,34 @@ import android.content.Context;
 
 
 
-public class Widget_mainLargeFTC extends Widget_mainLarge{
+public class Widget_mainLargeVTC extends Widget_mainLarge{
 
-		private final int currency = 2;
+		private final int currency = 4;
 	
 		@Override
 		GmcStickyService openServiceInstance(GetInfoWorkerCallback callback)
 		{
-			return GmcStickyService.getInstance(null, null, callback,null);
+			return GmcStickyService.getInstance(null, null, null, callback);
 		}
-		
+	
 		@Override
 		ComponentName getComponentName(Context context) {
 			// TODO Auto-generated method stub
-			return new ComponentName(context, Widget_mainLargeFTC.class);
+			return new ComponentName(context, Widget_mainLargeVTC.class);
 		}
 
 		@Override
 		GiveMeCoinsInfo getCurrentInfo(GmcStickyService para_service) {
 			// TODO Auto-generated method stub
 			if( para_service != null)
-				return para_service.getFTCInfo();
+				return para_service.getVTCInfo();
 			else
 				return null;
 		}
-
+		
 		@Override
 		int getCurrency() {
 			// TODO Auto-generated method stub
 			return currency;
 		}
-		
 }

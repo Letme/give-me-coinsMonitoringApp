@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">give-me-coins.com Dashboard</string>
+    <string name="app_name">GMC Dashboard</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="demo_collection">Demo collection</string>
@@ -18,14 +18,17 @@
     <string name="username_text">Username:</string>
     <string name="totalhash_text">Your hashrate:</string>
     <string name="roundestimate_text">Round estimate:</string>
+    <string name="usdroundestimate_text"></string>
 	<string name="roundshares_text">Round shares:</string>
 	<string name="confirmedrewards_text">Confirmed rewards:</string>
+	<string name="usdconfirmedrewards_text"></string>
 	<string name="ltc_text">LTC</string>
 	<string name="btc_text">BTC</string>
 	<string name="ftc_text">FTC</string>
+	<string name="vtc_text">VTC</string>
 	<string name="missing_username">Getting Data ...</string>
 	<string name="saved_coin_select">saved_coin_select</string>
-	<string name="pool_name">Give-me-coins.com Pool Status</string>
+	<string name="pool_name">GMC Pool Status</string>
 	<string name="pool_hashrate_text">Pool hashrate:</string>
 	<string name="pool_workers_text">Pool active workers:</string>
 	<string name="pool_shares_text">Pool shares this round:</string>
@@ -35,8 +38,8 @@
 	<string name="pool_last_block_reward_text">Pool last block reward:</string>
 	<string name="pool_difficulty_text">Pool difficulty:</string>
 	<string name="api_key_hint">Your API key with /pool/api-ltc...</string>
-	<string name="help1_text">Remember that this is Beta version. If you find any bugs please report at: https://github.com/Letme/give-me-coinsMonitoringApp</string>
-	<string name="help2_text">Once you enter your API key, please hit save settings. At this moment the data on Summary should start updating (blue,line on top of each tab). In case you do not receive any data in 30 seconds please close app and reopen it. This is known issue and it is being worked on, but it only happens if you do not have saved settings. Pool tab should be OK. In case of any other problems please contact crt on #give-me-coins . I would love to hear any additional feedback and ideas to improve this app before final release.</string>
+	<string name="help1_text">If you find any bugs or have a feature request please report it at: https://github.com/Letme/give-me-coinsMonitoringApp</string>
+	<string name="help2_text">Once you enter your API key, please hit save settings.</string>
     <string name="title_activity_widget_main">Widget_main</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
@@ -44,14 +47,16 @@
     <string name="totalhash_widget_text">Total Hashrate</string>
     <string name="workers_online">Workers</string>
     <string name="confirmed_rewards">Confirmed Rewards</string>
-    <string name="app_name_ltc">give-me-coins.com LTC</string>
-    <string name="app_name_ftc">give-me-coins.com FTC</string>
-    <string name="app_name_btc">give-me-coins.com BTC</string>
-    <string name="notification">give-me-coins.com</string>
+    <string name="app_name_ltc">GMC LTC</string>
+    <string name="app_name_ftc">GMC FTC</string>
+    <string name="app_name_btc">GMC BTC</string>
+    <string name="app_name_vtc">GMC VTC</string>
+    <string name="notification">GMC</string>
     <string name="refresh_text">Refresh</string>
     <string name="show_btc">Show BTC</string>
     <string name="show_ltc">Show LTC</string>
     <string name="show_ftc">Show FTC</string>
+    <string name="show_vtc">Show VTC</string>
     <string name="update_interval_helptext">The information will be updated in the chosen interval.</string>
     <string name="update_interval">Update interval</string>
     <string name="show_helptext">If unchecked this coin is not going to be shown in the app, and doesn\'t get updated. Saves traffic.</string>
