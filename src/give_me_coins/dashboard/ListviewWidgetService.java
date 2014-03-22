@@ -85,6 +85,10 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 	    	{
 	    		gmcInfo = Widget_mainLarge.oGmcService.getFTCInfo();
 	    	}
+	    	else if( mCurrency == 3 )
+	    	{
+	    		gmcInfo = Widget_mainLarge.oGmcService.getVTCInfo();
+	    	}
 	    	if(DEBUG)Log.d(TAG,"gmcInfo ");
 	    	
 	    	if( gmcInfo != null )

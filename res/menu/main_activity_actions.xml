@@ -4,17 +4,22 @@
     <item android:id="@+id/ltc_menu"
           android:icon="@drawable/litecoin"
           android:title="@string/ltc_text"
-          android:showAsAction="ifRoom|withText"/>
+          android:showAsAction="always"/>
     
     <item android:id="@+id/btc_menu"
           android:icon="@drawable/bitcoin"
           android:title="@string/btc_text" 
-          android:showAsAction="ifRoom|withText"/>
+          android:showAsAction="always"/>
     
     <item android:id="@+id/ftc_menu"
           android:icon="@drawable/feathercoin"
           android:title="@string/ftc_text" 
-          android:showAsAction="ifRoom|withText"/>
+          android:showAsAction="always"/>
+    
+    <item android:id="@+id/vtc_menu"
+          android:icon="@drawable/vertcoin"
+          android:title="@string/vtc_text" 
+          android:showAsAction="always"/>
    <!-- 
     <item android:id="@+id/refresh"
           android:icon="@drawable/ic_action_refresh"

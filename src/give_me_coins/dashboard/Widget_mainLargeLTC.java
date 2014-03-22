@@ -33,7 +33,7 @@ public class Widget_mainLargeLTC extends Widget_mainLarge{
 		@Override
 		GmcStickyService openServiceInstance(GetInfoWorkerCallback callback)
 		{
-			return GmcStickyService.getInstance(null, callback, null);
+			return GmcStickyService.getInstance(null, callback, null, null);
 		}
 	
 		@Override
