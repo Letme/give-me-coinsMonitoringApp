@@ -78,7 +78,7 @@
 				        android:layout_height="wrap_content"
 				        android:gravity="right"
 				        android:text=""
-				        android:paddingRight="10dp"
+				        android:paddingRight="20dp"
 				        android:textAppearance="?android:attr/textAppearanceMedium" />
 		            
 	   	            			
@@ -110,7 +110,7 @@
 		                android:layout_height="wrap_content"
 		                android:text=""
 		                android:gravity="right"
-		                android:paddingRight="10dp"
+		                android:paddingRight="20dp"
 		                android:textAppearance="?android:attr/textAppearanceMedium" />
 	
 		        </TableRow>
@@ -141,7 +141,7 @@
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:gravity="right"
-		                android:paddingRight="10dp"
+		                android:paddingRight="20dp"
 		                android:textAppearance="?android:attr/textAppearanceMedium" />
 				
 		        </TableRow>
@@ -172,7 +172,7 @@
 		                android:layout_height="wrap_content"
 		                android:text=""
 		                android:gravity="right"
-		                android:paddingRight="10dp"
+		                android:paddingRight="20dp"
 		                android:textAppearance="?android:attr/textAppearanceMedium" />
 					
 		        </TableRow>
@@ -202,7 +202,7 @@
 		                android:layout_height="wrap_content"
 		                android:text=""
 		                android:gravity="right"
-		                android:paddingRight="10dp"
+		                android:paddingRight="20dp"
 		                android:textAppearance="?android:attr/textAppearanceMedium" />
 					
 		        </TableRow>
@@ -233,7 +233,7 @@
 		                android:layout_height="wrap_content"
 		                android:text=""
 		                android:gravity="right"
-		                android:paddingRight="10dp"
+		                android:paddingRight="20dp"
 		                android:textAppearance="?android:attr/textAppearanceMedium" />
 					
 		        </TableRow>
@@ -264,7 +264,7 @@
 		                android:layout_height="wrap_content"
 		                android:text=""
 		                android:gravity="right"
-		                android:paddingRight="10dp"
+		                android:paddingRight="20dp"
 		                android:textAppearance="?android:attr/textAppearanceMedium" />
 					
 		        </TableRow>
@@ -296,7 +296,7 @@
 		                android:layout_height="wrap_content"
 		                android:text=""
 		                android:gravity="right"
-		                android:paddingRight="10dp"
+		                android:paddingRight="20dp"
 		                android:textAppearance="?android:attr/textAppearanceMedium" />
 		            
 		        </TableRow>

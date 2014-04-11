@@ -68,7 +68,7 @@
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:text="@string/pool_hashrate_text"
-		                android:textAppearance="?android:attr/textAppearanceMedium" 
+		                android:textAppearance="?android:attr/textAppearanceSmall" 
 	                 	android:textColor="#838383"
 		                />
 	      	        
@@ -78,7 +78,7 @@
 				        android:layout_height="wrap_content"
 				        android:gravity="right"
 				        android:text=""
-				        android:paddingRight="10dp"
+				        android:paddingRight="20dp"
 				        android:textAppearance="?android:attr/textAppearanceMedium" />
 		            
 	   	            			
@@ -100,7 +100,7 @@
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:text="@string/pool_workers_text"
-		                android:textAppearance="?android:attr/textAppearanceMedium" 
+		                android:textAppearance="?android:attr/textAppearanceSmall" 
 	                 	android:textColor="#838383"
 		                />
 	     	        
@@ -110,7 +110,7 @@
 		                android:layout_height="wrap_content"
 		                android:text=""
 		                android:gravity="right"
-		                android:paddingRight="10dp"
+		                android:paddingRight="20dp"
 		                android:textAppearance="?android:attr/textAppearanceMedium" />
 	
 		        </TableRow>
@@ -132,7 +132,7 @@
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:text="@string/pool_shares_text"
-		                android:textAppearance="?android:attr/textAppearanceMedium" 
+		                android:textAppearance="?android:attr/textAppearanceSmall" 
 	                 	android:textColor="#838383"
 		                />
 		      	        
@@ -141,7 +141,7 @@
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:gravity="right"
-		                android:paddingRight="10dp"
+		                android:paddingRight="20dp"
 		                android:textAppearance="?android:attr/textAppearanceMedium" />
 				
 		        </TableRow>
@@ -162,7 +162,7 @@
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:text="@string/pool_last_block_text"
-		                android:textAppearance="?android:attr/textAppearanceMedium" 
+		                android:textAppearance="?android:attr/textAppearanceSmall" 
 		                 android:textColor="#838383"
 		                />
 	      	        
@@ -172,7 +172,7 @@
 		                android:layout_height="wrap_content"
 		                android:text=""
 		                android:gravity="right"
-		                android:paddingRight="10dp"
+		                android:paddingRight="20dp"
 		                android:textAppearance="?android:attr/textAppearanceMedium" />
 					
 		        </TableRow>
@@ -193,7 +193,7 @@
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:text="@string/pool_last_block_shares_text"
-		                android:textAppearance="?android:attr/textAppearanceMedium" 
+		                android:textAppearance="?android:attr/textAppearanceSmall" 
 		                 android:textColor="#838383"
 		                />
 	      	        
@@ -203,7 +203,7 @@
 		                android:layout_height="wrap_content"
 		                android:text=""
 		                android:gravity="right"
-		                android:paddingRight="10dp"
+		                android:paddingRight="20dp"
 		                android:textAppearance="?android:attr/textAppearanceMedium" />
 					
 		        </TableRow>
@@ -224,7 +224,7 @@
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:text="@string/pool_last_block_finder_text"
-		                android:textAppearance="?android:attr/textAppearanceMedium" 
+		                android:textAppearance="?android:attr/textAppearanceSmall" 
 		                 android:textColor="#838383"
 		                />
 	      	        
@@ -234,7 +234,7 @@
 		                android:layout_height="wrap_content"
 		                android:text=""
 		                android:gravity="right"
-		                android:paddingRight="10dp"
+		                android:paddingRight="20dp"
 		                android:textAppearance="?android:attr/textAppearanceMedium" />
 					
 		        </TableRow>
@@ -255,7 +255,7 @@
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:text="@string/pool_last_block_reward_text"
-		                android:textAppearance="?android:attr/textAppearanceMedium" 
+		                android:textAppearance="?android:attr/textAppearanceSmall" 
 		                 android:textColor="#838383"
 		                />
 	      	        
@@ -265,7 +265,7 @@
 		                android:layout_height="wrap_content"
 		                android:text=""
 		                android:gravity="right"
-		                android:paddingRight="10dp"
+		                android:paddingRight="20dp"
 		                android:textAppearance="?android:attr/textAppearanceMedium" />
 					
 		        </TableRow>
@@ -287,7 +287,7 @@
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:text="@string/pool_difficulty_text"
-		                android:textAppearance="?android:attr/textAppearanceMedium" 
+		                android:textAppearance="?android:attr/textAppearanceSmall" 
 		                android:textColor="#838383"
 		                />
 		      	        
@@ -297,7 +297,7 @@
 		                android:layout_height="wrap_content"
 		                android:text=""
 		                android:gravity="right"
-		                android:paddingRight="10dp"
+		                android:paddingRight="20dp"
 		                android:textAppearance="?android:attr/textAppearanceMedium" />
 		            
 		        </TableRow>
