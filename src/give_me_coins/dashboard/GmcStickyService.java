@@ -46,6 +46,7 @@ public class GmcStickyService extends Service{
 	private static ArrayList<GetInfoWorkerCallback> oLtc_callbacks = null;
 	private static ArrayList<GetInfoWorkerCallback> oFtc_callbacks = null;
 	private static ArrayList<GetInfoWorkerCallback> oVtc_callbacks = null;
+	private static ArrayList<GetInfoWorkerCallback> oPpc_callbacks = null;
 	
 	private static GmcStickyService oInstance = null;
 	private final Handler oHandler = null;
@@ -68,11 +69,13 @@ public class GmcStickyService extends Service{
 	private GiveMeCoinsInfo gmcInfoLTC = null;
 	private GiveMeCoinsInfo gmcInfoBTC = null;
 	private GiveMeCoinsInfo gmcInfoVTC = null;
+	private GiveMeCoinsInfo gmcInfoPPC = null;
 	
 	private boolean showBTC = true;
 	private boolean showFTC = true;
 	private boolean showLTC = true;
 	private boolean showVTC = true;
+	private boolean showPPC = true;
 	
 	// so we can put all in (FTC, BTC, LTC) before we call the notification
 	private final int alreadyUpdated = 0;
@@ -81,6 +84,7 @@ public class GmcStickyService extends Service{
 	private String ltcHashRate = "0 kh/s";
 	private String ftcHashRate = "0 kh/s";
 	private String vtcHashRate = "0 kh/s";
+	private String ppcHashRate = "0 kh/s";
 	
 	
 	@Override
@@ -92,7 +96,7 @@ public class GmcStickyService extends Service{
 	
 	void detachListener(GetInfoWorkerCallback para_btcCallback,
 				GetInfoWorkerCallback para_ltcCallback, GetInfoWorkerCallback para_ftcCallback,
-				GetInfoWorkerCallback para_vtcCallback)
+				GetInfoWorkerCallback para_vtcCallback,GetInfoWorkerCallback para_ppcCallback)
 	{
 		if( para_btcCallback != null )
 		{
@@ -109,6 +113,10 @@ public class GmcStickyService extends Service{
 		if( para_vtcCallback != null )
 		{
 			oVtc_callbacks.remove(para_vtcCallback);
+		}
+		if( para_ppcCallback != null )
+		{
+			oPpc_callbacks.remove(para_ppcCallback);
 		}
 	}
 	
@@ -127,6 +135,7 @@ public class GmcStickyService extends Service{
 			showLTC = sp.getBoolean(getString(R.string.show_ltc), true);
 			showFTC = sp.getBoolean(getString(R.string.show_ftc), true);
 			showVTC = sp.getBoolean(getString(R.string.show_vtc), true);
+			showPPC = sp.getBoolean(getString(R.string.show_ppc), true);
 			int sleepTime = sp.getInt(getString(R.string.update_interval), 60000);
 			
 			
@@ -136,7 +145,7 @@ public class GmcStickyService extends Service{
 			{
 				oGiveMeCoinsWorker.setSleepTime(sleepTime);
 				oGiveMeCoinsWorker.setUrlToGiveMeCoins( URL_STRING+key );
-				oGiveMeCoinsWorker.setCoinsToShow(showBTC,showLTC, showFTC, showVTC);
+				oGiveMeCoinsWorker.setCoinsToShow(showBTC,showLTC, showFTC, showVTC, showPPC);
 				
 				oGiveMeCoinsWorker.forceUpdate();
 				//oGiveMeCoinsWorker.setRunning(false);
@@ -145,10 +154,10 @@ public class GmcStickyService extends Service{
 			else
 			{
 				// make new one ... 
-				oGiveMeCoinsWorker = new GetInfoWorker(btc_callback, ltc_callback, ftc_callback, vtc_callback);
+				oGiveMeCoinsWorker = new GetInfoWorker(btc_callback, ltc_callback, ftc_callback, vtc_callback, ppc_callback);
 				oGiveMeCoinsWorker.setUrlToGiveMeCoins( URL_STRING+key );
 				
-				oGiveMeCoinsWorker.setCoinsToShow(showBTC,showLTC, showFTC, showVTC);
+				oGiveMeCoinsWorker.setCoinsToShow(showBTC,showLTC, showFTC, showVTC, showPPC);
 
 				
 				oGiveMeCoinsWorker.setSleepTime(sleepTime);
@@ -175,6 +184,8 @@ public class GmcStickyService extends Service{
     		oFtc_callbacks = new ArrayList<GetInfoWorkerCallback>();
     	if( oVtc_callbacks == null )
     		oVtc_callbacks = new ArrayList<GetInfoWorkerCallback>();
+    	if( oPpc_callbacks == null )
+    		oPpc_callbacks = new ArrayList<GetInfoWorkerCallback>();
     	
     	oInstance = this;
     	
@@ -186,6 +197,7 @@ public class GmcStickyService extends Service{
 		showLTC = sp.getBoolean(getString(R.string.show_ltc), true);
 		showFTC = sp.getBoolean(getString(R.string.show_ftc), true);
 		showVTC = sp.getBoolean(getString(R.string.show_vtc), true);
+		showPPC = sp.getBoolean(getString(R.string.show_ppc), true);
         	
 		mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 		showStartNotification();
@@ -196,8 +208,8 @@ public class GmcStickyService extends Service{
 		{
 			if(DEBUG)Log.d(TAG,"new coin workers");
 			
-			oGiveMeCoinsWorker = new GetInfoWorker( btc_callback, ltc_callback, ftc_callback, vtc_callback );
-			oGiveMeCoinsWorker.setCoinsToShow(showBTC,showLTC, showFTC, showVTC);
+			oGiveMeCoinsWorker = new GetInfoWorker( btc_callback, ltc_callback, ftc_callback, vtc_callback, ppc_callback );
+			oGiveMeCoinsWorker.setCoinsToShow(showBTC,showLTC, showFTC, showVTC, showPPC);
 			oGiveMeCoinsWorker.setUrlToGiveMeCoins( URL_STRING+key );			
 			oGiveMeCoinsWorker.setSleepTime(sleepTime);
 			oGiveMeCoinsWorker.setRunning( true );
@@ -215,7 +227,7 @@ public class GmcStickyService extends Service{
 	 */
 	static GmcStickyService getInstance(GetInfoWorkerCallback para_btc_callback,
 			GetInfoWorkerCallback para_ltc_callback, GetInfoWorkerCallback para_ftc_callback,
-			GetInfoWorkerCallback para_vtc_callback)
+			GetInfoWorkerCallback para_vtc_callback,GetInfoWorkerCallback para_ppc_callback)
 	{
 		
 		if( para_btc_callback != null )
@@ -243,6 +255,12 @@ public class GmcStickyService extends Service{
 				oVtc_callbacks = new ArrayList<GetInfoWorkerCallback>();
 			oVtc_callbacks.add(para_vtc_callback);
 		}
+		if( para_ppc_callback != null )
+		{
+			if( oPpc_callbacks == null )
+				oPpc_callbacks = new ArrayList<GetInfoWorkerCallback>();
+			oPpc_callbacks.add(para_ppc_callback);
+		}
 		return oInstance;	
 
 	}
@@ -262,6 +280,8 @@ public class GmcStickyService extends Service{
 	    		currentTextToShow += "LTC: "+ltcHashRate+" ";
 	    	if( showVTC )
 	    		currentTextToShow += "VTC: "+vtcHashRate+" ";
+	    	if( showPPC )
+	    		currentTextToShow += "PPC: "+ppcHashRate+" ";
 	    	
 	        // The PendingIntent to launch our activity if the user selects this notification
 	        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
@@ -304,6 +324,8 @@ public class GmcStickyService extends Service{
 	    		currentTextToShow += "LTC: "+ltcHashRate+" ";
 	    	if( showVTC )
 	    		currentTextToShow += "VTC: "+vtcHashRate+" ";
+	    	if( showPPC )
+	    		currentTextToShow += "PPC: "+ppcHashRate+" ";
 	    	
 	        // Set the icon, scrolling text and timestamp
 	    	oNotification = new Notification(R.drawable.ic_launcher, currentTextToShow,
@@ -413,6 +435,26 @@ public class GmcStickyService extends Service{
 			
 		}
 	};
+	
+	private final GetInfoWorkerCallback ppc_callback = new GetInfoWorkerCallback() {
+		
+		@Override
+		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
+			gmcInfoPPC = para_giveMeCoinsInfo;
+			
+			// go through all 
+			for(GetInfoWorkerCallback callback : oPpc_callbacks)
+			{
+				callback.refreshValues(para_giveMeCoinsInfo);
+			}
+			if( showPPC )
+			{
+				ppcHashRate = MainScreen.readableHashSize(gmcInfoPPC.getTotal_hashrate());
+				refreshNotification();
+			}
+			
+		}
+	};
 
 
 	GiveMeCoinsInfo getBTCInfo()
@@ -433,6 +475,10 @@ public class GmcStickyService extends Service{
 	GiveMeCoinsInfo getVTCInfo()
 	{
 		return gmcInfoVTC;		
+	}
+	GiveMeCoinsInfo getPPCInfo()
+	{
+		return gmcInfoPPC;		
 	}
 
 	@Override

@@ -20,6 +20,11 @@
           android:icon="@drawable/vertcoin"
           android:title="@string/vtc_text" 
           android:showAsAction="always"/>
+    
+    <item android:id="@+id/ppc_menu"
+          android:icon="@drawable/peercoin"
+          android:title="@string/ppc_text" 
+          android:showAsAction="always"/>
    <!-- 
     <item android:id="@+id/refresh"
           android:icon="@drawable/ic_action_refresh"
