@@ -6,7 +6,8 @@ enum Currency {
     LTC(R.color.ltc),
     BTC(R.color.btc),
     FTC(R.color.ftc),
-    VTC(R.color.vtc);
+    VTC(R.color.vtc),
+    PPC(R.color.ppc);
 
     private final int color;
 

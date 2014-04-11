@@ -26,7 +26,7 @@ class GetInfoWorker extends AsyncTask<Void, JSONObject, Void> {
 	private boolean isRunning = true;
     private static final int iConnectionTimeout = 5000;
     private final ArrayList<GetInfoWorkerCallback> getInfoWorkerCallbacks = new ArrayList<GetInfoWorkerCallback>();
-    private final boolean[] showCoin = {true, true, true,true};
+    private final boolean[] showCoin = {true, true, true,true,true};
     private int sleepTime = 60000; // 1 min - default value
     private boolean isSleeping = false;
 
@@ -74,11 +74,13 @@ class GetInfoWorker extends AsyncTask<Void, JSONObject, Void> {
 
     
     GetInfoWorker(GetInfoWorkerCallback para_getInfoWorkerCallbackBTC, GetInfoWorkerCallback para_getInfoWorkerCallbackLTC, 
-    		GetInfoWorkerCallback para_getInfoWorkerCallbackFTC,GetInfoWorkerCallback para_getInfoWorkerCallbackVTC) {
+    		GetInfoWorkerCallback para_getInfoWorkerCallbackFTC,GetInfoWorkerCallback para_getInfoWorkerCallbackVTC,
+    		GetInfoWorkerCallback para_getInfoWorkerCallbackPPC) {
 		getInfoWorkerCallbacks.add( para_getInfoWorkerCallbackBTC );
 		getInfoWorkerCallbacks.add( para_getInfoWorkerCallbackLTC );
         getInfoWorkerCallbacks.add( para_getInfoWorkerCallbackFTC );
         getInfoWorkerCallbacks.add( para_getInfoWorkerCallbackVTC );
+        getInfoWorkerCallbacks.add( para_getInfoWorkerCallbackPPC );
 
     }
 
@@ -89,8 +91,8 @@ class GetInfoWorker extends AsyncTask<Void, JSONObject, Void> {
         {
             if(urlToGiveMeCoins != null )
             {
-                final String[] currencySwitcher = {"btc","ltc","ftc","vtc"};
-	            for(int i = 0; i<4;i++)
+                final String[] currencySwitcher = {"btc","ltc","ftc","vtc","ppc"};
+	            for(int i = 0; i<5;i++)
 	            {
 	            	if( showCoin[i] && getInfoWorkerCallbacks.get(i) != null )
 	            	{
@@ -223,11 +225,12 @@ class GetInfoWorker extends AsyncTask<Void, JSONObject, Void> {
 		
 	}
 
-	void setCoinsToShow(boolean para_showBTC, boolean para_showLTC, boolean para_showFTC, boolean para_showVTC)
+	void setCoinsToShow(boolean para_showBTC, boolean para_showLTC, boolean para_showFTC, boolean para_showVTC, boolean para_showPPC)
 	{
 		showCoin[0] = para_showBTC;
 		showCoin[1] = para_showLTC;
 		showCoin[2] = para_showFTC;
 		showCoin[3] = para_showVTC;
+		showCoin[4] = para_showPPC;
 	}
 }

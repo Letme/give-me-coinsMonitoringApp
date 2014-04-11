@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:text="@string/waiting_for_info" 
             android:textStyle="bold"
+   			android:paddingRight="25dp"
    			android:layout_alignParentRight="true"
             />
 

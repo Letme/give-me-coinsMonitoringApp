@@ -26,6 +26,7 @@
 	<string name="btc_text">BTC</string>
 	<string name="ftc_text">FTC</string>
 	<string name="vtc_text">VTC</string>
+	<string name="ppc_text">PPC</string>
 	<string name="missing_username">Getting Data ...</string>
 	<string name="saved_coin_select">saved_coin_select</string>
 	<string name="pool_name">GMC Pool Status</string>
@@ -51,12 +52,14 @@
     <string name="app_name_ftc">GMC FTC</string>
     <string name="app_name_btc">GMC BTC</string>
     <string name="app_name_vtc">GMC VTC</string>
+    <string name="app_name_ppc">GMC PPC</string>
     <string name="notification">GMC</string>
     <string name="refresh_text">Refresh</string>
     <string name="show_btc">Show BTC</string>
     <string name="show_ltc">Show LTC</string>
     <string name="show_ftc">Show FTC</string>
     <string name="show_vtc">Show VTC</string>
+    <string name="show_ppc">Show PPC</string>
     <string name="update_interval_helptext">The information will be updated in the chosen interval.</string>
     <string name="update_interval">Update interval</string>
     <string name="show_helptext">If unchecked this coin is not going to be shown in the app, and doesn\'t get updated. Saves traffic.</string>

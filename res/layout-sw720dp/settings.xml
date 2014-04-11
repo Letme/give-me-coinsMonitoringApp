@@ -120,6 +120,12 @@
 					         android:layout_width="wrap_content"
 					         android:layout_height="wrap_content"
 					         android:text="@string/show_vtc" />
+					  	
+					  	<CheckBox
+					         android:id="@+id/show_ppc"
+					         android:layout_width="wrap_content"
+					         android:layout_height="wrap_content"
+					         android:text="@string/show_ppc" />
 					</LinearLayout>
 		
 					<TextView

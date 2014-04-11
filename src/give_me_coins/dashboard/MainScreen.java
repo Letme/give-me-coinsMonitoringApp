@@ -164,7 +164,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	private final static float[] roundedCorners = new float[] { 5, 5, 5, 5, 5, 5, 5, 5 };
 	
 	
-	private static final int MAX_WORKER_NUMBER=20;
+	private static final int MAX_WORKER_NUMBER=30;
 	//int i=0;
 
 	private static final String PROGRESS = "Progress";
@@ -215,6 +215,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             onCurrencySelected(Currency.FTC);
 		} else if (sharedPref.getBoolean(getString(R.string.show_vtc), true)) {
             onCurrencySelected(Currency.VTC);
+		} else if (sharedPref.getBoolean(getString(R.string.show_ppc), true)) {
+            onCurrencySelected(Currency.PPC);
 		}
 		// Start service to receive data
 		//if(mService==null) mService= new GMCService(this,mHandler);
@@ -376,6 +378,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 					API_key_saved=API_key_saved.replace("api-ftc", "api-ltc");
 				} else if (API_key_saved.contains("api-vtc")) {
     				API_key_saved=API_key_saved.replace("api-vtc", "api-ltc");
+    			} else if (API_key_saved.contains("api-ppc")) {
+    				API_key_saved=API_key_saved.replace("api-ppc", "api-ltc");
     			}
     			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-ltc";
@@ -399,6 +403,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 					API_key_saved=API_key_saved.replace("api-ftc", "api-btc");
 				} else if (API_key_saved.contains("api-vtc")) {
     				API_key_saved=API_key_saved.replace("api-vtc", "api-btc");
+    			} else if (API_key_saved.contains("api-ppc")) {
+    				API_key_saved=API_key_saved.replace("api-ppc", "api-btc");
     			}
 				GMCService.url_fixed=URL+API_key_saved;
 				GMCPoolService.url_fixed=URL+"/pool/api-btc";
@@ -422,6 +428,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     				API_key_saved=API_key_saved.replace("api-btc", "api-ftc");
     			} else if (API_key_saved.contains("api-vtc")) {
     				API_key_saved=API_key_saved.replace("api-vtc", "api-ftc");
+    			} else if (API_key_saved.contains("api-ppc")) {
+    				API_key_saved=API_key_saved.replace("api-ppc", "api-ftc");
     			}
     			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-ftc";
@@ -445,6 +453,8 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     				API_key_saved=API_key_saved.replace("api-btc", "api-vtc");
     			} else if (API_key_saved.contains("api-ftc")) {
     				API_key_saved=API_key_saved.replace("api-ftc", "api-vtc");
+    			} else if (API_key_saved.contains("api-ppc")) {
+    				API_key_saved=API_key_saved.replace("api-ppc", "api-vtc");
     			}
     			GMCService.url_fixed=URL+API_key_saved;
     			GMCPoolService.url_fixed=URL+"/pool/api-vtc";
@@ -457,6 +467,31 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
     	 		if( summary != null )
     	 		{
     	 			summary.setBackgroundColor(vtcColor);
+    	 		}
+    	 		return true;
+	        case R.id.ppc_menu:
+                onCurrencySelected(Currency.PPC);
+     			Toast.makeText(this, "Coin changed to PPC", Toast.LENGTH_LONG).show();
+    			if(API_key_saved.contains("api-ltc")) {
+    				API_key_saved=API_key_saved.replace("api-ltc", "api-ppc");
+    			} else if (API_key_saved.contains("api-btc")) {
+    				API_key_saved=API_key_saved.replace("api-btc", "api-ppc");
+    			} else if (API_key_saved.contains("api-ftc")) {
+    				API_key_saved=API_key_saved.replace("api-ftc", "api-ppc");
+    			} else if (API_key_saved.contains("api-vtc")) {
+    				API_key_saved=API_key_saved.replace("api-vtc", "api-ppc");
+    			}
+    			GMCService.url_fixed=URL+API_key_saved;
+    			GMCPoolService.url_fixed=URL+"/pool/api-ppc";
+            	mAppSectionsPagerAdapter.notifyDataSetChanged();
+    	 		int ppcColor = getResources().getColor(R.color.ppc);
+    	 		if(dashBoard != null)
+    	 		{
+    	 			dashBoard.setBackgroundColor(ppcColor);
+    	 		}
+    	 		if( summary != null )
+    	 		{
+    	 			summary.setBackgroundColor(ppcColor);
     	 		}
     	 		return true;
 	        default:
@@ -480,6 +515,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         showIfEnabled(R.string.show_ltc, R.id.ltc_menu, menu);
         showIfEnabled(R.string.show_ftc, R.id.ftc_menu, menu);
         showIfEnabled(R.string.show_vtc, R.id.vtc_menu, menu);
+        showIfEnabled(R.string.show_ppc, R.id.ppc_menu, menu);
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -595,12 +631,14 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             CheckBox show_ltc = (CheckBox) rootView.findViewById(R.id.show_ltc);
             CheckBox show_ftc = (CheckBox) rootView.findViewById(R.id.show_ftc);
             CheckBox show_vtc = (CheckBox) rootView.findViewById(R.id.show_vtc);
+            CheckBox show_ppc = (CheckBox) rootView.findViewById(R.id.show_ppc);
             CheckBox show_notification = (CheckBox) rootView.findViewById(R.id.show_notification);
             
             show_btc.setChecked(sharedPref.getBoolean(getString(R.string.show_btc), true ) );
             show_ltc.setChecked(sharedPref.getBoolean(getString(R.string.show_ltc), true ) );
             show_ftc.setChecked(sharedPref.getBoolean(getString(R.string.show_ftc), true ) );
             show_vtc.setChecked(sharedPref.getBoolean(getString(R.string.show_vtc), true ) );
+            show_ppc.setChecked(sharedPref.getBoolean(getString(R.string.show_ppc), true ) );
             show_notification.setChecked(sharedPref.getBoolean(getString(R.string.show_notification), true ) );
             
             
@@ -633,6 +671,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                                 CheckBox show_ltc = (CheckBox) rootView.findViewById(R.id.show_ltc);
                                 CheckBox show_ftc = (CheckBox) rootView.findViewById(R.id.show_ftc);
                                 CheckBox show_vtc = (CheckBox) rootView.findViewById(R.id.show_vtc);
+                                CheckBox show_ppc = (CheckBox) rootView.findViewById(R.id.show_ppc);
                                 CheckBox show_notification = (CheckBox) rootView.findViewById(R.id.show_notification);
                         		
                                 SharedPreferences.Editor editor = sharedPref.edit();
@@ -640,6 +679,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                                 editor.putBoolean(getString(R.string.show_ftc), show_ftc.isChecked());
                                 editor.putBoolean(getString(R.string.show_ltc), show_ltc.isChecked());
                                 editor.putBoolean(getString(R.string.show_vtc), show_vtc.isChecked());
+                                editor.putBoolean(getString(R.string.show_ppc), show_ppc.isChecked());
                                 editor.putBoolean(getString(R.string.show_notification), show_notification.isChecked());
                                 editor.putInt(getString(R.string.update_interval), getMillisecondsFromView(rootView.findViewById(R.id.update_times)));
                                 
@@ -999,7 +1039,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             Worker_NameH.setText("Worker Name"); //+1 tukaj ker gledamo 2 polje
             Worker_NameH.setTextColor(Color.BLACK);
             // Worker_NameH.setBackgroundColor(Color.LTGRAY);
-            Worker_NameH.setPadding(5,2,40,2);
+            Worker_NameH.setPadding(5,2,20,2);
             Worker_NameH.setGravity(Gravity.LEFT);
             Worker_NameH.setLayoutParams(new TableRow.LayoutParams(
                     LayoutParams.WRAP_CONTENT));
@@ -1011,7 +1051,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             Worker_AliveH.setTextColor(Color.BLACK);
             // Worker_AliveH.setBackgroundColor(Color.LTGRAY);
             Worker_AliveH.setGravity(Gravity.CENTER);
-            Worker_AliveH.setPadding(0,2,40,2);
+            Worker_AliveH.setPadding(0,2,20,2);
             Worker_AliveH.setLayoutParams(new TableRow.LayoutParams(
                     LayoutParams.WRAP_CONTENT));
             trH.addView(Worker_AliveH);
@@ -1022,6 +1062,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             Worker_HashRateH.setTextColor(Color.BLACK);
             //Worker_HashRateH.setBackgroundColor(Color.LTGRAY);
             Worker_HashRateH.setGravity(Gravity.RIGHT);
+            Worker_HashRateH.setPadding(0,2,2,2);
             Worker_HashRateH.setLayoutParams(new TableRow.LayoutParams(
                     LayoutParams.WRAP_CONTENT));
             // Worker_HashRateH.setPadding(10,2,0,2);
@@ -1058,7 +1099,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         // tr.setBackgroundColor(red);
                     }
                     TextView Worker_HashRate =(TextView) rootView.findViewById(4000+current);
-                    Worker_HashRate.setText(worker_hashrate[current]);
+                    Worker_HashRate.setText(readableHashSize(Long.valueOf(worker_hashrate[current])));
                     TextView Worker_Name =(TextView) rootView.findViewById(2000+current);
                     Worker_Name.setText(worker_name[current]);
                 }
@@ -1103,8 +1144,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                     // Third column
                     TextView Worker_HashRate = new TextView(getActivity());
                     Worker_HashRate.setId(4000+current);
-                    Worker_HashRate.setText(worker_hashrate[current]);
+                    Worker_HashRate.setText(readableHashSize(Long.valueOf(worker_hashrate[current])));
                     Worker_HashRate.setGravity(Gravity.RIGHT);
+                    Worker_HashRate.setPadding(0,2,2,2);
                     Worker_HashRate.setTextColor(Color.BLACK);
                     Worker_HashRate.setLayoutParams(new TableRow.LayoutParams(
                             LayoutParams.WRAP_CONTENT));
@@ -1171,6 +1213,15 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				TextView ClearCTV = (TextView) rootView.findViewById(R.id.summary_usdconfirmedrewards);
 				ClearCTV.setText("");
 			}
+            if (currency() == Currency.PPC) {
+				exchange_rate=null;
+				// clear UI
+				TextView ClearETV = (TextView) rootView.findViewById(R.id.summary_usdroundestimate);
+				ClearETV.setText("");
+				TextView ClearCTV = (TextView) rootView.findViewById(R.id.summary_usdconfirmedrewards);
+				ClearCTV.setText("");
+			}
+
 
             if(username!=null) {
                 TextView usernameTV = (TextView) rootView.findViewById(R.id.summary_username);
@@ -1233,7 +1284,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                     }
 
                     TextView Worker_HashRate =(TextView) rootView.findViewById(4000+current);
-                    Worker_HashRate.setText(worker_hashrate[current]);
+                    Worker_HashRate.setText(readableHashSize(Long.valueOf(worker_hashrate[current])));
                     TextView Worker_Name = (TextView) rootView.findViewById(2000+current);
                     Worker_Name.setText(worker_name[current]);
                 }
@@ -1280,8 +1331,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                     // Third column
                     TextView Worker_HashRate = new TextView(getActivity());
                     Worker_HashRate.setId(4000+current);
-                    Worker_HashRate.setText(worker_hashrate[current]);
+                    Worker_HashRate.setText(readableHashSize(Long.valueOf(worker_hashrate[current])));
                     Worker_HashRate.setGravity(Gravity.RIGHT);
+                    Worker_HashRate.setPadding(0,2,2,2);
                     Worker_HashRate.setTextColor(Color.BLACK);
                     Worker_HashRate.setLayoutParams(new TableRow.LayoutParams(
                             LayoutParams.WRAP_CONTENT));
@@ -1343,6 +1395,10 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 			 		if( oStickyService.getVTCInfo() != null)
 			 			setToLocalGMCInfo(oStickyService.getVTCInfo());
 			 		break;
+			 	case PPC:
+			 		if( oStickyService.getPPCInfo() != null)
+			 			setToLocalGMCInfo(oStickyService.getPPCInfo());
+			 		break;
 			 	default:
 			 		if( oStickyService.getLTCInfo() != null)
 			 			setToLocalGMCInfo(oStickyService.getLTCInfo());
@@ -1357,7 +1413,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		@Override
 		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
 			if( oStickyService == null)
-				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback, vtc_callback);
+				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback, vtc_callback, ppc_callback);
 
 			if (currency() == Currency.BTC) {
 				setToLocalGMCInfo(para_giveMeCoinsInfo);
@@ -1373,7 +1429,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		@Override
 		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
 			if( oStickyService == null)
-				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback,vtc_callback);
+				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback,vtc_callback, ppc_callback);
 
 			if (currency() == Currency.LTC) {
 				setToLocalGMCInfo(para_giveMeCoinsInfo);
@@ -1389,7 +1445,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		@Override
 		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
 			if( oStickyService == null)
-				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback,vtc_callback);
+				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback,vtc_callback, ppc_callback);
 
 			if (currency() == Currency.FTC) {
 				setToLocalGMCInfo(para_giveMeCoinsInfo);
@@ -1406,9 +1462,26 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		@Override
 		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
 			if( oStickyService == null)
-				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback,vtc_callback);
+				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback,vtc_callback,ppc_callback);
 
 			if (currency() == Currency.VTC) {
+				setToLocalGMCInfo(para_giveMeCoinsInfo);
+				mAppSectionsPagerAdapter.notifyDataSetChanged();
+				if(oLoadingProgress != null)oLoadingProgress.dismiss();
+			}
+			
+			
+		}
+	};
+	
+	private final GetInfoWorkerCallback ppc_callback = new GetInfoWorkerCallback() {
+		
+		@Override
+		public void refreshValues(GiveMeCoinsInfo para_giveMeCoinsInfo) {
+			if( oStickyService == null)
+				oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback,vtc_callback,ppc_callback);
+
+			if (currency() == Currency.PPC) {
 				setToLocalGMCInfo(para_giveMeCoinsInfo);
 				mAppSectionsPagerAdapter.notifyDataSetChanged();
 				if(oLoadingProgress != null)oLoadingProgress.dismiss();
@@ -1462,7 +1535,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 		super.onResume();
 		if(DEBUG) Log.d(TAG,"onResume");
 		isRunning=true;
-		oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback, vtc_callback);
+		oStickyService = GmcStickyService.getInstance(btc_callback, ltc_callback, ftc_callback, vtc_callback,ppc_callback);
 		if( oStickyService == null)
 		{
 			if(DEBUG)Log.w(TAG,"oStickyService == null onResume");
@@ -1484,6 +1557,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 				case VTC:
 					setToLocalGMCInfo(oStickyService.getVTCInfo());
 					break;
+				case PPC:
+					setToLocalGMCInfo(oStickyService.getPPCInfo());
+					break;
 				default:
 					setToLocalGMCInfo(oStickyService.getLTCInfo());
 					break;
@@ -1501,7 +1577,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         {
             if( oStickyService != null )
             {
-                oStickyService.detachListener(btc_callback, ltc_callback, ftc_callback, vtc_callback);
+                oStickyService.detachListener(btc_callback, ltc_callback, ftc_callback, vtc_callback, ppc_callback);
             }
             asyncService.cancel(true);
             asyncPoolService.cancel(true);
@@ -1527,7 +1603,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
         {
             if( oStickyService != null)
             {
-                oStickyService.detachListener(btc_callback, ltc_callback, ftc_callback, vtc_callback);
+                oStickyService.detachListener(btc_callback, ltc_callback, ftc_callback, vtc_callback, ppc_callback);
                 oStickyService.stop();
                 oStickyService = null;
             }
@@ -1544,7 +1620,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	
 	static String readableHashSize(long size) {
 	    if(size <= 0) return String.valueOf(size);
-	    final String[] units = new String[] { "Kh/s", "Mh/s", "Gh/s", "Th/s","Ph/s","Eh/s" }; //we left ouh h/s because API puts dot at kh/s!!
+	    final String[] units = new String[] { "kh/s", "Mh/s", "Gh/s", "Th/s","Ph/s","Eh/s" }; //we left ouh h/s because API puts dot at kh/s!!
 	    int digitGroups = (int) (Math.log10(size)/Math.log10(1000));
 	    return new DecimalFormat("#,##0.#").format(size/Math.pow(1000, digitGroups)) + " " + units[digitGroups];
 	}
