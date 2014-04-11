@@ -164,7 +164,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	private final static float[] roundedCorners = new float[] { 5, 5, 5, 5, 5, 5, 5, 5 };
 	
 	
-	private static final int MAX_WORKER_NUMBER=20;
+	private static final int MAX_WORKER_NUMBER=30;
 	//int i=0;
 
 	private static final String PROGRESS = "Progress";
@@ -1039,7 +1039,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             Worker_NameH.setText("Worker Name"); //+1 tukaj ker gledamo 2 polje
             Worker_NameH.setTextColor(Color.BLACK);
             // Worker_NameH.setBackgroundColor(Color.LTGRAY);
-            Worker_NameH.setPadding(5,2,40,2);
+            Worker_NameH.setPadding(5,2,20,2);
             Worker_NameH.setGravity(Gravity.LEFT);
             Worker_NameH.setLayoutParams(new TableRow.LayoutParams(
                     LayoutParams.WRAP_CONTENT));
@@ -1051,7 +1051,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             Worker_AliveH.setTextColor(Color.BLACK);
             // Worker_AliveH.setBackgroundColor(Color.LTGRAY);
             Worker_AliveH.setGravity(Gravity.CENTER);
-            Worker_AliveH.setPadding(0,2,40,2);
+            Worker_AliveH.setPadding(0,2,20,2);
             Worker_AliveH.setLayoutParams(new TableRow.LayoutParams(
                     LayoutParams.WRAP_CONTENT));
             trH.addView(Worker_AliveH);
@@ -1062,6 +1062,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
             Worker_HashRateH.setTextColor(Color.BLACK);
             //Worker_HashRateH.setBackgroundColor(Color.LTGRAY);
             Worker_HashRateH.setGravity(Gravity.RIGHT);
+            Worker_HashRateH.setPadding(0,2,2,2);
             Worker_HashRateH.setLayoutParams(new TableRow.LayoutParams(
                     LayoutParams.WRAP_CONTENT));
             // Worker_HashRateH.setPadding(10,2,0,2);
@@ -1098,7 +1099,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                         // tr.setBackgroundColor(red);
                     }
                     TextView Worker_HashRate =(TextView) rootView.findViewById(4000+current);
-                    Worker_HashRate.setText(worker_hashrate[current]);
+                    Worker_HashRate.setText(readableHashSize(Long.valueOf(worker_hashrate[current])));
                     TextView Worker_Name =(TextView) rootView.findViewById(2000+current);
                     Worker_Name.setText(worker_name[current]);
                 }
@@ -1143,8 +1144,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                     // Third column
                     TextView Worker_HashRate = new TextView(getActivity());
                     Worker_HashRate.setId(4000+current);
-                    Worker_HashRate.setText(worker_hashrate[current]);
+                    Worker_HashRate.setText(readableHashSize(Long.valueOf(worker_hashrate[current])));
                     Worker_HashRate.setGravity(Gravity.RIGHT);
+                    Worker_HashRate.setPadding(0,2,2,2);
                     Worker_HashRate.setTextColor(Color.BLACK);
                     Worker_HashRate.setLayoutParams(new TableRow.LayoutParams(
                             LayoutParams.WRAP_CONTENT));
@@ -1282,7 +1284,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                     }
 
                     TextView Worker_HashRate =(TextView) rootView.findViewById(4000+current);
-                    Worker_HashRate.setText(worker_hashrate[current]);
+                    Worker_HashRate.setText(readableHashSize(Long.valueOf(worker_hashrate[current])));
                     TextView Worker_Name = (TextView) rootView.findViewById(2000+current);
                     Worker_Name.setText(worker_name[current]);
                 }
@@ -1329,8 +1331,9 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
                     // Third column
                     TextView Worker_HashRate = new TextView(getActivity());
                     Worker_HashRate.setId(4000+current);
-                    Worker_HashRate.setText(worker_hashrate[current]);
+                    Worker_HashRate.setText(readableHashSize(Long.valueOf(worker_hashrate[current])));
                     Worker_HashRate.setGravity(Gravity.RIGHT);
+                    Worker_HashRate.setPadding(0,2,2,2);
                     Worker_HashRate.setTextColor(Color.BLACK);
                     Worker_HashRate.setLayoutParams(new TableRow.LayoutParams(
                             LayoutParams.WRAP_CONTENT));
@@ -1617,7 +1620,7 @@ public class MainScreen extends FragmentActivity implements ActionBar.TabListene
 	
 	static String readableHashSize(long size) {
 	    if(size <= 0) return String.valueOf(size);
-	    final String[] units = new String[] { "Kh/s", "Mh/s", "Gh/s", "Th/s","Ph/s","Eh/s" }; //we left ouh h/s because API puts dot at kh/s!!
+	    final String[] units = new String[] { "kh/s", "Mh/s", "Gh/s", "Th/s","Ph/s","Eh/s" }; //we left ouh h/s because API puts dot at kh/s!!
 	    int digitGroups = (int) (Math.log10(size)/Math.log10(1000));
 	    return new DecimalFormat("#,##0.#").format(size/Math.pow(1000, digitGroups)) + " " + units[digitGroups];
 	}
